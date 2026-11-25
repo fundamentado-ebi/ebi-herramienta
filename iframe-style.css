@@ -1,0 +1,208 @@
+body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+        }
+        .instruction {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            color: #7f8c8d;
+        }
+        .step {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step-content {
+            flex: 1;
+            min-width: 350px;
+            padding-right: 30px;
+            margin-bottom: 20px;
+        }
+        .step-visual {
+            flex: 0 0 350px;
+            text-align: center;
+            width: 100%;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 0;
+        }
+        .objective {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-top: 15px;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+
+        /* --- Estilos para simular la Interfaz de Biblearc --- */
+        .biblearc-panel {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            text-align: left;
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .panel-header {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .system-lane-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .system-lane-item:last-child {
+            border-bottom: none;
+        }
+        .system-lane-meta {
+            color: #e67e22;
+            font-size: 0.9em;
+            margin-left: 10px;
+            background: #fdf2e9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .action-icons {
+            font-family: 'Courier New', Courier, monospace;
+            color: #7f8c8d;
+            margin-left: 15px;
+        }
+        .btn-panel {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-add {
+            color: #c4a170;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn-done {
+            background-color: #c4a170;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .note-area {
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+        .note-text {
+            font-weight: bold;
+            color: #333;
+        }
+        .color-list-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+        }
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: inline-block;
+        }
+        .item-text {
+            flex: 1;
+        }
+        .item-separator {
+            color: #ddd;
+            margin: 0 10px;
+        }
+        .topico-principal-oval {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 2px solid #333;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        .contexto-icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: #7f8c8d;
+        }
+
+        /* --- Flujo del proceso --- */
+        .process-arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #c4a170;
+            margin: -20px 0 30px 0;
+        }
+
+        /* --- Tooltips Interactivos (Ajustados para no cortarse) --- */
+        .info-icon { display: inline-block; width: 18px; height: 18px; background: #3498db; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 0.8em; font-weight: bold; cursor: help; margin-left: 8px; position: relative; vertical-align: middle; }
+        .info-icon:hover { background: #2980b9; transform: scale(1.1); }
+        .tooltip { visibility: hidden; opacity: 0; position: absolute; z-index: 1000; background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 15px; border-radius: 8px; width: max-content; max-width: 250px; bottom: 130%; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: opacity 0.3s, visibility 0.3s; text-align: left; font-weight: normal; font-style: normal; line-height: 1.4; white-space: normal;}
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 5px; border-style: solid; border-color: #34495e transparent transparent transparent; }
+        .info-icon:hover .tooltip { visibility: visible; opacity: 1; }
+        .tooltip-title { font-weight: bold; margin-bottom: 5px; font-size: 1.05em; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; color: #f1c40f; display: block; }
+
+        /* --- Estilos añadidos para las listas <ul> de complemento --- */
+        .step-content ul {
+            background-color: #fcfcfc;
+            border: 1px solid #eee;
+            padding: 15px 15px 15px 35px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        .step-content ul li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+        .step-content ul li strong {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .step-content {
+                padding-right: 0;
+            }
+        }

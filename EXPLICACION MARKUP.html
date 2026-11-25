@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Interactivo: Markup Biblearc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#FAF9F6',
+                            surface: '#FFFFFF',
+                            text: '#2D3748',
+                            accent: '#4A5568',
+                            highlight: '#E2E8F0'
+                        },
+                        ba: {
+                            rojo: '#ef4444',
+                            verde: '#22c55e',
+                            morado: '#a855f7',
+                            naranja: '#f97316',
+                            amarillo: '#eab308',
+                            rosado: '#ec4899',
+                            gris: '#6b7280',
+                            azul: '#3b82f6',
+                            lila: '#d946ef'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #FAF9F6; color: #2D3748; }
+        .tab-active { border-bottom: 2px solid #2D3748; font-weight: 600; color: #1A202C; }
+        .tab-inactive { color: #718096; border-bottom: 2px solid transparent; }
+        .tab-inactive:hover { color: #4A5568; border-bottom: 2px solid #CBD5E0; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .case-word { transition: all 0.3s ease; padding: 2px 4px; border-radius: 4px; }
+        .lente-box { border: 2px solid #1A202C; background-color: #f8fafc; font-weight: 700; box-shadow: 2px 2px 0px #1A202C; }
+        
+        .c-rojo { color: #ef4444; font-weight: bold; }
+        .c-verde { color: #22c55e; font-weight: bold; }
+        .c-morado { color: #a855f7; font-weight: bold; }
+        .c-naranja { color: #f97316; font-weight: bold; }
+        .c-amarillo { color: #eab308; font-weight: bold; }
+        .c-rosado { color: #ec4899; font-weight: bold; }
+        .c-gris { color: #6b7280; font-weight: bold; }
+        .c-azul { color: #3b82f6; font-weight: bold; }
+        .c-lila { color: #d946ef; font-weight: bold; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Warm Neutrals (Alabaster/Stone) for background, crisp white for surfaces, dark slate for typography, and the strict 9 Biblearc colors for accents and data visualization. -->
+    <!-- Application Structure Plan: A dashboard-style SPA divided into four functional views: 1. "El Concepto" (Introduction to the 2-layer method), 2. "Capa 1: Gramática" (Interactive explorer of the 9 colors using a donut chart as a visual selector), 3. "Capa 2: Lentes" (Grid-based explorer of the 7 exegetical functions), and 4. "Casos de Estudio" (Interactive step-by-step application of the rules on actual verses). This structure transforms a theoretical manual into an exploratory learning tool, prioritizing user engagement and progressive disclosure of information. -->
+    <!-- Visualization & Content Choices: Report Info -> Grammar Categories. Goal -> Inform/Organize. Viz -> Donut Chart (Chart.js) acting as an interactive palette/selector. Interaction -> Clicking a slice updates a detail panel. Justification -> Reinforces the color-coding system visually while keeping the UI clean. Report Info -> Exegetical Lenses. Goal -> Organize/Inform. Viz -> Interactive CSS Grid Cards. Interaction -> Hover/Click to reveal sub-tags. Justification -> Hierarchical display without overwhelming the user. Report Info -> Case Studies. Goal -> Teach the "Superposition" and "Single Anchor" rules. Viz -> Dynamic HTML text manipulation. Interaction -> Step-by-step buttons revealing CSS classes (Color then Lens). Justification -> Simulates the actual software experience without using SVG or Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl mr-2">📖</span>
+                    <span class="font-serif font-bold text-xl tracking-tight text-gray-900">Biblearc Mastery</span>
+                </div>
+                <div class="flex space-x-1 sm:space-x-8 overflow-x-auto items-center no-scrollbar" id="nav-tabs">
+                    <button onclick="navigate('intro')" class="tab-active whitespace-nowrap px-1 py-4 text-sm font-medium transition-colors" id="tab-intro">El Concepto</button>
+                    <button onclick="navigate('gramatica')" class="tab-inactive whitespace-nowrap px-1 py-4 text-sm font-medium transition-colors" id="tab-gramatica">Capa 1: Gramática</button>
+                    <button onclick="navigate('lentes')" class="tab-inactive whitespace-nowrap px-1 py-4 text-sm font-medium transition-colors" id="tab-lentes">Capa 2: Lentes</button>
+                    <button onclick="navigate('casos')" class="tab-inactive whitespace-nowrap px-1 py-4 text-sm font-medium transition-colors" id="tab-casos">Práctica y Casos</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="sec-intro" class="block animate-[fadeIn_0.5s_ease-out]">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 font-serif mb-6">El Secreto de las Dos Capas</h1>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    Esta sección introduce la arquitectura fundamental del método de marcado (Markup). Comprender la diferencia entre lo que una palabra <strong>es</strong> por naturaleza y el <strong>trabajo</strong> que realiza en el texto es el primer paso para una exégesis rigurosa.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">La Gran Confusión y la Solución</h2>
+                <p class="text-gray-600 mb-8 text-lg">
+                    El error más común es hacer competir la gramática con la función. Las palabras tienen <strong>DOS</strong> dimensiones. La Regla de Oro Inquebrantable establece que el Color y el Lente <strong>NUNCA compiten, se superponen.</strong>
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                    <div class="bg-brand-bg p-6 rounded-xl border border-gray-200 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🧬</div>
+                        <h3 class="text-xl font-bold mb-2">1. Categoría Gramatical</h3>
+                        <p class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-3">El ADN de la palabra</p>
+                        <p class="text-gray-600 mb-4">Lo que la palabra ES por naturaleza en el diccionario. Se representa exclusivamente mediante <strong>Colores</strong>.</p>
+                        <span class="px-4 py-2 bg-white rounded-full text-sm font-bold shadow-sm border border-gray-200">Herramienta: Color del Texto</span>
+                    </div>
+
+                    <div class="bg-brand-bg p-6 rounded-xl border border-gray-200 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🦺</div>
+                        <h3 class="text-xl font-bold mb-2">2. Función Exegética</h3>
+                        <p class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-3">El Uniforme de Trabajo</p>
+                        <p class="text-gray-600 mb-4">Lo que el autor quiere que esa palabra HAGA en este versículo específico. Se representa mediante <strong>Lentes</strong>.</p>
+                        <span class="px-4 py-2 bg-white rounded-full text-sm font-bold shadow-sm border border-gray-200">Herramienta: Subrayados y Marcos</span>
+                    </div>
+                </div>
+
+                <div class="mt-10 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl text-blue-900">
+                    <h4 class="font-bold text-lg mb-2 flex items-center"><span>🎯</span> <span class="ml-2">La Regla del Ancla Única</span></h4>
+                    <p>Aunque una idea conceptual abarque toda una frase, el sistema exige <strong>anclar</strong> el Lente a una palabra específica y representativa. No se subraya toda la frase, sino el detonante de la función.</p>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button onclick="navigate('gramatica')" class="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors shadow-md">Explorar la Capa 1: Gramática ➔</button>
+            </div>
+        </section>
+
+        <section id="sec-gramatica" class="hidden animate-[fadeIn_0.5s_ease-out]">
+            <div class="max-w-3xl mx-auto text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 font-serif mb-4">Capa 1: Categoría Gramatical</h2>
+                <p class="text-lg text-gray-600">
+                    En esta sección exploraremos el "ADN" del texto. Utiliza el gráfico interactivo para seleccionar una categoría cromática y descubrir su función técnica, su metáfora para facilitar la memorización, y ejemplos comunes.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8 items-center bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div class="w-full lg:w-1/2">
+                    <div class="chart-container">
+                        <canvas id="gramaticaChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-400 mt-4 italic">Haz clic en un segmento para ver los detalles.</p>
+                </div>
+
+                <div class="w-full lg:w-1/2 min-h-[300px] flex flex-col justify-center" id="gramatica-detail">
+                    <div class="text-center text-gray-400">
+                        <span class="text-6xl block mb-4">🎨</span>
+                        <p class="text-xl">Selecciona un color en el gráfico interactivo para comenzar a explorar el ADN gramatical.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-lentes" class="hidden animate-[fadeIn_0.5s_ease-out]">
+            <div class="max-w-3xl mx-auto text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 font-serif mb-4">Capa 2: Funciones Exegéticas</h2>
+                <p class="text-lg text-gray-600">
+                    Aquí definimos el "Uniforme de Trabajo" del texto. Explora los 7 lentes del sistema. Estos dictan la intención teológica, narrativa o estructural del autor original. Cada lente contiene etiquetas específicas que debes usar.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="lentes-grid">
+            </div>
+        </section>
+
+        <section id="sec-casos" class="hidden animate-[fadeIn_0.5s_ease-out]">
+            <div class="max-w-3xl mx-auto text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 font-serif mb-4">Práctica: El Método en Acción</h2>
+                <p class="text-lg text-gray-600">
+                    Esta sección consolida el aprendizaje mediante la aplicación práctica. Interactúa con los versículos de 1 Juan 1 para observar cómo se superpone el Color (ADN) con el Lente (Uniforme), respetando siempre la regla del Ancla Única.
+                </p>
+            </div>
+
+            <div class="space-y-12">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold font-serif">Caso A: Dos palabras idénticas, dos trabajos diferentes</h3>
+                        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded uppercase tracking-wider font-bold">1 Juan 1:5 y 1:7</span>
+                    </div>
+                    
+                    <div class="bg-brand-bg p-6 rounded-xl mb-6 font-serif text-lg leading-relaxed border-l-4 border-gray-300">
+                        <p class="mb-3">v.5: "Dios es <span id="caso1-w1" class="case-word">luz</span>"</p>
+                        <p>v.7: "mas si <span id="caso1-w2" class="case-word">andamos</span> en la <span id="caso1-w3" class="case-word">luz</span>"</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mb-6">
+                        <button onclick="applyCaso1Step1()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold transition-colors border border-gray-300">1. Aplicar ADN (Colores)</button>
+                        <button onclick="applyCaso1Step2()" class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" id="btn-caso1-2" disabled>2. Aplicar Uniforme (Lentes)</button>
+                        <button onclick="resetCaso1()" class="text-gray-500 hover:text-gray-700 px-4 py-2 text-sm font-medium underline">Reiniciar</button>
+                    </div>
+
+                    <div id="caso1-exp" class="hidden p-4 bg-gray-50 rounded-lg text-sm text-gray-700 border border-gray-100">
+                        <p class="mb-2"><strong>La Relación:</strong> En ambos versículos, "luz" es un Sustantivo (🔴). Sin embargo, tienen <em>uniformes exegéticos</em> distintos:</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>En el v.5, el trabajo de "luz" es definir a Dios ➔ <strong>Lente 7: Theology (Teología Propia/Dios)</strong>.</li>
+                            <li>En el v.7, el autor contrasta el andar en la luz vs. tinieblas. Anclamos en el detonante de la acción "andamos" (o podría ser "luz") ➔ <strong>Lente 1: Puntos de Atención (Contraste/Paradoja)</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold font-serif">Caso B: Cuando la gramática y el Lente se abrazan</h3>
+                        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded uppercase tracking-wider font-bold">1 Juan 1:1</span>
+                    </div>
+                    
+                    <div class="bg-brand-bg p-6 rounded-xl mb-6 font-serif text-lg leading-relaxed border-l-4 border-gray-300">
+                        <p>"lo que hemos <span id="caso2-w1" class="case-word">oído</span>, lo que hemos <span id="caso2-w2" class="case-word">visto</span>... lo que hemos <span id="caso2-w3" class="case-word">contemplado</span>"</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mb-6">
+                        <button onclick="applyCaso2Step1()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold transition-colors border border-gray-300">1. Aplicar ADN (Colores)</button>
+                        <button onclick="applyCaso2Step2()" class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" id="btn-caso2-2" disabled>2. Aplicar Uniforme (Lentes)</button>
+                        <button onclick="resetCaso2()" class="text-gray-500 hover:text-gray-700 px-4 py-2 text-sm font-medium underline">Reiniciar</button>
+                    </div>
+
+                    <div id="caso2-exp" class="hidden p-4 bg-gray-50 rounded-lg text-sm text-gray-700 border border-gray-100">
+                        <p class="mb-2"><strong>La Relación:</strong> Oído, visto y contemplado son Verbos (🟢). El autor repite conceptualmente la idea de los sentidos físicos para dar énfasis.</p>
+                        <p>Seleccionamos estos verbos y aplicamos a cada uno de ellos el <strong>Lente 1: Puntos de Atención (Repetición Conceptual/Sinónimo)</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 text-center">
+                    <h3 class="text-2xl font-bold mb-6 font-serif text-gray-900">Checklist Final</h3>
+                    <div class="max-w-xl mx-auto space-y-4 text-left">
+                        <label class="flex items-start space-x-3 cursor-pointer group p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                            <input type="checkbox" class="mt-1 w-5 h-5 text-gray-900 rounded border-gray-300 focus:ring-gray-900">
+                            <span class="text-gray-700"><strong>¿Qué tipo de palabra es en el diccionario?</strong> ➔ Identifiqué el COLOR. Todas las palabras deben tener uno.</span>
+                        </label>
+                        <label class="flex items-start space-x-3 cursor-pointer group p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                            <input type="checkbox" class="mt-1 w-5 h-5 text-gray-900 rounded border-gray-300 focus:ring-gray-900">
+                            <span class="text-gray-700"><strong>¿Para qué usó el apóstol esta palabra aquí?</strong> ➔ Evalué si requiere un LENTE específico (anclado a una palabra).</span>
+                        </label>
+                        <label class="flex items-start space-x-3 cursor-pointer group p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                            <input type="checkbox" class="mt-1 w-5 h-5 text-gray-900 rounded border-gray-300 focus:ring-gray-900">
+                            <span class="text-gray-700"><strong>¿Dejé alguna palabra con lente pero sin color?</strong> ➔ Verifiqué. ¡Nunca la gramática compite con la función!</span>
+                        </label>
+                        <label class="flex items-start space-x-3 cursor-pointer group p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                            <input type="checkbox" class="mt-1 w-5 h-5 text-gray-900 rounded border-gray-300 focus:ring-gray-900">
+                            <span class="text-gray-700"><strong>¿Tengo palabras solo con color?</strong> ➔ ¡Correcto! Muchas palabras son relleno y no requieren un lente exegético.</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 text-center text-sm text-gray-500">
+            <p>Laboratorio Interactivo de Exégesis basado en el Método Biblearc.</p>
+        </div>
+    </footer>
+
+    <script>
+        const state = {
+            activeSection: 'intro',
+            chartInstance: null
+        };
+
+        const gramaticaData = [
+            { id: 'sustantivo', colorHex: '#ef4444', emoji: '🔴', nombre: 'Sustantivos', meta: 'Los Actores y Objetos', desc: 'Nombran todo lo que existe (personas, lugares, cosas, conceptos abstractos).', ex: 'Dios, luz, Juan, amor, mundo, pecado, verdad.' },
+            { id: 'verbo', colorHex: '#22c55e', emoji: '🟢', nombre: 'Verbos', meta: 'Los Motores', desc: 'Son las acciones, movimientos o estados. Es lo que está "pasando" en el versículo.', ex: 'amó, andamos, dijo, es, hemos visto, limpiar.' },
+            { id: 'pronombre', colorHex: '#a855f7', emoji: '🟣', nombre: 'Pronombres', meta: 'Los Dobles de Acción', desc: '"Reemplazan" al sustantivo para no repetir su nombre a cada rato.', ex: 'Él, nosotros, vosotros, lo, le, te, nos.' },
+            { id: 'determinante', colorHex: '#f97316', emoji: '🟠', nombre: 'Determinantes', meta: 'Los Señaladores', desc: 'Palabras pequeñas que acompañan al sustantivo para presentarlo o indicar posesión.', ex: 'El, la, los, un, este, nuestro, su, toda.' },
+            { id: 'preposicion', colorHex: '#eab308', emoji: '🟡', nombre: 'Preposiciones', meta: 'Los Puentes', desc: 'Unen a otras palabras indicando posición, dirección, tiempo o causa.', ex: 'en, de, por, para, con, a, desde, hacia.' },
+            { id: 'adjetivo', colorHex: '#ec4899', emoji: '🩷', nombre: 'Adjetivos', meta: 'Los Decoradores', desc: 'Palabras que "pintan", califican o dicen "cómo es" un sustantivo.', ex: 'eterna, santo, alguna, fiel, justo, verdadero.' },
+            { id: 'conectores', colorHex: '#6b7280', emoji: '🩶', nombre: 'Conectores y Adv.', meta: 'Bisagras y Lupas', desc: 'Unen ideas completas o modifican la intensidad/negación de los verbos.', ex: 'y, pero, porque, si, mas, no, también, hoy.' },
+            { id: 'azul', colorHex: '#3b82f6', emoji: '🔵', nombre: 'Genitivos / Relativos', meta: 'Posesivos y Enganches', desc: 'Indican pertenencia (de quién es) o abren frases descriptivas enganchadas a lo anterior.', ex: 'de vida (gen), el cual (rel), lo que (rel).' },
+            { id: 'secundarios', colorHex: '#d946ef', emoji: '🔮', nombre: 'Secundarios', meta: 'Los Extras', desc: 'Partículas menores o de relleno gramatical que no llevan el peso de la oración.', ex: 'oh, ay, amén.' }
+        ];
+
+        const lentesData = [
+            { num: 1, name: 'Puntos de Atención', meta: 'El Resaltador Visual', desc: 'Mapea cómo el autor intenta llamar tu atención o crear choques cognitivos.', tags: ['Énfasis Principal/Climax', 'Repetición Exacta', 'Contraste/Paradoja', 'Repetición Conceptual/Sinónimo'] },
+            { num: 2, name: 'Commands+', meta: 'El Desglose de Órdenes', desc: 'Aísla las instrucciones que Dios nos da y su anatomía funcional.', tags: ['Mandatos', 'Ancla/base o razon', 'El Propósito', 'Medios', 'Maneras'] },
+            { num: 3, name: 'Transiciones', meta: 'El Director de Cámara', desc: 'Te avisa que el escenario o el enfoque narrativo cambió.', tags: ['Cambio de Sujeto', 'Cambio de accion', 'Cambio de Idea/Tema', 'Cambio de Tiempo', 'Cambio de Lugar'] },
+            { num: 4, name: 'Contexto', meta: 'Las Señales de Tránsito', desc: 'Ancla el texto a su entorno lógico o marca citas externas (A.T.).', tags: ['Conecta con lo que viene antes', 'Conecta con lo que viene despues', 'Conecta con ambos', 'Cita A.T.'] },
+            { num: 5, name: 'Mis Dudas (Questions)', meta: 'La Interrogación', desc: 'Clava una bandera donde hay tensión para que el texto mismo responda.', tags: ['¿Quien?', '¿Que?', '¿Como?', '¿Cuando?', '¿Donde?', '¿Por que?', '¿Para que?', 'Entonces'] },
+            { num: 6, name: 'Topics (Temas)', meta: 'El Mapeo de Actores', desc: 'Responde rápido: "¿De qué actores o temas clave trata este pasaje?".', tags: ['El Hombre', 'La Fe', 'Amor', 'Oracion', 'Sufrimiento', 'Buenas obras', 'Alabanza'] },
+            { num: 7, name: 'Theology (Teología)', meta: 'El Sello Doctrinal', desc: 'Rastrea las grandes doctrinas sistémicas detrás del vocabulario usado.', tags: ['Soteriologia', 'Cristologia', 'Pneumatologia', 'Escatologia', 'Antropologia', 'Bibliologia', 'Eclesiologia'] }
+        ];
+
+        function navigate(targetId) {
+            const sections = ['intro', 'gramatica', 'lentes', 'casos'];
+            
+            sections.forEach(sec => {
+                const el = document.getElementById(`sec-${sec}`);
+                const tab = document.getElementById(`tab-${sec}`);
+                
+                if (sec === targetId) {
+                    el.classList.remove('hidden');
+                    el.classList.add('block');
+                    tab.classList.remove('tab-inactive');
+                    tab.classList.add('tab-active');
+                } else {
+                    el.classList.remove('block');
+                    el.classList.add('hidden');
+                    tab.classList.remove('tab-active');
+                    tab.classList.add('tab-inactive');
+                }
+            });
+
+            if (targetId === 'gramatica' && !state.chartInstance) {
+                initChart();
+            }
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('gramaticaChart').getContext('2d');
+            
+            state.chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: gramaticaData.map(d => d.nombre),
+                    datasets: [{
+                        data: Array(9).fill(100/9), 
+                        backgroundColor: gramaticaData.map(d => d.colorHex),
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const dataIndex = context.dataIndex;
+                                    return ' ' + gramaticaData[dataIndex].nombre;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            updateGrammarDetail(index);
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateGrammarDetail(index) {
+            const data = gramaticaData[index];
+            const detailDiv = document.getElementById('gramatica-detail');
+            
+            detailDiv.innerHTML = `
+                <div class="animate-[fadeIn_0.3s_ease-out] text-left">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-5xl">${data.emoji}</span>
+                        <h3 class="text-3xl font-bold font-serif" style="color: ${data.colorHex}">${data.nombre}</h3>
+                    </div>
+                    <div class="bg-gray-50 border-l-4 rounded-r p-4 mb-4" style="border-color: ${data.colorHex}">
+                        <p class="text-sm uppercase tracking-widest font-bold text-gray-500 mb-1">Metáfora</p>
+                        <p class="text-lg font-medium text-gray-800">"${data.meta}"</p>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-6">${data.desc}</p>
+                    <div>
+                        <p class="text-sm font-bold text-gray-400 uppercase mb-2">Ejemplos Frecuentes</p>
+                        <p class="font-serif italic text-gray-800 bg-white border border-gray-100 p-3 rounded shadow-sm">${data.ex}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLentes() {
+            const container = document.getElementById('lentes-grid');
+            let html = '';
+            
+            lentesData.forEach(l => {
+                const tagsHtml = l.tags.map(t => `<span class="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded border border-gray-200 mr-1 mb-1">${t}</span>`).join('');
+                
+                html += `
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-gray-800 transition-all group-hover:w-2"></div>
+                        <h4 class="text-xl font-bold font-serif mb-1 flex items-center gap-2">
+                            <span class="bg-gray-800 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">${l.num}</span>
+                            ${l.name}
+                        </h4>
+                        <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">${l.meta}</p>
+                        <p class="text-gray-600 text-sm mb-4 h-10">${l.desc}</p>
+                        <div class="pt-4 border-t border-gray-100">
+                            <p class="text-xs font-bold text-gray-400 uppercase mb-2">Etiquetas:</p>
+                            <div class="flex flex-wrap">${tagsHtml}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function applyCaso1Step1() {
+            document.getElementById('caso1-w1').className = 'case-word c-rojo';
+            document.getElementById('caso1-w3').className = 'case-word c-rojo';
+            document.getElementById('caso1-w2').className = 'case-word c-verde';
+            document.getElementById('btn-caso1-2').disabled = false;
+        }
+
+        function applyCaso1Step2() {
+            document.getElementById('caso1-w1').classList.add('lente-box');
+            document.getElementById('caso1-w1').setAttribute('title', 'Lente 7: Theology');
+            
+            document.getElementById('caso1-w2').classList.add('lente-box');
+            document.getElementById('caso1-w2').setAttribute('title', 'Lente 1: Puntos de Atención (Contraste) - ANCLA');
+            
+            document.getElementById('caso1-exp').classList.remove('hidden');
+            document.getElementById('caso1-exp').classList.add('block', 'animate-[fadeIn_0.5s_ease-out]');
+        }
+
+        function resetCaso1() {
+            ['caso1-w1', 'caso1-w2', 'caso1-w3'].forEach(id => {
+                document.getElementById(id).className = 'case-word';
+                document.getElementById(id).removeAttribute('title');
+            });
+            document.getElementById('btn-caso1-2').disabled = true;
+            document.getElementById('caso1-exp').classList.add('hidden');
+            document.getElementById('caso1-exp').classList.remove('block');
+        }
+
+        function applyCaso2Step1() {
+            ['caso2-w1', 'caso2-w2', 'caso2-w3'].forEach(id => {
+                document.getElementById(id).className = 'case-word c-verde';
+            });
+            document.getElementById('btn-caso2-2').disabled = false;
+        }
+
+        function applyCaso2Step2() {
+            ['caso2-w1', 'caso2-w2', 'caso2-w3'].forEach(id => {
+                document.getElementById(id).classList.add('lente-box');
+                document.getElementById(id).setAttribute('title', 'Lente 1: Repetición Conceptual');
+            });
+            document.getElementById('caso2-exp').classList.remove('hidden');
+            document.getElementById('caso2-exp').classList.add('block', 'animate-[fadeIn_0.5s_ease-out]');
+        }
+
+        function resetCaso2() {
+            ['caso2-w1', 'caso2-w2', 'caso2-w3'].forEach(id => {
+                document.getElementById(id).className = 'case-word';
+                document.getElementById(id).removeAttribute('title');
+            });
+            document.getElementById('btn-caso2-2').disabled = true;
+            document.getElementById('caso2-exp').classList.add('hidden');
+            document.getElementById('caso2-exp').classList.remove('block');
+        }
+
+        window.onload = () => {
+            renderLentes();
+        };
+    </script>
+</body>
+</html>

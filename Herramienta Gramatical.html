@@ -1,0 +1,1251 @@
+F<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramienta Completa de Gramática Bíblica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-style: italic;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .method-info {
+            background: rgba(52, 73, 94, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #34495e;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .search-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .search-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px 20px;
+            border: 3px solid #34495e;
+            border-radius: 25px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2c3e50;
+            box-shadow: 0 0 20px rgba(52, 73, 94, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .identification-result {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .identification-result.show {
+            display: block;
+        }
+
+        .identification-header {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grammar-match {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid rgba(255,255,255,0.8);
+        }
+
+
+
+/* COLORES INTEGRADOS CON GUÍA BIBLEARC - ACTUALIZADO */
+        .grammar-match.match-phrase-preposicional {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+            color: white;
+        }
+        .grammar-match.match-phrase-genitiva {
+            background: linear-gradient(135deg, #007bff, #0056b3); /* AZUL */
+            color: white;
+        }
+        .grammar-match.match-phrase-infinitiva {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: white;
+        }
+        .grammar-match.match-phrase-conjuncion {
+            background: linear-gradient(135deg, #6c757d, #545b62); /* GRIS */
+            color: white;
+        }
+        .grammar-match.match-phrase-participial {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: white;
+        }
+        .grammar-match.match-phrase-aposicional {
+            background: linear-gradient(135deg, #dc3545, #bd2130);
+            color: white;
+        }
+        .grammar-match.match-phrase-relativa {
+            background: linear-gradient(135deg, #6f42c1, #5a32a3); /* MORADO */
+            color: white;
+        }
+        .grammar-match.match-phrase-sustantival {
+            background: linear-gradient(135deg, #dc3545, #bd2130);
+            color: white;
+        }
+        .grammar-match.match-phrase-nomarcada {
+            background: linear-gradient(135deg, #6c757d, #545b62);
+            color: white;
+        }
+        .grammar-match.match-phrase-adverbial {
+            background: linear-gradient(135deg, #6c757d, #545b62);
+            color: white;
+        }
+        .grammar-match.match-phrase-exclamatory {
+            background: linear-gradient(135deg, #fd7e14, #dc6502);
+            color: white;
+        }
+        .grammar-match.match-phrase-vocative {
+            background: linear-gradient(135deg, #fd7e14, #dc6502);
+            color: white;
+        }
+        .grammar-match.match-relation-coordinada {
+            background: linear-gradient(135deg, #6c757d, #545b62); /* GRIS */
+            color: white;
+        }
+        .grammar-match.match-relation-subordinada {
+            background: linear-gradient(135deg, #6c757d, #545b62); /* GRIS */
+            color: white;
+        }
+        .grammar-match.match-expression {
+            background: linear-gradient(135deg, #6c757d, #545b62);
+            color: white;
+        }
+        .grammar-match.match-preposition {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+            color: white;
+        }
+        /* Clase adicional para adjetivos rosados */
+        .grammar-match.match-phrase-adjetival {
+            background: linear-gradient(135deg, #e91e63, #c2185b); /* ROSADO */
+            color: white;
+        }
+
+        /* ANOTACIONES FRONTALES - ACTUALIZADO */
+        .phrase-annotation {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.8em;
+            color: white;
+        }
+        .ann-preposicional { background-color: #ffc107; }
+        .ann-genitiva { background-color: #007bff; } /* AZUL */
+        .ann-infinitiva { background-color: #28a745; }
+        .ann-conjuncion { background-color: #6c757d; } /* GRIS */
+        .ann-participial { background-color: #28a745; }
+        .ann-aposicional { background-color: #dc3545; }
+        .ann-relativa { background-color: #6f42c1; } /* MORADO */
+        .ann-sustantival { background-color: #dc3545; }
+        .ann-nomarcada { background-color: #6c757d; }
+        .ann-adverbial { background-color: #6c757d; }
+        .ann-exclamatory { background-color: #fd7e14; }
+        .ann-vocative { background-color: #fd7e14; }
+        .ann-adjetival { background-color: #e91e63; } /* ROSADO */
+
+
+        .match-type {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .match-details {
+            font-size: 0.95em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .match-function {
+            font-style: italic;
+            font-size: 0.9em;
+            opacity: 0.85;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .filter-btn {
+            padding: 10px 18px;
+            border: 2px solid #34495e;
+            background: rgba(255,255,255,0.9);
+            color: #34495e;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3);
+        }
+
+        .special-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-color: #27ae60;
+            color: white;
+        }
+
+        .special-btn:hover {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-color: #e74c3c;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .results-info {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .grammar-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grammar-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .grammar-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .section-header:hover {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+
+        .section-header.logical-relations {
+            background: linear-gradient(135deg, #6c757d, #545b62); /* GRIS */
+        }
+
+        .section-header.phrase-types {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+        }
+
+        .section-header.expressions {
+            background: linear-gradient(135deg, #6c757d, #545b62);
+        }
+        .section-header.prepositions {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 25px;
+            display: block;
+        }
+
+        .section-content.collapsed {
+            display: none;
+        }
+
+        .grammar-item {
+            background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+            border: 2px solid rgba(52, 73, 94, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .grammar-item:hover {
+            box-shadow: 0 8px 25px rgba(52, 73, 94, 0.15);
+            transform: translateY(-3px);
+            border-color: #34495e;
+        }
+
+        .grammar-item.highlighted {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-color: #f39c12;
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.2);
+        }
+
+        .item-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-icon {
+            font-size: 1.4em;
+        }
+
+        .item-definition {
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+            padding: 10px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 8px;
+        }
+
+        .details-section {
+            margin-bottom: 15px;
+        }
+
+        .details-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .details-content {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .function-section {
+            margin-bottom: 15px;
+        }
+
+        .function-text {
+            background: rgba(52, 73, 94, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #34495e;
+            color: #2c3e50;
+        }
+
+        .example-section {
+            background: rgba(52, 73, 94, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #34495e;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .biblical-example {
+            font-style: italic;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            background: rgba(255,255,255,0.7);
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .common-example {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .greek-section {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 15px;
+        }
+
+        .greek-title {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .greek-content {
+            background: #3498db;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1em;
+        }
+
+        .morphology-section {
+            background: rgba(155, 89, 182, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #9b59b6;
+            margin-bottom: 15px;
+        }
+
+        .morphology-title {
+            font-weight: bold;
+            color: #9b59b6;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .morphology-content {
+            background: #9b59b6;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .importance-section {
+            background: rgba(230, 126, 34, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .importance-title {
+            font-weight: bold;
+            color: #e67e22;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .importance-content {
+            color: #d35400;
+            font-weight: 500;
+        }
+
+        .no-results {
+            text-align: center;
+            color: white;
+            font-style: italic;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            font-size: 1.1em;
+        }
+.color-guide-info {
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+            text-align: left;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .search-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+            
+            input[type="text"] {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Herramienta Completa de Gramática Bíblica</h1>
+            <p class="subtitle">Sistema Unificado de Análisis Textual - Método John Piper</p>
+            <div class="method-info">
+                <strong>Funcionalidades:</strong><br>
+                • <strong>18 Relaciones Lógicas:</strong> Identifica conectores y relaciones entre proposiciones<br>
+                • <strong>9 Tipos de Frases:</strong> Clasifica frases según su estructura gramatical<br>
+                • <strong>Expresiones Gramaticales:</strong> Reconoce locuciones, gerundios, participios y construcciones especiales<br>
+                • <strong>Base expandible:</strong> Fácil adición de nuevos elementos desde el código
+            </div>
+        </div>
+<div class="color-guide-info">
+                <strong>Sistema de Colores Integrado:</strong><br>
+                🔴 <strong>ROJO:</strong> Sustantivos, Aposicionales, Sustantivales | 
+                🟢 <strong>VERDE:</strong> Verbos, Infinitivas, Participiales | 
+                🟣 <strong>MORADO:</strong> Pronombres, Relativas | 
+                🟡 <strong>AMARILLO:</strong> Preposiciones | 
+                🔵 <strong>AZUL:</strong> Genitivos | 
+                🩷 <strong>ROSADO:</strong> Adjetivos | 
+                🩶 <strong>GRIS:</strong> Adverbiales, Expresiones, Conectores Lógicos, Conjunciones | 
+                🟠 <strong>NARANJA:</strong> Exclamativas, Vocativas
+            </div>
+        </div>
+        <div class="search-section">
+            <div class="search-controls">
+                <input type="text" id="searchInput" placeholder="Escribe una palabra o expresión (ej: porque, siendo, para siempre, que, cuando, por medio de...)" />
+            </div>
+            
+            <div class="identification-result" id="identificationResult">
+                <div class="identification-header">
+                    <span>Elementos gramaticales identificados:</span>
+                </div>
+                <div id="matchedElements"></div>
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn" data-filter="all">Todo</button>
+                <button class="filter-btn" data-filter="logical-relations">Relaciones Lógicas</button>
+                <button class="filter-btn" data-filter="phrase-types">Tipos de Frases</button>
+                <button class="filter-btn" data-filter="expressions">Expresiones</button>
+                <button class="filter-btn" data-filter="prepositions">Preposiciones Griegas</button>
+                <button class="filter-btn special-btn" id="greekToggle">Mostrar Griego</button>
+                <button class="filter-btn clear-btn" onclick="clearSearch()">Limpiar</button>
+            </div>
+            
+            <div class="results-info" id="resultsInfo"></div>
+        </div>
+
+        <div class="grammar-grid" id="grammarGrid">
+            <!-- El contenido se generará dinámicamente -->
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            No se encontraron elementos gramaticales para tu búsqueda.
+        </div>
+    </div>
+
+    <script>
+        // =============================================================================
+        // CONFIGURACIÓN DE DATOS - FÁCIL DE MODIFICAR
+        // =============================================================================
+        
+        // 1. RELACIONES LÓGICAS COORDINADAS
+        const coordinadas = [
+            {
+                id: 'serie',
+                title: 'Serie (S)',
+                icon: 'Serie',
+                description: 'Cada proposición hace su propia contribución independiente al todo.',
+                connectors: 'y, también, del mismo modo, ninguno, ni, en realidad, en verdad, mirad, de cierto, ahora bien, aun',
+                greekConnectors: 'καί, δέ, τε, οὐδέ, οὐδείς, ἀληθῶς, ἰδοῦ, ἀμήν, νῦν δέ',
+                example: 'amonestando a todos los hombres, y enseñando a todos los hombres con toda sabiduría (Colosenses 1:28).',
+                category: 'logical-relations',
+                subcategory: 'coordinadas',
+                keywords: ['y', 'también', 'del mismo modo', 'ninguno', 'ni', 'en realidad', 'en verdad', 'mirad', 'de cierto', 'ahora bien', 'aun']
+            },
+            {
+                id: 'progresion',
+                title: 'Progresión (P)',
+                icon: 'Progresión',
+                description: 'Como la serie, pero cada proposición es un paso más hacia un clímax.',
+                connectors: 'entonces, y, además, luego',
+                greekConnectors: 'τότε, καί, ἔτι, εἶτα',
+                example: 'primero la hoja, luego la espiga, y después el grano maduro en la espiga. (Marcos 4:28).',
+                category: 'logical-relations',
+                subcategory: 'coordinadas',
+                keywords: ['entonces', 'además', 'luego']
+            },
+            {
+                id: 'alternativa',
+                title: 'Alternativa (A)',
+                icon: 'Alternativa',
+                description: 'Cada proposición expresa una posibilidad distinta que surge de una situación.',
+                connectors: 'mientras tanto, entre tanto que, o, pero, mas, mientras, por otro lado',
+                greekConnectors: 'ἐν τῷ μεταξύ, ἕως, ἤ, δέ, ἀλλά',
+                example: '¿Eres tú el que ha de venir, o esperaremos a otro? (Mateo 11:3).',
+                category: 'logical-relations',
+                subcategory: 'coordinadas',
+                keywords: ['mientras tanto', 'entre tanto que', 'o', 'pero', 'mas', 'mientras', 'por otro lado']
+            }
+        ];
+
+        // 2. RELACIONES LÓGICAS SUBORDINADAS (15 relaciones para completar las 18)
+        const subordinadas = [
+            // POR DECLARACIÓN DISTINTA
+            {
+                id: 'fundamento',
+                title: 'Fundamento (G)',
+                icon: 'Fundamento',
+                description: 'Una declaración y el argumento o razón de tal declaración (siempre la razón va después).',
+                connectors: 'porque, por, desde que, puesto que, si, por cuanto, ya que, por causa de, pues',
+                greekConnectors: 'γάρ, ὅτι, ἐπεί, διότι',
+                example: 'No temáis, porque he aquí, os traigo buenas nuevas de gran gozo (Lucas 2:10).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['porque', 'por', 'desde que', 'puesto que', 'si', 'por cuanto', 'ya que', 'por causa de', 'pues']
+            },
+            {
+                id: 'inferencia',
+                title: 'Inferencia (∴)',
+                icon: 'Inferencia',
+                description: 'Una declaración y el argumento o razón de tal declaración (siempre la razón precede).',
+                connectors: 'por lo tanto, pues, entonces, así que, por tanto, consecuentemente, en consecuencia, por eso, por consiguiente, ahora bien, así mismo',
+                greekConnectors: 'οὖν, διό, ὅπως',
+                example: 'No he hallado en El ningún delito digno de muerte; por tanto, le castigaré y le soltaré. (Lucas 23:22).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['por lo tanto', 'pues', 'entonces', 'así que', 'por tanto', 'consecuentemente', 'en consecuencia', 'por eso', 'por consiguiente', 'ahora bien', 'así mismo']
+            },
+            {
+                id: 'bilateral',
+                title: 'Bilateral (BL)',
+                icon: 'Bilateral',
+                description: 'Una proposición que sirve de apoyo a otras dos, una es anterior y la otra posterior.',
+                connectors: 'por, porque, por tanto, así',
+                greekConnectors: 'γάρ, ὅτι, ἐπεί, διότι, οὖν, διό, ὅπως',
+                example: 'no pudieron beber las aguas de Mara porque eran amargas; por tanto al lugar le pusieron el nombre de Mara. (Éxodo 15:23).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['por', 'porque', 'por tanto', 'así']
+            },
+            {
+                id: 'accion-resultado',
+                title: 'Acción-Resultado (Ac/Res)',
+                icon: 'Resultado',
+                description: 'Una acción y su consecuencia o resultado que acompaña a tal acción.',
+                connectors: 'a fin de que, que, de modo que, de tal manera que, con el resultado, de manera que',
+                greekConnectors: 'ὥστε',
+                example: 'se desató una gran tormenta en el mar, de modo que las olas cubrían la barca (Mateo 8:24).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['a fin de que', 'que', 'de modo que', 'de tal manera que', 'con el resultado', 'de manera que']
+            },
+            {
+                id: 'accion-proposito',
+                title: 'Acción-Propósito (Ac/Pur)',
+                icon: 'Propósito',
+                description: 'Una acción y aquello que se espera que sea su resultado.',
+                connectors: 'ya que, para que, para, a fin de que, con la mira de, no sea que',
+                greekConnectors: 'ἵνα',
+                example: 'Esto lo digo para que nadie os engañe (Colosenses 2:4).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['ya que', 'para que', 'para', 'a fin de que', 'con la mira de', 'no sea que']
+            },
+            {
+                id: 'condicional',
+                title: 'Condicional (If/Th)',
+                icon: 'Condicional',
+                description: 'Similar a Acción-Resultado excepto que la existencia de la acción es sólo potencial.',
+                connectors: 'si...entonces, siempre que, excepto, cualquiera que',
+                greekConnectors: 'εἰ, ἐάν, εἴτε, ἆρα',
+                example: 'si hubiera algún otro daño, entonces pondrás como castigo vida por vida (Éxodo 21:23).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['si entonces', 'siempre que', 'excepto', 'cualquiera que', 'si']
+            },
+            {
+                id: 'temporal',
+                title: 'Temporal (T)',
+                icon: 'Temporal',
+                description: 'Una declaración y la ocasión en que es verdad o puede ocurrir.',
+                connectors: 'cuando, siempre que sea, antes, después, hasta que, mientras, entonces, ahora, al final, aun, todavía',
+                greekConnectors: 'ὅταν, ὅτε, πρίν',
+                example: 'Y cuando ayunéis, no pongáis cara triste (Mateo 6:16).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['cuando', 'siempre que sea', 'antes', 'después', 'hasta que', 'mientras', 'entonces', 'ahora', 'al final', 'aun', 'todavía']
+            },
+            {
+                id: 'locativa',
+                title: 'Locativa (L)',
+                icon: 'Locativa',
+                description: 'Una declaración y el lugar donde es verdad o puede ocurrir.',
+                connectors: 'donde, donde sea, aquí, allí, allá, dondequiera',
+                greekConnectors: 'ὅπου',
+                example: 'adonde tú vayas, iré yo (Rut 1:16).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['donde', 'donde sea', 'aquí', 'allí', 'allá', 'dondequiera']
+            },
+            // POR REITERACIÓN
+            {
+                id: 'accion-manera',
+                title: 'Acción-Manera (Ac/Mn)',
+                icon: 'Manera',
+                description: 'Una acción y una declaración que indica la forma o manera que la acción se lleva a cabo.',
+                connectors: 'por, por medio, en que, gerundios',
+                greekConnectors: 'διά',
+                example: 'no dejó de dar testimonio de sí mismo, haciendo bien y dándoos lluvias del cielo (Hechos 14:17).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['por', 'por medio', 'en que', 'gerundios', 'haciendo', 'siendo', 'estando']
+            },
+            {
+                id: 'comparacion',
+                title: 'Comparación (Cf)',
+                icon: 'Comparación',
+                description: 'Una acción y una declaración que da más detalles de la acción, mostrando a qué se parece.',
+                connectors: 'como, de la misma forma, igualmente, así, así como, incluso como, tal como, según, de la misma manera, conforme a, así también, por lo cual',
+                greekConnectors: 'ὡς, καθώς',
+                example: 'Sed imitadores de mí, como también yo lo soy de Cristo. (1 Corintios 11:1).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['como', 'de la misma forma', 'igualmente', 'así', 'así como', 'incluso como', 'tal como', 'según', 'de la misma manera', 'conforme a', 'así también']
+            },
+            {
+                id: 'negativo-positivo',
+                title: 'Negativo-Positivo (-/+)',
+                icon: 'Negativo',
+                description: 'Dos declaraciones, una de ellas se niega para que la otra sea resaltada.',
+                connectors: 'no...sino',
+                greekConnectors: 'ἀλλά',
+                example: 'no seáis necios, sino entended cuál es la voluntad del Señor. (Efesios 5:17).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['no sino', 'sino', 'pero no']
+            },
+            {
+                id: 'idea-explicacion',
+                title: 'Idea-Explicación (Id/Exp)',
+                icon: 'Explicación',
+                description: 'La relación entre una declaración y otra que da más claridad a su significado.',
+                connectors: 'esto es, que es, (que no es), que son, es decir',
+                greekConnectors: 'ὅτι, γάρ, ἵνα',
+                example: 'hasta que pereció toda la nación, es decir, los hombres de guerra que salieron de Egipto (Josué 5:6).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['esto es', 'que es', 'que no es', 'que son', 'es decir']
+            },
+            {
+                id: 'pregunta-respuesta',
+                title: 'Pregunta-Respuesta (Q/A)',
+                icon: 'Pregunta',
+                description: 'La declaración de una pregunta y la respuesta asociada.',
+                connectors: 'Pregunta marcada por ¿?',
+                greekConnectors: 'Signo de interrogación',
+                example: '¿qué dice la Escritura? Y creyó Abraham a Dios, y le fue contado por justicia. (Romanos 4:3).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['qué', 'quién', 'cómo', 'cuándo', 'dónde', 'por qué']
+            },
+            // POR DECLARACIÓN CONTRARIA
+            {
+                id: 'concesiva',
+                title: 'Concesiva (Csv)',
+                icon: 'Concesiva',
+                description: 'Una cláusula principal que se destaca a pesar de una declaración contraria.',
+                connectors: 'pero, pues, sino que, mas, aunque...todavía, no obstante, sin embargo, mucho más, sino, aun, ya, de otra manera, he aquí, a pesar de',
+                greekConnectors: 'δέ, πλήν',
+                example: 'siempre estaré listo para recordaros estas cosas, aunque vosotros ya las sabéis (2 Pedro 1:12).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['pero', 'pues', 'sino que', 'mas', 'aunque', 'no obstante', 'sin embargo', 'mucho más', 'sino', 'aun', 'ya', 'de otra manera', 'he aquí', 'a pesar de']
+            },
+            {
+                id: 'situacion-respuesta',
+                title: 'Situación-Respuesta (Sit/R)',
+                icon: 'Situación',
+                description: 'Una situación y su respuesta sorpresiva o contra intuitiva.',
+                connectors: 'y',
+                greekConnectors: 'καί',
+                example: '¡Cuántas veces quise juntar a tus hijos, como la gallina junta sus pollitos debajo de sus alas, y no quisiste! (Mateo 23:37).',
+                category: 'logical-relations',
+                subcategory: 'subordinadas',
+                keywords: ['y respuesta inesperada', 'pero respuesta contraria']
+            }
+        ];
+
+        // 3. TIPOS DE FRASES
+        const phraseTypes = [
+            {
+                id: 'relative',
+                title: 'Frase Relativa',
+                icon: 'Relativa',
+                description: 'Grupo de palabras que empieza con un pronombre relativo para describir o dar más información sobre un sustantivo.',
+                indicators: 'que, quien, el cual, la cual, cuyo, donde, cuando (como relativos), which, who, whom, what, whose, that (como relativos)',
+                function: 'Describe o define un sustantivo que las precede. Conecta la frase con el sustantivo anterior.',
+                biblicalExample: '"lo que ha sido concebido en ella es del Espíritu Santo" (Mateo 1:20)',
+                commonExample: '"La mujer que canta es mi madre", "El hombre quien ayudó fue Pedro"',
+                category: 'phrase-types',
+                subcategory: 'basic',
+                keywords: ['que', 'quien', 'el cual', 'la cual', 'cuyo', 'donde', 'cuando', 'which', 'who', 'whom', 'what', 'whose', 'that']
+            },
+            {
+                id: 'substantival',
+                title: 'Frase Sustantiva',
+                icon: 'Sustantiva',
+                description: 'Grupo de palabras con verbo que funciona como un sustantivo (nombre).',
+                indicators: 'lo que, que (como sujeto), el que, la que, what, that (como sujeto)',
+                function: 'Puede ser sujeto, objeto o complemento en la oración. Funciona como si fuera un nombre.',
+                biblicalExample: '"La prueba de vuestra fe produce paciencia" (Santiago 1:3)',
+                commonExample: '"Que ames a Dios es lo más importante", "No entiendo lo que dices"',
+                category: 'phrase-types',
+                subcategory: 'basic',
+                keywords: ['lo que', 'el que', 'la que', 'what', 'that']
+            },
+            {
+                id: 'genitive',
+                title: 'Frase Genitiva',
+                icon: 'Genitiva',
+                description: 'Indica pertenencia, origen o relación. Se reconoce porque usa "de" (en inglés "of" o apóstrofe \'s).',
+                indicators: 'de, del, de la, de los, de las, of, \'s',
+                function: 'Responde a las preguntas "¿de quién?" o "¿de qué?". Expresa posesión, origen o relación.',
+                biblicalExample: '"fuente de salvación eterna" (Hebreos 5:9)',
+                commonExample: '"El libro de María", "La paz de Dios"',
+                category: 'phrase-types',
+                subcategory: 'basic',
+                keywords: ['de', 'del', 'de la', 'de los', 'de las', 'of']
+            },
+            {
+                id: 'prepositional',
+                title: 'Frase Preposicional',
+                icon: 'Preposicional',
+                description: 'Comienza con una preposición y da información adicional sobre lugar, tiempo, compañía o causa.',
+                indicators: 'a, ante, bajo, cabe, con, contra, de, desde, durante, en, entre, hacia, hasta, mediante, para, por, según, sin, so, sobre, tras, versus, vía, in, on, at, by, for, with, from, to',
+                function: 'Proporciona información adicional sobre lugar, tiempo, compañía, causa, manera o instrumento.',
+                biblicalExample: '"en un sueño el ángel se le apareció" (Mateo 1:20)',
+                commonExample: '"Vive en la ciudad", "Caminó con su amigo"',
+                category: 'phrase-types',
+                subcategory: 'structural',
+                keywords: [
+                    'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 
+                    'durante', 'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 
+                    'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía',
+                    'in', 'on', 'at', 'by', 'for', 'with', 'from', 'to'
+                ]
+            },
+            {
+                id: 'participle',
+                title: 'Frase Participial',
+                icon: 'Participial',
+                description: 'Contiene un participio (verbo terminado en -ado, -ido, -ando, -iendo o -ing en inglés).',
+                indicators: 'siendo, estando, habiendo, teniendo, corriendo, caminando, hablando, viviendo, words ending in -ado, -ido, -ando, -iendo, -ing',
+                function: 'Describe cómo está alguien, en qué condición se encuentra, o cómo se realiza una acción.',
+                biblicalExample: '"José, siendo un hombre justo..." (Mateo 1:19)',
+                commonExample: '"Los niños, cansados, se durmieron", "Corriendo hacia casa, tropezó"',
+                category: 'phrase-types',
+                subcategory: 'descriptive',
+                keywords: ['siendo', 'estando', 'habiendo', 'teniendo', 'corriendo', 'caminando', 'hablando', 'viviendo', 'ando', 'iendo', 'ado', 'ido', 'ing']
+            },
+            {
+                id: 'unmarked',
+                title: 'Frase No Marcada',
+                icon: 'NoMarcada',
+                description: 'Frase que no empieza con preposición, conjunción ni pronombre relativo. Aparece como declaración directa.',
+                indicators: 'No tiene palabra introductoria específica, yuxtaposición directa',
+                function: 'Aparece como declaración directa o yuxtaposición (colocada junto a otra sin nexo conector).',
+                biblicalExample: '"Perseguiré, alcanzaré, repartiré el botín..." (Éxodo 15:9)',
+                commonExample: '"Mañana temprano, reunión", "Él agotado, ella feliz"',
+                category: 'phrase-types',
+                subcategory: 'descriptive',
+                keywords: ['yuxtaposición', 'declaración', 'directa']
+            },
+            {
+                id: 'conjunction',
+                title: 'Frase de Conjunción',
+                icon: 'Conjunción',
+                description: 'Comienza con una conjunción para unir frases o introducir ideas nuevas.',
+                indicators: 'y, e, ni, o, u, pero, mas, sino, que, aunque, porque, si, cuando, mientras, pues, luego, and, but, or, that, if, when, while, because',
+                function: 'Une frases o introduce ideas nuevas. Establece relaciones lógicas entre proposiciones.',
+                biblicalExample: '"Y José hizo como el ángel mandó" (Mateo 1:24)',
+                commonExample: '"Y llamó su nombre Jesús", "Pero no tuvo miedo"',
+                category: 'phrase-types',
+                subcategory: 'structural',
+                keywords: [
+                    'y', 'e', 'ni', 'o', 'u', 'pero', 'mas', 'sino', 'que', 
+                    'aunque', 'porque', 'si', 'cuando', 'mientras', 'pues', 'luego',
+                    'and', 'but', 'or', 'that', 'if', 'when', 'while', 'because'
+                ]
+            },
+            {
+                id: 'appositional',
+                title: 'Frase Aposicional',
+                icon: 'Aposicional',
+                description: 'Un sustantivo que renombra a otro sustantivo para explicarlo o precisarlo.',
+                indicators: 'Nombres o títulos que explican o renombran, generalmente entre comas',
+                function: 'Explica o precisa el sustantivo anterior. Proporciona información adicional sobre la identidad.',
+                biblicalExample: '"José, hijo de David..." (Mateo 1:20)',
+                commonExample: '"Pedro, apóstol de Jesucristo", "Madrid, capital de España"',
+                category: 'phrase-types',
+                subcategory: 'descriptive',
+                keywords: ['hijo de', 'apóstol de', 'rey de', 'ciudad de', 'presidente de', 'capital de']
+            },
+            {
+                id: 'infinitive',
+                title: 'Frase Infinitiva',
+                icon: 'Infinitiva',
+                description: 'Contiene un infinitivo (forma básica del verbo: -ar, -er, -ir / to + verbo en inglés).',
+                indicators: 'para + infinitivo, a + infinitivo, infinitivos (-ar, -er, -ir), to + verb',
+                function: 'Expresa propósito, resultado o contenido. Indica la intención o meta de una acción.',
+                biblicalExample: '"do not fear to take Mary as your wife" (Mateo 1:20)',
+                commonExample: '"No temas tomar a María", "Salió a buscar ayuda"',
+                category: 'phrase-types',
+                subcategory: 'structural',
+                keywords: ['para', 'a', 'tomar', 'hacer', 'ser', 'estar', 'ir', 'venir', 'to', 'ar', 'er', 'ir']
+            },
+            {
+                id: 'adverbial',
+                title: 'Frase Adverbial',
+                icon: 'Adverbial',
+                description: 'Modifica verbos, adjetivos o adverbios, indicando manera, tiempo, lugar, cantidad o intensidad.',
+                indicators: 'rápidamente, cuidadosamente, fielmente, muy, bastante, entonces, aquí, allí, words ending in -mente',
+                function: 'Modifica la acción del verbo o intensifica adjetivos y otros adverbios.',
+                biblicalExample: '"Respondió Jesús inmediatamente" (Marcos 1:43)',
+                commonExample: '"Habló claramente", "Muy importante", "Bastante difícil"',
+                category: 'phrase-types',
+                subcategory: 'descriptive',
+                keywords: ['rápidamente', 'cuidadosamente', 'fielmente', 'inmediatamente', 'claramente', 'muy', 'bastante', 'entonces', 'aquí', 'allí', 'mente']
+            },
+            {
+                id: 'exclamatory',
+                title: 'Frase Exclamativa',
+                icon: 'Exclamativa',
+                description: 'Expresa admiración, sorpresa, énfasis o emoción intensa.',
+                indicators: '¡Qué!, ¡Cuán!, ¡Cómo!, exclamation marks, emphatic expressions',
+                function: 'Expresan admiración, énfasis, sorpresa o emoción fuerte.',
+                biblicalExample: '"¡Cuán hermosos son sobre los montes los pies del que trae alegres nuevas!" (Isaías 52:7)',
+                commonExample: '"¡Qué grande es Dios!", "¡Cuán misericordioso!", "¡Cómo ama!"',
+                category: 'phrase-types',
+                subcategory: 'emphatic',
+                keywords: ['qué', 'cuán', 'cómo', 'quién', 'cuánto', 'cuánta', 'cuántos', 'cuántas']
+            },
+            {
+                id: 'vocative',
+                title: 'Frase Vocativa',
+                icon: 'Vocativa',
+                description: 'Llamamiento o invocación directa a una persona, deidad o entidad.',
+                indicators: 'Oh, Señor, Padre, nombres propios en llamamiento directo',
+                function: 'Invoca, llama o se dirige directamente a alguien. Función de llamamiento.',
+                biblicalExample: '"Oh Señor, Dios nuestro" (Salmo 8:1)', 
+                commonExample: '"Padre nuestro", "Oh Dios", "Señor Jesús"',
+                category: 'phrase-types',
+                subcategory: 'emphatic',
+                keywords: ['oh', 'señor', 'padre', 'dios', 'jesús', 'cristo', 'maestro']
+            }
+        ];
+
+        // 4. PREPOSICIONES GRIEGAS
+        const greekPrepositions = [
+            { id: 'ana', title: 'ἀνά (ana)', icon: 'Ascendente', greekText: 'ἀνά', latinEquivalent: 'per, super', basicMeaning: 'De abajo arriba', withAccusative: 'Hacia arriba, durante (distributivo)', withGenitive: 'No se usa comúnmente', biblicalExamples: 'ἀνὰ μέσον (en medio de)', function: 'Expresa movimiento ascendente o distribución', category: 'prepositions', keywords: ['ana', 'ἀνά'] },
+            { id: 'eis', title: 'εἰς (eis)', icon: 'Hacia', greekText: 'εἰς', latinEquivalent: 'in (+ ac.)', basicMeaning: 'Hacia dentro', withAccusative: 'A, adentro, hacia (dirección)', withGenitive: 'No se usa', biblicalExamples: 'εἰς τὸν οὐρανόν', function: 'Indica dirección hacia el interior', category: 'prepositions', keywords: ['eis', 'εἰς'] },
+            { id: 'anti', title: 'ἀντί (anti)', icon: 'Intercambio', greekText: 'ἀντί', latinEquivalent: 'contra, pro', basicMeaning: 'Frente a / en lugar de', withAccusative: 'No se usa comúnmente', withGenitive: 'En vez de, en lugar de, por', biblicalExamples: 'ἀντὶ τούτων', function: 'Expresa substitución o intercambio', category: 'prepositions', keywords: ['anti', 'ἀντί'] },
+            { id: 'apo', title: 'ἀπό (apo)', icon: 'Alejamiento', greekText: 'ἀπό', latinEquivalent: 'a, ab', basicMeaning: 'Alejamiento', withAccusative: 'No se usa', withGenitive: 'De, desde, lejos de', biblicalExamples: 'ἀπὸ τῶν οὐρανῶν', function: 'Indica origen o separación', category: 'prepositions', keywords: ['apo', 'ἀπό'] },
+            { id: 'ek', title: 'ἐκ / ἐξ (ek/ex)', icon: 'Salida', greekText: 'ἐκ / ἐξ', latinEquivalent: 'ex, e', basicMeaning: 'Salida', withAccusative: 'No se usa', withGenitive: 'De, de dentro, fuera de', biblicalExamples: 'ἐκ τῆς καρδίας', function: 'Expresa salida del interior o origen', category: 'prepositions', keywords: ['ek', 'ex', 'ἐκ', 'ἐξ'] },
+            { id: 'pro', title: 'πρό (pro)', icon: 'Precedencia', greekText: 'πρό', latinEquivalent: 'pro, prae', basicMeaning: 'Delante, preferencia', withAccusative: 'No se usa comúnmente', withGenitive: 'Ante, antes de, en pro de', biblicalExamples: 'πρὸ τῶν αἰώνων', function: 'Indica anterioridad temporal o espacial', category: 'prepositions', keywords: ['pro', 'πρό'] },
+            { id: 'en', title: 'ἐν (en)', icon: 'Interior', greekText: 'ἐν', latinEquivalent: 'in (+ ab.)', basicMeaning: 'Dentro, en el interior', withAccusative: 'No se usa', withGenitive: 'No se usa', withDative: 'En, dentro de, por medio de', biblicalExamples: 'ἐν τῷ κόσμῳ', function: 'Indica ubicación interior o instrumento', category: 'prepositions', keywords: ['en', 'ἐν'] },
+            { id: 'syn', title: 'σύν (syn)', icon: 'Compañía', greekText: 'σύν', latinEquivalent: 'cum', basicMeaning: 'Compañía', withAccusative: 'No se usa', withGenitive: 'No se usa', withDative: 'Con, junto con', biblicalExamples: 'σὺν αὐτῷ', function: 'Expresa compañía o asociación', category: 'prepositions', keywords: ['syn', 'σύν'] },
+            { id: 'dia', title: 'διά (dia)', icon: 'Atravesar', greekText: 'διά', latinEquivalent: 'per, di-, dis-', basicMeaning: 'Por entre, a través de', withAccusative: 'Por (causa de)', withGenitive: 'Por, a través de, por medio de', biblicalExamples: 'διὰ τοῦτο, διὰ τῆς πίστεως', function: 'Indica medio, causa o paso a través', category: 'prepositions', keywords: ['dia', 'διά'] },
+            { id: 'kata', title: 'κατά (kata)', icon: 'Descendente', greekText: 'κατά', latinEquivalent: 'per, ad, secundum', basicMeaning: 'De arriba abajo', withAccusative: 'Hacia abajo, según', withGenitive: 'De (arriba abajo), contra', biblicalExamples: 'κατὰ σάρκα', function: 'Expresa conformidad o oposición', category: 'prepositions', keywords: ['kata', 'κατά'] },
+            { id: 'hyper', title: 'ὑπέρ (hyper)', icon: 'Superior', greekText: 'ὑπέρ', latinEquivalent: 'super', basicMeaning: 'Sobre, encima de', withAccusative: 'Más (allá) de', withGenitive: 'Sobre, a favor de, en nombre de', biblicalExamples: 'ὑπὲρ ἡμῶν', function: 'Indica superioridad o representación', category: 'prepositions', keywords: ['hyper', 'ὑπέρ'] },
+            { id: 'meta', title: 'μετά (meta)', icon: 'Entre', greekText: 'μετά', latinEquivalent: 'inter, cum, post, trans', basicMeaning: 'En medio de, entre', withAccusative: 'Después de', withGenitive: 'Con, en medio de', biblicalExamples: 'μετὰ ταῦτα, μεθ᾽ αὐτοῦ', function: 'Expresa compañía o posterioridad', category: 'prepositions', keywords: ['meta', 'μετά'] },
+            { id: 'epi', title: 'ἐπί (epi)', icon: 'Encima', greekText: 'ἐπί', latinEquivalent: 'in, super', basicMeaning: 'Sobre, encima', withAccusative: 'A, hacia; por, contra', withGenitive: 'Sobre, a, en (tiempo)', withDative: 'Sobre, en, junto a', biblicalExamples: 'ἐπὶ τῆς γῆς', function: 'Indica posición superior o dirección', category: 'prepositions', keywords: ['epi', 'ἐπί'] },
+            { id: 'para', title: 'παρά (para)', icon: 'AlLado', greekText: 'παρά', latinEquivalent: 'apud, ad', basicMeaning: 'Al lado', withAccusative: 'A, hacia, a lo largo de', withGenitive: 'De parte de', withDative: 'Junto a, al lado de', biblicalExamples: 'παρὰ θεοῦ', function: 'Indica proximidad o origen', category: 'prepositions', keywords: ['para', 'παρά'] },
+            { id: 'pros', title: 'πρός (pros)', icon: 'Presencia', greekText: 'πρός', latinEquivalent: 'ad', basicMeaning: 'En presencia de, junto a', withAccusative: 'A, hacia, contra, para', withGenitive: 'No se usa comúnmente', withDative: 'De lado de, de parte de', biblicalExamples: 'πρὸς τὸν θεόν', function: 'Indica dirección o relación', category: 'prepositions', keywords: ['pros', 'πρός'] },
+            { id: 'hypo', title: 'ὑπό (hypo)', icon: 'Debajo', greekText: 'ὑπό', latinEquivalent: 'sub', basicMeaning: 'Debajo de', withAccusative: 'Bajo, hacia', withGenitive: 'Bajo, por (agente)', biblicalExamples: 'ὑπὸ τὸν οὐρανόν', function: 'Indica posición inferior o agente', category: 'prepositions', keywords: ['hypo', 'ὑπό'] }
+        ];
+
+        // 5. EXPRESIONES GRAMATICALES
+        const grammaticalExpressions = [
+            { id: 'para_siempre', title: 'para siempre', icon: 'Temporal', expression: 'para siempre', morphology: 'Locución adverbial de tiempo.', function: 'Expresa tiempo indefinido.', example: 'Tu misericordia es "para siempre"', importance: 'Indica duración.', category: 'expressions', keywords: ['para siempre'] },
+            { id: 'ciertamente', title: 'ciertamente', icon: 'Afirmación', expression: 'ciertamente', morphology: 'Adverbio de afirmación.', function: 'Refuerza veracidad.', example: '"Ciertamente" llevaré tu carga', importance: 'Intensifica.', category: 'expressions', keywords: ['ciertamente'] },
+            { id: 'siendo', title: 'siendo', icon: 'Gerundio', expression: 'siendo', morphology: 'Gerundio de "ser".', function: 'Marca proceso.', example: 'Noé, "siendo" advertido…', importance: 'Forma no personal.', category: 'expressions', keywords: ['siendo'] },
+            { id: 'advertido', title: 'advertido', icon: 'Participio', expression: 'advertido', morphology: 'Participio de "advertir".', function: 'Voz pasiva / adjetivo.', example: '"Advertido" por Dios', importance: 'Pasiva progresiva.', category: 'expressions', keywords: ['advertido'] },
+            { id: 'he_aqui', title: 'he aquí', icon: 'Enfático', expression: 'he aquí', morphology: 'Locución presentativa.', function: 'Introduce anuncio.', example: '"He aquí" yo estoy con vosotros', importance: 'Marcador de atención.', category: 'expressions', keywords: ['he aquí'] },
+            { id: 'por_tanto', title: 'por tanto', icon: 'Conclusión', expression: 'por tanto', morphology: 'Locución consecutiva.', function: 'Introduce conclusión.', example: '"Por tanto", id y haced discípulos', importance: 'Nexo lógico.', category: 'expressions', keywords: ['por tanto'] }
+        ];
+
+        // 6. MORFOLOGÍA ESPAÑOLA
+        const morfologiaEspanola = [
+            { id: 'pron_personal', title: 'Pronombre Personal', icon: '👤', description: 'Sustituye al sujeto u objeto.', indicators: 'yo, me, le, les, se', function: 'Núcleo del sujeto u objeto.', category: 'morphology', keywords: ['yo', 'me', 'le', 'les', 'se', 'ellos', 'nosotros'] },
+            { id: 'pron_relativo', title: 'Pronombre Relativo', icon: '🔗', description: 'Se refiere a un antecedente.', indicators: 'que, cual, quien', function: 'Introduce subordinada adjetiva.', category: 'morphology', keywords: ['que', 'cual', 'quien'] },
+            { id: 'adv_negacion', title: 'Adverbio de Negación', icon: '🚫', description: 'Niega la acción.', indicators: 'no, nunca, jamás', function: 'Modifica el verbo.', category: 'morphology', keywords: ['no', 'nunca', 'jamás'] },
+            { id: 'adj_calificativo', title: 'Adjetivo', icon: '🎨', description: 'Expresa cualidades.', indicators: 'santo, justo, grande', function: 'Modifica al sustantivo.', category: 'morphology', keywords: ['santo', 'justo', 'grande', 'bueno', 'malo'] }
+        ];
+
+        // =============================================================================
+        // LÓGICA DE LA APLICACIÓN
+        // =============================================================================
+        let currentFilter = 'all';
+        let searchTerm = '';
+        let showGreek = false;
+
+        function identifyGrammarElements(input) {
+            if (!input.trim()) return [];
+            const inputLower = input.toLowerCase().trim();
+            const matches = [];
+
+            const allData = [...coordinadas, ...subordinadas, ...phraseTypes, ...grammaticalExpressions, ...greekPrepositions, ...morfologiaEspanola];
+
+            allData.forEach(item => {
+                if (item.keywords && item.keywords.some(k => k.toLowerCase() === inputLower)) {
+                    matches.push(item);
+                }
+            });
+
+            return matches;
+        }
+
+        function renderIdentification(matches) {
+            const resultDiv = document.getElementById('identificationResult');
+            const matchedDiv = document.getElementById('matchedElements');
+            
+            if (matches.length > 0) {
+                matchedDiv.innerHTML = matches.map(match => {
+                    let colorClass = 'match-expression';
+                    let annotation = '';
+                    
+                    if (match.category === 'phrase-types') {
+                        switch(match.id) {
+                            case 'prepositional': colorClass = 'match-phrase-preposicional'; annotation = 'P'; break;
+                            case 'genitive': colorClass = 'match-phrase-genitiva'; annotation = 'G'; break;
+                            case 'infinitive': colorClass = 'match-phrase-infinitiva'; annotation = 'I'; break;
+                            case 'conjunction': colorClass = 'match-phrase-conjuncion'; annotation = 'C'; break;
+                            case 'participle': colorClass = 'match-phrase-participial'; annotation = 'Part'; break;
+                            case 'appositional': colorClass = 'match-phrase-aposicional'; annotation = 'Ap'; break;
+                            case 'relative': colorClass = 'match-phrase-relativa'; annotation = 'R'; break;
+                            case 'substantival': colorClass = 'match-phrase-sustantival'; annotation = 'S'; break;
+                            case 'adverbial': colorClass = 'match-phrase-adverbial'; annotation = 'Adv'; break;
+                            case 'exclamatory': colorClass = 'match-phrase-exclamatory'; annotation = 'Exc'; break;
+                            case 'vocative': colorClass = 'match-phrase-vocative'; annotation = 'Voc'; break;
+                        }
+                    } else if (match.category === 'logical-relations') {
+                        colorClass = 'match-relation-coordinada';
+                    } else if (match.category === 'prepositions') {
+                        colorClass = 'match-phrase-preposicional';
+                    } else if (match.category === 'morphology') {
+                        if (match.id.startsWith('pron_')) colorClass = 'match-phrase-relativa';
+                        else if (match.id.startsWith('adj_')) colorClass = 'match-phrase-adjetival';
+                        else if (match.id.startsWith('adv_')) colorClass = 'match-phrase-adverbial';
+                    }
+
+                    const annTag = annotation ? `<div class="phrase-annotation ann-${match.id || 'default'}">${annotation}</div>` : '';
+                    
+                    return `
+                        <div class="grammar-match ${colorClass}">
+                            ${annTag}
+                            <div class="match-type">${match.icon || ''} ${match.title}</div>
+                            <div class="match-details">${match.indicators || match.connectors || match.expression || ''}</div>
+                            <div class="match-function">${match.description || match.function || ''}</div>
+                        </div>
+                    `;
+                }).join('');
+                resultDiv.classList.add('show');
+            } else {
+                resultDiv.classList.remove('show');
+            }
+        }
+
+        function renderGrammarElements() {
+            const grid = document.getElementById('grammarGrid');
+            grid.innerHTML = '';
+            
+            const sections = [
+                { id: 'logical-relations', title: 'Relaciones Lógicas', data: [...coordinadas, ...subordinadas], class: 'logical-relations' },
+                { id: 'phrase-types', title: 'Tipos de Frases', data: phraseTypes, class: 'phrase-types' },
+                { id: 'expressions', title: 'Expresiones', data: grammaticalExpressions, class: 'expressions' },
+                { id: 'prepositions', title: 'Preposiciones Griegas', data: greekPrepositions, class: 'prepositions' }
+            ];
+
+            sections.forEach(sec => {
+                if (currentFilter === 'all' || currentFilter === sec.id) {
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'grammar-section';
+                    
+                    const header = document.createElement('div');
+                    header.className = `section-header ${sec.class}`;
+                    header.innerHTML = `<span>${sec.title}</span><span class="toggle-icon">▼</span>`;
+                    
+                    const content = document.createElement('div');
+                    content.className = 'section-content';
+                    
+                    sec.data.forEach(item => {
+                        if (!searchTerm || (item.keywords && item.keywords.some(k => k.toLowerCase().includes(searchTerm.toLowerCase())))) {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'grammar-item';
+                            itemDiv.innerHTML = `
+                                <div class="item-title">${item.icon || ''} ${item.title}</div>
+                                <div class="item-definition">${item.description || item.basicMeaning || ''}</div>
+                                <div class="details-content">${item.indicators || item.connectors || item.expression || ''}</div>
+                            `;
+                            content.appendChild(itemDiv);
+                        }
+                    });
+                    
+                    if (content.children.length > 0) {
+                        sectionDiv.appendChild(header);
+                        sectionDiv.appendChild(content);
+                        grid.appendChild(sectionDiv);
+                        
+                        header.onclick = () => {
+                            header.classList.toggle('collapsed');
+                            content.classList.toggle('collapsed');
+                        };
+                    }
+                }
+            });
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchTerm = '';
+            currentFilter = 'all';
+            document.getElementById('identificationResult').classList.remove('show');
+            renderGrammarElements();
+        }
+
+        document.getElementById('searchInput').oninput = (e) => {
+            searchTerm = e.target.value;
+            renderIdentification(identifyGrammarElements(searchTerm));
+            renderGrammarElements();
+        };
+
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+            btn.onclick = () => {
+                currentFilter = btn.dataset.filter;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderGrammarElements();
+            };
+        });
+
+        window.onload = renderGrammarElements;
+    </script>
+</body>
+</html>

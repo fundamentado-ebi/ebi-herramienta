@@ -1,0 +1,2718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Exégesis Bíblica - Método John Piper</title>
+    <style>
+        /* ========================================== */
+        /* ESTILOS GENERALES DE LA HERRAMIENTA BASE   */
+        /* ========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6; color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 20px;
+            background: white; margin-top: 20px; margin-bottom: 20px;
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+
+        /* ========================================== */
+        /* ENVOLTORIO PEGAJOSO (NAVEGACIÓN + ACCESOS) */
+        /* ========================================== */
+        .sticky-nav-wrapper {
+            position: sticky; top: 15px; z-index: 900;
+            display: flex; flex-direction: column; gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        /* ACCESOS DIRECTOS (ELEGANTE Y DISCRETO) */
+        .shortcuts-bar {
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 8px 20px; border-radius: 10px;
+            display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.05);
+        }
+        .shortcut-text { font-size: 12px; color: #888; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .shortcut-btn {
+            background: white; border: 1px solid #e0e0e0; color: #555;
+            padding: 4px 12px; border-radius: 6px; cursor: pointer; font-weight: 600;
+            transition: all 0.2s ease; font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .shortcut-btn:hover { background: #f8f9fa; color: #1e3c72; border-color: #1e3c72; transform: translateY(-1px); }
+        
+        /* NAVEGACIÓN PRINCIPAL (PASOS - ELEGANTE) */
+        .nav-buttons {
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 10px; border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .nav-btn {
+            background: transparent; color: #555; border: none; 
+            padding: 8px 16px; border-radius: 8px; cursor: pointer; 
+            font-weight: 600; transition: all 0.2s ease; text-decoration: none; font-size: 14px;
+        }
+        
+        .nav-btn:hover { background: rgba(0,0,0,0.03); color: #1e3c72; transform: translateY(-1px); }
+        .nav-btn.active {
+            background: #1e3c72; color: white;
+            box-shadow: 0 4px 10px rgba(30, 60, 114, 0.3); transform: translateY(-1px);
+        }
+        
+        /* SUB-PESTAÑAS (INTERNAS) */
+        .sub-tabs-container {
+            display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px;
+            border-bottom: 3px solid #2a5298; padding-bottom: 0;
+        }
+        .sub-tab-btn {
+            background: #e8f4fd; color: #1e3c72; border: 1px solid #c5dcf1; border-bottom: none;
+            padding: 12px 20px; border-radius: 10px 10px 0 0; cursor: pointer; font-weight: bold;
+            transition: all 0.3s ease; font-size: 15px;
+        }
+        .sub-tab-btn:hover { background: #d6e9f7; }
+        .sub-tab-btn.active {
+            background: #2a5298; color: white; border-color: #2a5298;
+        }
+        .sub-tab-content { display: none; animation: fadeIn 0.4s; }
+        .sub-tab-content.active { display: block; }
+        
+        /* SECCIONES PRINCIPALES */
+        .section {
+            display: none; margin-bottom: 40px; background: #f8f9fa;
+            padding: 30px; border-radius: 15px; border-left: 5px solid #2a5298;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section h2 { color: #1e3c72; font-size: 2em; margin-bottom: 20px; border-bottom: 3px solid #feb47b; padding-bottom: 10px; }
+        .section h3 { color: #2a5298; font-size: 1.5em; margin: 25px 0 15px 0; background: linear-gradient(135deg, #e8f4fd 0%, #d6e9f7 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #2a5298; }
+        .section h4 { color: #ff7e5f; font-size: 1.2em; margin: 15px 0 10px 0; }
+        
+        /* CAJAS DE INFORMACIÓN */
+        .highlight-box { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ff7e5f; }
+        .example-box { background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%); padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #28a745; }
+        .warning-box { background: linear-gradient(135deg, #fff3cd 0%, #fdeaa7 100%); padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #ffc107; }
+        .info-box { background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%); padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #17a2b8; }
+        .connection-box { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #2196f3; }
+        
+        /* GRIDS Y TARJETAS */
+        .types-grid, .relations-grid, .genitive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 20px 0; }
+        .type-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-top: 4px solid #2a5298; transition: transform 0.3s ease; }
+        .type-card:hover { transform: translateY(-5px); }
+        .type-card h4 { color: #1e3c72; margin-bottom: 15px; font-size: 1.3em; }
+        .type-card h5 { color: #ff7e5f; margin-bottom: 10px; font-size: 1.1em; }
+        .relation-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #ff7e5f; }
+        .relation-card h5 { color: #1e3c72; margin-bottom: 8px; font-size: 1em; }
+        .genitive-card { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; border-radius: 8px; border-top: 3px solid #28a745; }
+        
+        /* TABLAS Y LISTAS */
+        .table-container { overflow-x: auto; margin: 20px 0; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .standard-table { width: 100%; border-collapse: collapse; background: white; }
+        .standard-table th { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 15px; text-align: left; font-weight: bold; }
+        .standard-table td { padding: 12px 15px; border-bottom: 1px solid #dee2e6; }
+        .standard-table tr:nth-child(even) { background: #f8f9fa; }
+        
+        .simple-list { background: white; padding: 20px; border-radius: 10px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .simple-list h4 { color: #1e3c72; margin-bottom: 15px; border-bottom: 2px solid #feb47b; padding-bottom: 8px; }
+        .simple-list ol { counter-reset: item; padding-left: 0; }
+        .simple-list ol > li { display: block; margin-bottom: 15px; padding: 12px 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #2a5298; counter-increment: item; }
+        .simple-list ol > li:before { content: counter(item, decimal) ". "; font-weight: bold; color: #2a5298; }
+        .simple-list ul > li { margin-bottom: 8px; padding: 8px 0; border-bottom: 1px solid #e9ecef; }
+        .simple-list ul > li:last-child { border-bottom: none; }
+        
+        /* VARIOS */
+        .intro-text { font-size: 1.1em; line-height: 1.8; color: #555; margin-bottom: 20px; text-align: justify; }
+        code { background: #f1f3f4; padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #d63384; font-weight: bold; }
+        strong { color: #1e3c72; }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); color: white; border: none; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; z-index: 1000; }
+        .back-to-top:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+
+        /* ========================================== */
+        /* ESTILOS EXACTOS DE LA GUÍA DE COLORES      */
+        /* ========================================== */
+        .color-tabs-container { background: #2a5298; display: flex; justify-content: center; gap: 5px; padding: 0; border-radius: 10px 10px 0 0; }
+        .color-tab-button { flex: 1; max-width: 400px; padding: 20px 30px; background: rgba(255,255,255,0.1); color: white; border: none; cursor: pointer; font-size: 1.1em; font-weight: bold; transition: all 0.3s ease; border-bottom: 4px solid transparent; }
+        .color-tab-button:hover { background: rgba(255,255,255,0.2); }
+        .color-tab-button.active { background: white; color: #1e3c72; border-bottom: 4px solid #ffc107; }
+        .color-tab-content-inner { display: none; padding: 30px; animation: fadeIn 0.5s; background: white; border-radius: 0 0 10px 10px; }
+        .color-tab-content-inner.active { display: block; }
+        
+        .palette-section { background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; margin-bottom: 30px; border-radius: 5px; }
+        .palette-section h2 { color: #856404; margin-bottom: 15px; text-align: center; }
+        .palette-info { background: #e8f5e8; border: 2px solid #28a745; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        .palette-info h3 { color: #155724; margin-bottom: 10px; }
+        
+        .level-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; margin: 5px; }
+        .badge-beginner { background: #28a745; color: white; }
+        .badge-intermediate { background: #ffc107; color: #333; }
+        .badge-advanced { background: #dc3545; color: white; }
+        
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .color-section { background: #f8f9fa; border-radius: 10px; padding: 20px; border-top: 5px solid; }
+        .color-section.red { border-top-color: #dc3545; }
+        .color-section.green { border-top-color: #28a745; }
+        .color-section.cyan { border-top-color: #17a2b8; }
+        .color-section.orange { border-top-color: #fd7e14; }
+        .color-section.purple { border-top-color: #6f42c1; }
+        .color-section.yellow { border-top-color: #ffc107; }
+        .color-section.pink { border-top-color: #e91e63; }
+        .color-section.lilac { border-top-color: #b19cd9; }
+        .color-section.blue { border-top-color: #007bff; }
+        .color-section.gray { border-top-color: #6c757d; }
+        
+        .color-header { display: flex; align-items: center; margin-bottom: 15px; }
+        .color-box { width: 30px; height: 30px; border-radius: 5px; margin-right: 15px; border: 2px solid #333; }
+        .red-box { background-color: #dc3545; }
+        .green-box { background-color: #28a745; }
+        .cyan-box { background-color: #17a2b8; }
+        .orange-box { background-color: #fd7e14; }
+        .purple-box { background-color: #6f42c1; }
+        .yellow-box { background-color: #ffc107; }
+        .pink-box { background-color: #e91e63; }
+        .lilac-box { background-color: #b19cd9; }
+        .blue-box { background-color: #007bff; }
+        .gray-box { background-color: #6c757d; }
+        
+        .color-title { font-size: 1.2em; font-weight: bold; color: #333; }
+        .usage-list { list-style: none; margin-bottom: 15px; }
+        .usage-list li { padding: 8px 0; border-bottom: 1px solid #e9ecef; display: flex; align-items: center; }
+        .usage-list li:last-child { border-bottom: none; }
+        .mark-type { background: #e9ecef; padding: 3px 8px; border-radius: 15px; font-size: 0.8em; font-weight: bold; margin-right: 10px; min-width: 110px; text-align: center; }
+        .count-badge { background: #28a745; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8em; font-weight: bold; margin-left: 10px; }
+        
+        .workflow { background: #d1ecf1; border-left: 5px solid #17a2b8; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .workflow h3 { color: #0c5460; margin-bottom: 15px; text-align: center; }
+        .workflow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .workflow-item { background: white; padding: 15px; border-radius: 8px; border: 2px solid #bee5eb; }
+        .workflow-item h4 { color: #0c5460; margin-bottom: 10px; }
+        
+        .example-section { background: #f0f8ff; border-left: 5px solid #007bff; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .example-section h3 { color: #004085; margin-bottom: 15px; text-align: center; }
+        .biblical-text { background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; font-style: italic; font-size: 1.1em; line-height: 1.8; }
+        
+        .progression-path { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; }
+        .progression-path h3 { text-align: center; margin-bottom: 20px; font-size: 1.5em; }
+        .progression-steps { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .step { background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; text-align: center; min-width: 200px; backdrop-filter: blur(10px); color:white; }
+        .step-number { background: white; color: #667eea; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-weight: bold; font-size: 1.2em; }
+        .arrow { font-size: 2em; color: white; }
+        
+        .secondary-note { background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 5px; margin-top: 20px; }
+        .secondary-note h4 { color: #721c24; margin-bottom: 10px; }
+        .secondary-note p { color: #721c24; margin-bottom: 5px; }
+
+        /* Tooltips (Actualizados para no cortarse) */
+        .info-icon { display: inline-block; width: 20px; height: 20px; background: #17a2b8; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 0.8em; font-weight: bold; cursor: help; margin-left: 8px; position: relative; }
+        .info-icon:hover { background: #138496; transform: scale(1.1); }
+        .tooltip { visibility: hidden; opacity: 0; position: absolute; z-index: 1000; background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 15px; border-radius: 8px; width: max-content; max-width: 320px; bottom: 130%; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: opacity 0.3s, visibility 0.3s; text-align: left; font-weight: normal; font-style: normal; line-height: 1.4; text-transform: none; }
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 5px; border-style: solid; border-color: #34495e transparent transparent transparent; }
+        .info-icon:hover .tooltip { visibility: visible; opacity: 1; }
+        .tooltip-title { font-weight: bold; margin-bottom: 8px; font-size: 1.1em; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+        .tooltip-definition { font-style: italic; margin-bottom: 8px; opacity: 0.9; }
+        .tooltip-categories { background: rgba(255,255,255,0.15); padding: 8px; border-radius: 5px; margin: 8px 0; font-size: 0.85em; }
+        .tooltip-categories-title { font-weight: bold; color: #ffc107; margin-bottom: 5px; }
+        .tooltip-example { background: rgba(255,255,255,0.1); padding: 8px; border-radius: 5px; margin-top: 8px; font-size: 0.9em; }
+        .tooltip-example strong { color: #ffc107; }
+
+        /* Terminos Gramaticales en Texto */
+        .gram-term { position: relative; border-bottom: 1px dashed #2a5298; cursor: help; color: #2a5298; font-weight: bold; }
+        .gram-term .tooltip { background: #2c3e50; padding: 10px 15px; border-radius: 6px; font-size: 13px; bottom: 130%; }
+        .gram-term:hover .tooltip { visibility: visible; opacity: 1; }
+
+        /* Anotaciones Frontales */
+        .phrase-types { background: #e8f5e8; border-left: 5px solid #28a745; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .phrase-types h3 { color: #155724; margin-bottom: 15px; text-align: center; }
+        .phrase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .phrase-item { background: white; padding: 15px; border-radius: 8px; border-left: 4px solid; text-align: center; }
+        
+        .phrase-item.yellow { border-left-color: #ffc107; }
+        .phrase-item.green { border-left-color: #cccc03; }
+        .phrase-item.pink { border-left-color: #e91e63; }
+        .phrase-item.lilac { border-left-color: #b19cd9; }
+        .phrase-item.red { border-left-color: #dc3545; }
+        .phrase-item.purple { border-left-color: #6f42c1; }
+        .phrase-item.cyan { border-left-color: #17a2b8; }
+        .phrase-item.orange { border-left-color: #fd7e14; }
+        .phrase-item.gray { border-left-color: #6c757d; }
+        .phrase-item.green2 { border-left-color: #5db939; }
+        .phrase-item.blue2 { border-left-color: #a1afff; }
+        .phrase-item.blue { border-left-color: #007bff; }
+        
+        .phrase-annotation { display: inline-block; padding: 5px 10px; border-radius: 20px; font-weight: bold; color: white; margin-bottom: 8px; }
+        .ann-yellow { background-color: #ffc107; }
+        .ann-green { background-color: #cccc03; }
+        .ann-green2 { background-color: #5db939; }
+        .ann-pink { background-color: #e91e63; }
+        .ann-lilac { background-color: #b19cd9; }
+        .ann-red { background-color: #dc3545; }
+        .ann-purple { background-color: #6f42c1; }
+        .ann-cyan { background-color: #17a2b8; }
+        .ann-orange { background-color: #fd7e14; }
+        .ann-gray { background-color: #6c757d; }
+        .ann-blue { background-color: #007bff; }
+        .ann-blue2 { background-color: #a1afff; }
+
+        /* ========================================== */
+        /* ESTILOS DE LA TABLA 27 RELACIONES          */
+        /* ========================================== */
+        .relaciones-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; background: white; }
+        .relaciones-table th { background: #ecf0f1; color: #2c3e50; font-weight: bold; padding: 12px; text-align: left; border: 1px solid #bdc3c7; font-size: 1em; }
+        .relaciones-table td { padding: 10px 12px; border: 1px solid #bdc3c7; vertical-align: top; line-height: 1.4; color: #333; }
+        
+        .category-header { font-weight: bold; font-size: 1.2em; text-align: center; padding: 15px !important; border: 2px solid #34495e !important; }
+        .distinct-statement { background: #e8d5d5 !important; color: #2c3e50 !important; }
+        .restatement { background: #d5e3f0 !important; color: #2c3e50 !important; }
+        .contrary-statement { background: #f0e6d2 !important; color: #2c3e50 !important; }
+        
+        .number-col { width: 60px; text-align: center; font-weight: bold; background: #f8f9fa; color: #2c3e50; }
+        .name-col { width: 200px; font-weight: bold; color: #2c3e50; }
+        .english-name { color: #7f8c8d; font-style: italic; font-weight: normal; display: block; font-size: 0.9em; }
+        .definition-col { min-width: 300px; }
+        .phrases-col { width: 100px; text-align: center; font-family: 'Courier New', monospace; font-weight: bold; color: #27ae60; }
+        
+        .relaciones-table tr:nth-child(even) { background: #f8f9fa; }
+        .relaciones-table tr:hover { background: #e3f2fd; transition: background-color 0.3s ease; }
+        
+        .phrase-code { display: inline-block; background: #ecf0f1; padding: 2px 6px; margin: 1px; border-radius: 3px; font-size: 0.9em; border: 1px solid #bdc3c7; color: #2c3e50; }
+        .subcategory-note { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; font-style: italic; color: #856404; }
+        
+        .main-relation td { background: #ffffff; }
+        .sub-relation td { background: #f8f9fa; }
+
+        @media (max-width: 768px) {
+            .nav-buttons, .shortcuts-bar { 
+                flex-direction: row; flex-wrap: nowrap; overflow-x: auto; 
+                justify-content: flex-start; padding-bottom: 8px; 
+                -webkit-overflow-scrolling: touch;
+            }
+            .shortcut-text { display: none; }
+            .color-tab-button { font-size: 0.9em; padding: 15px 20px; }
+            .progression-steps { flex-direction: column; }
+            .arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📖 Guía de Exégesis Bíblica</h1>
+            <p>Mesa de Trabajo: Flujo de 5 Pasos para el Método Inductivo</p>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- ENVOLTORIO PEGAJOSO (ACCESOS DIRECTOS + NAVEGACIÓN) -->
+        <!-- ============================================== -->
+        <div class="sticky-nav-wrapper">
+            <!-- ACCESOS DIRECTOS -->
+            <div class="shortcuts-bar">
+                <span class="shortcut-text">⚡ Accesos Directos:</span>
+                <button onclick="goToShortcut('paso3', 'paso3-colores')" class="shortcut-btn">🎨 Guía de Colores</button>
+                <button onclick="goToShortcut('paso4', 'paso4-frases')" class="shortcut-btn">🔤 Tipos de Frases</button>
+                <button onclick="goToShortcut('paso5', 'paso5-27rels')" class="shortcut-btn">📊 Tabla 27 Relaciones</button>
+            </div>
+
+            <!-- NAVEGACIÓN EN 5 PASOS PROGRESIVOS -->
+            <nav class="nav-buttons">
+                <a href="#paso1" class="nav-btn active">🎯 Paso 1: Introducción</a>
+                <a href="#paso2" class="nav-btn">🔍 Paso 2: Observación General</a>
+                <a href="#paso3" class="nav-btn">🎨 Paso 3: Gramática y Colores</a>
+                <a href="#paso4" class="nav-btn">✂️ Paso 4: Disección y Frases</a>
+                <a href="#paso5" class="nav-btn">🔗 Paso 5: Arqueo Bíblico</a>
+            </nav>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- PASO 1: INTRODUCCIÓN                           -->
+        <!-- ============================================== -->
+        <section id="paso1" class="section">
+            <h2>🎯 Paso 1: Entiende el Estudio Bíblico Inductivo</h2>
+            
+            <p class="intro-text">
+                La exégesis bíblica es el arte y la ciencia de extraer el significado original que el autor bíblico quiso comunicar. John Piper desarrolló un método sistemático que nos ayuda a descubrir no solo QUÉ dice el texto, sino CÓMO está estructurado su argumento y POR QUÉ cada parte se relaciona con las demás.
+            </p>
+
+            <div class="highlight-box">
+                <h4>🎯 Meta Principal del Método:</h4>
+                <p>Descubrir la <strong>"corriente de pensamiento"</strong> del autor bíblico, siguiendo su línea de argumento paso a paso para captar el significado completo que Dios inspiró.</p>
+            </div>
+
+            <div class="types-grid">
+                <div class="type-card">
+                    <h4>1. 📝 Observación</h4>
+                    <p>¿Qué dice exactamente el texto? Identificar cada palabra, frase y <span class="gram-term">proposición<span class="tooltip">Afirmación completa que tiene sujeto y predicado.</span></span> sin interpretar todavía.</p>
+                </div>
+                <div class="type-card">
+                    <h4>2. 🔍 Interpretación</h4>
+                    <p>¿Qué significa lo que dice? Aplicar gramática, contexto histórico y relaciones lógicas.</p>
+                </div>
+                <div class="type-card">
+                    <h4>3. 🎯 Aplicación</h4>
+                    <p>¿Qué significa para nosotros hoy? Aplicar las verdades descubiertas a nuestra vida.</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>💡 Cita Clave de Piper:</h4>
+                <p><em>"El punto de ver las proposiciones relacionadas no es simplemente aclarar el significado de cada proposición, sino que también nos ayuda a <strong>atrapar la corriente del autor</strong>."</em></p>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- PASO 2: LA OBSERVACIÓN GENERAL                 -->
+        <!-- ============================================== -->
+        <section id="paso2" class="section">
+            <h2>🔍 Paso 2: La Observación Inicial del Texto</h2>
+            
+            <div class="sub-tabs-container">
+                <button class="sub-tab-btn paso2-btn active" onclick="openSubTab(event, 'paso2-basica', 'paso2')">🔍 1. Observación Básica</button>
+                <button class="sub-tab-btn paso2-btn" onclick="openSubTab(event, 'paso2-markup', 'paso2')">💻 2. Pasos 3, 4 y 5 con Lentes (Markup)</button>
+            </div>
+
+            <div id="paso2-basica" class="sub-tab-content paso2-content active">
+                <p class="intro-text">
+                    La Observación nos enseña a ver exactamente lo que dice el pasaje sin añadir nuestras propias ideas. De ella parten la interpretación precisa y la aplicación correcta. Antes de marcar la gramática, debemos seguir estos sub-pasos metodológicos:
+                </p>
+
+                <div class="highlight-box">
+                    <h4>1. Comience con Oración</h4>
+                    <p>La oración es a menudo el elemento que falta; es el Espíritu Santo quien nos guía a toda la verdad y nos revela la Palabra. Siempre que abra su Biblia, pídale a Dios que le enseñe.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>2. Lectura Repetitiva</h4>
+                    <p>El primer paso práctico consiste en leer el pasaje entero varias veces. Esta lectura repetida permitirá una saturación del contenido y la observación progresiva de datos y conceptos que no se captan durante las primeras lecturas.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>3. Hacer las Seis Preguntas Clave (Se realiza con la herramienta Markup)</h4>
+                    <p>Al estudiar cualquier pasaje, cultive el hábito de preguntar constantemente al texto: ¿Quién?, ¿Qué?, ¿Cuándo?, ¿Dónde?, ¿Por qué? y ¿Cómo? Estas preguntas son los elementos básicos de la observación precisa y son esenciales para evitar errores interpretativos. <strong>Nota: En BibleArc, este paso se realiza de manera 100% textual y visual utilizando la herramienta de Lentes (Curso Markup), como se explica detalladamente en la siguiente pestaña.</strong></p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>4. Identificar el Contexto (Se realiza con la herramienta Markup)</h4>
+                    <p>Observe cuidadosamente la relación del pasaje con los versículos que lo preceden y lo siguen. Lea la introducción del libro para entender al autor, la fecha, los destinatarios, el propósito y el tema general de la obra. <strong>Nota: En BibleArc, el reconocimiento de estas structures contextuales se aplica directamente utilizando el lente "Contexto" dentro de la herramienta Markup para no divagar.</strong></p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>5. Asignar Títulos Tentativos (Se realiza con la herramienta Markup)</h4>
+                    <p>Para esto se necesita pensar y leer el capítulo varias veces, metiéndose de lleno en el libro para poder extraer su mensaje central. El título que asigne debe ser corto, utilizar palabras textuales del capítulo, dar un sentido claro del texto y respetar escrupulosamente la idea del autor. <strong>Nota: Sintetizamos esto visualmente mediante la asignación estricta del Tópico Principal usando los Lentes de Markup adjuntos.</strong></p>
+                </div>
+            </div>
+
+            <div id="paso2-markup" class="sub-tab-content paso2-content">
+                <iframe id="markup-iframe" style="width: 100%; height: 2100px; border: none; border-radius: 12px; background: transparent; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></iframe>
+                
+                <!-- Tu código original insertado de forma 100% pura y sin alterar, más complementos -->
+                <script type="text/html" id="markup-raw-content">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Marcaje Exegético (Biblearc) - Sin Imágenes Externas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+        }
+        .instruction {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            color: #7f8c8d;
+        }
+        .step {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step-content {
+            flex: 1;
+            min-width: 350px;
+            padding-right: 30px;
+            margin-bottom: 20px;
+        }
+        .step-visual {
+            flex: 0 0 350px;
+            text-align: center;
+            width: 100%;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 0;
+        }
+        .objective {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-top: 15px;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+
+        /* --- Estilos para simular la Interfaz de Biblearc --- */
+        .biblearc-panel {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            text-align: left;
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .panel-header {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .system-lane-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .system-lane-item:last-child {
+            border-bottom: none;
+        }
+        .system-lane-meta {
+            color: #e67e22;
+            font-size: 0.9em;
+            margin-left: 10px;
+            background: #fdf2e9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .action-icons {
+            font-family: 'Courier New', Courier, monospace;
+            color: #7f8c8d;
+            margin-left: 15px;
+        }
+        .btn-panel {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-add {
+            color: #c4a170;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn-done {
+            background-color: #c4a170;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .note-area {
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+        .note-text {
+            font-weight: bold;
+            color: #333;
+        }
+        .color-list-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+        }
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: inline-block;
+        }
+        .item-text {
+            flex: 1;
+        }
+        .item-separator {
+            color: #ddd;
+            margin: 0 10px;
+        }
+        .topico-principal-oval {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 2px solid #333;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        .contexto-icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: #7f8c8d;
+        }
+
+        /* --- Flujo del proceso --- */
+        .process-arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #c4a170;
+            margin: -20px 0 30px 0;
+        }
+
+        /* --- Tooltips Interactivos (Ajustados para no cortarse) --- */
+        .info-icon { display: inline-block; width: 18px; height: 18px; background: #3498db; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 0.8em; font-weight: bold; cursor: help; margin-left: 8px; position: relative; vertical-align: middle; }
+        .info-icon:hover { background: #2980b9; transform: scale(1.1); }
+        .tooltip { visibility: hidden; opacity: 0; position: absolute; z-index: 1000; background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 15px; border-radius: 8px; width: max-content; max-width: 250px; bottom: 130%; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: opacity 0.3s, visibility 0.3s; text-align: left; font-weight: normal; font-style: normal; line-height: 1.4; white-space: normal;}
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 5px; border-style: solid; border-color: #34495e transparent transparent transparent; }
+        .info-icon:hover .tooltip { visibility: visible; opacity: 1; }
+        .tooltip-title { font-weight: bold; margin-bottom: 5px; font-size: 1.05em; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; color: #f1c40f; display: block; }
+
+        /* --- Estilos añadidos para las listas <ul> de complemento --- */
+        .step-content ul {
+            background-color: #fcfcfc;
+            border: 1px solid #eee;
+            padding: 15px 15px 15px 35px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        .step-content ul li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+        .step-content ul li strong {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .step-content {
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>GUÍA VISUAL: MARCAJE EXEGÉTICO CON LENTES BIBLEARC</h1>
+    
+    <p class="instruction">
+        Esta guía simula la interfaz de usuario de Biblearc para estructurar visualmente el proceso de marcaje exegético de un texto, sin requerir imágenes externas. Utiliza HTML estilizado para replicar las herramientas y sus flujos de datos.
+    </p>
+
+    <!-- INICIO COMPLEMENTO: CURSO READ WELL -->
+    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <h2 style="color: #2c3e50; border-bottom: 2px solid #e67e22; padding-bottom: 10px; margin-top: 0;">Fase Preparatoria: Estrategias para Leer Bien (Read Well)</h2>
+        <p style="font-size: 1.05em; color: #555;">Antes de usar el módulo de Marcaje (Markup), debemos cultivar el hábito de la lectura profunda y atenta. Como establece el curso: <strong>"Lo que está en juego es toda la vida" (What's at Stake: All of Life).</strong> Toma y lee la Palabra aplicando estas cinco estrategias fundamentales:</p>
+        
+        <div class="objective" style="border-left-color: #e67e22; background-color: #fdf2e9; margin-top: 20px;">
+            <strong style="color: #d35400; font-size: 1.1em;">Las 5 Estrategias para una Mejor Lectura:</strong>
+            <ol style="margin-top: 10px; margin-bottom: 0; padding-left: 20px; line-height: 1.7;">
+                <li><strong>Leer en Oración:</strong> Depender del Espíritu Santo para la iluminación, no solo del intelecto humano.</li>
+                <li><strong>Leer Repetidamente:</strong> La familiaridad con el texto revela detalles precisos que una primera pasada superficial siempre omite.</li>
+                <li><strong>Leer Detenidamente:</strong> Hacer las seis grandes preguntas directamente al texto (¿Quién?, ¿Qué?, ¿Cuándo?, ¿Dónde?, ¿Por qué?, ¿Cómo?).</li>
+                <li><strong>Leer Contextualmente:</strong> Recordar siempre que el significado de un versículo está gobernado y delimitado por los versículos y párrafos que lo rodean.</li>
+                <li><strong>Leer Neutral y Textualmente:</strong> Permitir que el texto hable por sí mismo exactamente como está escrito, sin imponerle presuposiciones doctrinales o alegorías externas (evitar la eiségesis).</li>
+            </ol>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center; border-bottom: 1px dashed #ddd; padding-bottom: 20px;">
+            <h3 style="color: #3498db; font-size: 1.5em; margin-bottom: 5px;">El Módulo Markup (Marcaje)</h3>
+            <p style="color: #7f8c8d; margin-top: 0;">Aplicando "Leer Bien" directamente en la herramienta visual de Lentes</p>
+        </div>
+    </div>
+    <!-- FIN COMPLEMENTO -->
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 1: Gestionar Kits de Lentes</h2>
+            <p>El punto de partida es configurar qué "Lentes" (categorías de marcado) estarán activas para el módulo de estudio actual.</p>
+            <ul>
+                <li><strong>Lentes:</strong> Ninguno (Configuración Inicial)</li>
+                <li><strong>Aplicación:</strong> Seleccionar y activar los lentes necesarios para el estudio: Tópicos, Mis Dudas, Comandos, Contexto, Transiciones, Teología.</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Preparar el entorno de marcaje neutral. Esta gestión de lentes es la estructura sobre la cual se construirán los pasos de observación, sin depender de un sistema de marcado rígido predefinido.
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header">Administrar Lentes para este Módulo</div>
+                <div class="system-lane-item"><div>≡ Topicos<span class="system-lane-meta">System Lens*</span></div><div class="action-icons">✎ X</div></div>
+                <div class="system-lane-item"><div>≡ Mis Dudas<span class="system-lane-meta">System Lens*</span></div><div class="action-icons">✎ X</div></div>
+                <div class="system-lane-item"><div>≡ Topicos<span class="system-lane-meta">System Lens*</span></div><div class="action-icons">✎ X</div></div>
+                <div class="system-lane-item"><div>≡ Comandos<span class="system-lane-meta">System Lens*</span></div><div class="action-icons">✎ X</div></div>
+                <div class="system-lane-item"><div>≡ Contexto<span class="system-lane-meta">System Lens*</span></div><div class="action-icons">✎ X</div></div>
+                <div class="system-lane-item"><div>≡ Transiciones<span class="system-lane-meta">System Lens*</span></div><div class="action-icons">✎ X</div></div>
+                <div class="system-lane-item"><div>≡ Teologia<span class="system-lane-meta">System Lens*</span></div><div class="action-icons">✎ X</div></div>
+                <div class="btn-panel">
+                    <a href="#" class="btn-add">ADD LENSES</a>
+                    <button class="btn-done">DONE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="process-arrow">⇓</div>
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 2: Identificar Temas Iniciales</h2>
+            <p>Utiliza el lente de Tópicos (con un punto de navegación activo) para realizar una observación rápida de los temas y actores principales en el pasaje.</p>
+            <ul>
+                <li><strong>Lentes:</strong> Tópicos</li>
+                <li><strong>Aplicación:</strong> Identificar y clasificar sujetos explícitamente mencionados en el texto (ej: Sobre Dios, Sobre Cristo, Salvación).</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Ser "textual". Esto te ayuda a ir lento, notar las repeticiones y fundamentar el estudio en lo que la Biblia declara explícitamente sobre los sujetos mencionados, antes de interpretarlo.
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header"><span>←</span><span>Tópicos</span><span>→</span></div>
+                <div class="note-area"><div><span style="background-color: #ddd; padding: 2px 5px;">Me llamó la Atención</span></div><span class="note-text" style="text-decoration: underline;">Detalles relacionados</span></div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #27ae60;"></span><span class="item-text">Sobre Dios</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text">Sobre Cristo</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #e74c3c;"></span><span class="item-text">Sobre El Espíritu Santo</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #e67e22;"></span><span class="item-text">Sobre el Hombre</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #9b59b6;"></span><span class="item-text">Salvación</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #ff9ff3;"></span><span class="item-text">Fé</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #48dbfb;"></span><span class="item-text">Otro</span><span class="item-separator">=</span></div>
+                <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">● ○ ○ ○ ○ ○ ⚙</div>
+            </div>
+        </div>
+    </div>
+    <div class="process-arrow">⇓</div>
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 3: Registrar Dudas</h2>
+            <p>A medida que lees, no intentes responder preguntas teológicas de inmediato. Registra tus dudas utilizando el lente de "Mis Dudas".</p>
+            <ul>
+                <li><strong>Lentes:</strong> Mis Dudas</li>
+                <li><strong>Aplicación:</strong> Documentar las preguntas generadas por el texto (¿Por qué?, ¿Cómo?, ¿Dónde?) para ser respondidas en el análisis.</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Evitar presuponer posiciones teológicas basándose en lo que dice un tercero. El texto bíblico o el contexto deben responder estas preguntas durante el análisis posterior.
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header"><span>←</span><span>Mis Dudas</span><span>→</span></div>
+                <div class="note-area"><div><span style="text-decoration: underline wavy;">Tengo una Pregunta</span></div><span class="note-text" style="background-color: #ddd; padding: 2px 5px;">Detalles Relacionados</span></div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text">Porque</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #27ae60;"></span><span class="item-text">Como</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #e74c3c;"></span><span class="item-text">Donde</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #e67e22;"></span><span class="item-text">Para que</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #9b59b6;"></span><span class="item-text">Que Resultados</span><span class="item-separator">=</span></div>
+                <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ● ○ ○ ○ ○ ⚙</div>
+            </div>
+        </div>
+    </div>
+    <div class="process-arrow">⇓</div>
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 4: Definir Tópico Principal</h2>
+            <p>Utiliza otra instancia del lente de "Tópicos" (con el tercer punto activo) para sintetizar las observaciones iniciales y declarar cuál es el tema central del pasaje.</p>
+            <ul>
+                <li><strong>Lentes:</strong> Tópicos (Tópico Principal)</li>
+                <li><strong>Aplicación:</strong> Sintetizar las observaciones en una idea central clara y textual.</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Clarificar el enfoque del texto sobre el cual se construirá el resto del análisis detallado. Extraer la instrucción de forma literal, entendiendo los requisitos exactos demandados por el autor sin añadir cargas o atenuantes externos.
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header"><span>←</span><span>Tópicos</span><span>→</span></div>
+                <div class="note-area"><div><span style="background-color: #ddd; padding: 2px 5px;">Topico</span></div><span class="note-text" style="text-decoration: underline;">Detalles Relacionados</span><br><span class="topico-principal-oval" style="padding: 2px 10px; margin: 5px 0; display: inline-block;">Topico Principal</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Tópico Principal</span>Es el tema central y unificador del pasaje. Todas las demás observaciones deben subordinarse o relacionarse de alguna forma con este punto focal.</span></span></div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text" style="color: #999;">Enter a label here</span><span class="item-separator">=</span></div>
+                <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ○ ● ○ ○ ○ ⚙</div>
+            </div>
+        </div>
+    </div>
+    <div class="process-arrow">⇓</div>
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 5: Analizar Mandatos (Mandatos y Exhortaciones)</h2>
+            <p>Identifica y desglosa los verbos imperativos utilizando el lente de "Comandos", vinculando el mandato a sus motivos y medios de ejecución.</p>
+            <ul>
+                <li><strong>Lentes:</strong> Comandos</li>
+                <li><strong>Aplicación:</strong> Reconocer la instrucción exacta separando: Anclajes (el mandato), Objetivos (para qué), Medios (a través de qué) y Maneras (cómo hacerlo).</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Extraer la instrucción de forma literal y textual, entendiendo los requisitos exactos que demanda el texto bíblico, separando el mandato de la explicación sin añadir cargas o atenuantes externos.
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header"><span>←</span><span>Comandos</span><span>→</span></div>
+                <div class="note-area">
+                    <div style="background-color: #ddd; padding: 2px 5px; display: inline-block; margin-bottom: 8px;">Comandos</div><br>
+                    <div style="margin-bottom: 4px;"><span style="text-decoration: underline; color: #2980b9;">Anclajes</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Anclajes</span>El verbo imperativo principal o mandato central del cual dependen todas las demás instrucciones. (Ej: "Haced discípulos").</span></span></div>
+                    <div style="margin-bottom: 4px;"><span style="text-decoration: dashed underline; color: #2c3e50;">Objetivos</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Objetivos</span>El propósito o resultado exacto que se busca alcanzar con el mandato. Responde a la pregunta textual "¿Para qué?". (Ej: "para que seáis salvos").</span></span></div>
+                    <div style="margin-bottom: 4px;"><span style="text-decoration: dotted underline; color: #2980b9;">Medios</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Medios</span>El instrumento, recurso o método textual por el cual se debe cumplir el mandato. Responde al "¿Por medio de qué?". (Ej: "por la palabra").</span></span></div>
+                    <div><span style="text-decoration: underline wavy; color: #2980b9;">Maneras</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Maneras</span>La actitud o forma descrita en la que se debe llevar a cabo el mandato. Responde al "¿Cómo?". (Suele presentarse como participios: "con gozo", "orando").</span></span></div>
+                </div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text" style="color: #999;">Enter a label here</span><span class="item-separator">=</span></div>
+                <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ○ ○ ● ○ ○ ⚙</div>
+            </div>
+        </div>
+    </div>
+    <div class="process-arrow">⇓</div>
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 6: Visualizar Conexiones Contextuales</h2>
+            <p>Traza la estructura lógica y narrativa del texto utilizando el lente de "Contexto" (Analizar Conexiones Lógicas).</p>
+            <ul>
+                <li><strong>Lentes:</strong> Contexto</li>
+                <li><strong>Aplicación:</strong> Demostrar si la proposición se conecta con la anterior, con la posterior o si actúa de puente bilateral.</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Mantener la exactitud y rigor, asegurando que el significado de un versículo esté atado a su entorno inmediato, evitando sacarlo de contexto.
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header"><span>←</span><span>Contexto</span><span>→</span></div>
+                <div class="note-area">
+                    <div style="background: #ccc; clip-path: polygon(10% 0, 100% 0%, 100% 100%, 10% 100%, 0% 50%); padding: 2px 10px 2px 20px; margin-bottom: 5px; display: inline-block;">Conecta con lo que viene antes</div> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Contexto Anterior</span>Vínculo explícito con los versículos previos. Muestra que la proposición actual depende de lo ya dicho. (Ej: "Por tanto", "Así que").</span></span><br>
+                    <div style="background: #ccc; clip-path: polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%); padding: 2px 20px 2px 10px; margin-bottom: 5px; display: inline-block;">Conecta con lo que sigue</div> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Contexto Posterior</span>La proposición actual prepara el terreno para la siguiente declaración en el argumento. (Ej: "Sabiendo esto...").</span></span><br>
+                    <div style="background: #ccc; clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%); padding: 2px 20px; margin-bottom: 5px; display: inline-block;">Conecta con ambos</div> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Contexto Bilateral</span>Una proposición que sirve como un puente conector que amarra el argumento anterior con el posterior simultáneamente.</span></span>
+                </div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text" style="color: #999;">Enter a label here</span><span class="item-separator">=</span></div>
+                <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ○ ○ ○ ● ○ ⚙</div>
+            </div>
+        </div>
+    </div>
+    <div class="process-arrow">⇓</div>
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 7: Marcar Transiciones</h2>
+            <p>Utiliza el lente de "Transiciones" para marcar cambios de escena o de discurso dentro del análisis de conexiones lógicas.</p>
+            <ul>
+                <li><strong>Lentes:</strong> Transiciones</li>
+                <li><strong>Aplicación:</strong> Etiquetar de forma visual las señales narrativas o gramaticales que separan las perícopas o secciones de pensamiento.</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Identificar los bloques lógicos que definen la estructura. Esto es crucial en narrativas para notar los cambios de argumento.
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header"><span>←</span><span>Transiciones</span><span>→</span></div>
+                <div class="note-area">
+                    <div style="background: #ccc; clip-path: polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%); padding: 2px 20px 2px 10px; display: inline-block; vertical-align: middle;">Marca de Transición</div> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Transiciones</span>Señales gramaticales o narrativas explícitas que indican un cambio de rumbo en el argumento (cambio de tiempo, lugar, sujeto hablante o enfoque teológico).</span></span>
+                </div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #e74c3c;"></span><span class="item-text">Cambio de: Tiempo</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #9b59b6;"></span><span class="item-text">Cambio de: Lugar</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #27ae60;"></span><span class="item-text">Cambio de: Hablante</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text">Cambio de: Sujeto</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #e67e22;"></span><span class="item-text">Cambio retorico</span><span class="item-separator">=</span></div>
+                <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ○ ○ ○ ○ ● ⚙</div>
+            </div>
+        </div>
+    </div>
+    <div class="process-arrow">⇓</div>
+
+    <div class="step">
+        <div class="step-content">
+            <h2>Paso 8: Síntesis y Clasificación Doctrinal</h2>
+            <p>Solo después de haber observado, preguntado y analizado la estructura (Pasos 1-7), se deben extraer conclusiones temáticas y teológicas.</p>
+            <ul>
+                <li><strong>Lentes:</strong> Tópicos (Tópico Principal) y Teología</li>
+                <li><strong>Aplicación:</strong> Identifica el tema central del pasaje y etiqueta las declaraciones que <em>Informan de Nuestra Doctrina</em> basándote estrictamente en los datos recolectados en los pasos anteriores.</li>
+            </ul>
+            <div class="objective">
+                <strong>Objetivo Exegético:</strong> Construir una teología que emerge limpiamente del texto (exégesis neutral), evitando el sesgo de leer el texto buscando confirmar una postura preestablecida (eiségesis).
+            </div>
+        </div>
+        <div class="step-visual">
+            <div class="biblearc-panel">
+                <div class="panel-header"><span>←</span><span>Teologia</span><span>→</span></div>
+                <div class="note-area">
+                    <div style="background-color: #ddd; padding: 2px 5px; display: inline-block;">Informa de Nuestra Doctrina</div>
+                </div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text" style="color: #999;">E.g. Justificacion</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="item-text" style="color: #2980b9;">Add a color</span></div>
+                <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ○ ○ ○ ○ ● ⚙</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Script inyectado para corrección de bordes dentro del iframe -->
+<script>
+    document.addEventListener('mouseover', function(e) {
+        const target = e.target.closest('.info-icon');
+        if (target) {
+            const tooltip = target.querySelector('.tooltip');
+            if (tooltip) {
+                tooltip.style.left = '50%';
+                tooltip.style.transform = 'translateX(-50%)';
+                const rect = tooltip.getBoundingClientRect();
+                if (rect.left < 10) {
+                    tooltip.style.left = '0';
+                    tooltip.style.transform = 'translateX(0)';
+                } else if (rect.right > window.innerWidth - 10) {
+                    tooltip.style.left = 'auto';
+                    tooltip.style.right = '0';
+                    tooltip.style.transform = 'translateX(0)';
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+                </script>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- PASO 3: CLASIFICACIÓN GRAMATICAL Y SINTAXIS    -->
+        <!-- ============================================== -->
+        <section id="paso3" class="section">
+            <h2>🎨 Paso 3: Gramática y Colores</h2>
+            
+            <p class="intro-text">Para evitar la "lectura alegórica", identificaremos la morfología exacta de cada palabra antes de asignarle un color. Usa las pestañas para navegar entre la teoría gramatical y la paleta de colores.</p>
+            
+            <!-- NAVEGACIÓN SUB-PESTAÑAS PASO 3 -->
+            <div class="sub-tabs-container">
+                <button class="sub-tab-btn paso3-btn active" onclick="openSubTab(event, 'paso3-teoria', 'paso3')">📚 1. Teoría Gramatical (Conceptos Básicos)</button>
+                <button class="sub-tab-btn paso3-btn" onclick="openSubTab(event, 'paso3-sintaxis', 'paso3')">🧩 2. Sintaxis y Patrones</button>
+                <button class="sub-tab-btn paso3-btn" onclick="openSubTab(event, 'paso3-colores', 'paso3')">🎨 3. Guía de Colores (Sistema BibleArc)</button>
+            </div>
+
+            <!-- CONTENIDO 1: TEORÍA GRAMATICAL -->
+            <div id="paso3-teoria" class="sub-tab-content paso3-content active">
+                
+                <h3>📖 3.1 Fundamentos de la Oración</h3>
+                <div class="example-box">
+                    <p><strong>Proposición:</strong> Una afirmación completa que tiene sujeto y predicado. (Ejemplo: <code>"Jesús lloró"</code>).</p>
+                    <p><strong>Frase:</strong> Grupo de palabras sin sujeto ni predicado completos. (Ejemplo: <code>"por la fe"</code>).</p>
+                </div>
+
+                <!-- LAS 8 CATEGORÍAS GRAMATICALES CLAVE -->
+                <h3>📝 3.2 Las Categorías Gramaticales Clave</h3>
+                <p class="intro-text">Para asegurar una base firme y no dejar lugar a dudas, es vital comprender la función de estas categorías fundamentales en el texto bíblico antes de aplicar colores.</p>
+                
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h4>1. El <span class="gram-term">Modo Indicativo<span class="tooltip">Modo verbal de la realidad y los hechos concretos.</span></span> (Verbos)</h4>
+                        <p><strong>¿Qué es?</strong> Es el modo de la realidad y los hechos concretos. A diferencia del <span class="gram-term">imperativo<span class="tooltip">Modo verbal que expresa mandatos, órdenes o peticiones.</span></span> (mandato) o <span class="gram-term">subjuntivo<span class="tooltip">Modo verbal que expresa acciones posibles, deseadas o hipotéticas.</span></span> (posibilidad), el indicativo declara lo que ES.</p>
+                        <p><strong>Importancia Exegética:</strong> Es la base de las doctrinas. Establece las verdades fundamentales (Ej: "Dios <em>amó</em> al mundo", "Cristo <em>murió</em> por nuestros pecados").</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>2. Los <span class="gram-term">Sustantivos<span class="tooltip">Palabra que nombra personas, lugares, objetos o conceptos.</span></span></h4>
+                        <p><strong>¿Qué son?</strong> Palabras que nombran personas, lugares, objetos o conceptos.</p>
+                        <p><strong>Importancia Exegética:</strong> Debemos distinguir entre sustantivos <strong>concretos</strong> (templo, pan, Pedro) y <strong>abstractos</strong> (fe, gracia, justificación). Los abstractos suelen contener el peso doctrinal más profundo del pasaje.</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>3. Los <span class="gram-term">Pronombres<span class="tooltip">Palabra que sustituye al sustantivo para evitar su repetición.</span></span></h4>
+                        <p><strong>¿Qué son?</strong> Palabras que sustituyen al sustantivo para evitar repetición (él, nosotros, ese, quien).</p>
+                        <p><strong>Importancia Exegética:</strong> Son los "hilos" del argumento. Rastrear un pronombre (como el relativo "el cual" o "quien") es vital para saber exactamente de quién está hablando el autor en oraciones largas.</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>4. Los <span class="gram-term">Adjetivos<span class="tooltip">Palabra que califica, describe o limita a un sustantivo.</span></span></h4>
+                        <p><strong>¿Qué son?</strong> Palabras que califican, describen o limitan a un sustantivo.</p>
+                        <p><strong>Importancia Exegética:</strong> Añaden precisión teológica. Diferencia entre uso <strong>atributivo</strong> ("El <em>buen</em> pastor da su vida") y <strong>predicativo</strong> ("Dios es <em>bueno</em>").</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>5. Los <span class="gram-term">Adverbios<span class="tooltip">Palabra que modifica a un verbo, adjetivo u otro adverbio (tiempo, modo, cantidad).</span></span></h4>
+                        <p><strong>¿Qué son?</strong> Modifican verbos, adjetivos u otros adverbios (indican tiempo, lugar, modo, cantidad).</p>
+                        <p><strong>Importancia Exegética:</strong> Definen <em>cómo</em> o <em>cuándo</em> ocurre la acción. Específicamente vitales son las <strong>negaciones</strong> (no, nunca), que pueden alterar completamente el significado de una proposición.</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>6. Artículos y Determinantes</h4>
+                        <p><strong>¿Qué son?</strong> Palabras que acompañan al sustantivo para especificarlo (el, la, un, este, todo).</p>
+                        <p><strong>Importancia Exegética:</strong> En griego koiné, el artículo definido (el/la) marca una identidad específica. La <em>ausencia</em> de artículo a menudo enfatiza la cualidad o naturaleza (Ej: "y el Verbo era <em>Dios</em>" - divino por naturaleza).</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>7. Las <span class="gram-term">Conjunciones<span class="tooltip">Palabra que une ideas o proposiciones (el pegamento de la oración).</span></span></h4>
+                        <p><strong>¿Qué son?</strong> Palabras que unen ideas o términos. Son el "pegamento" de la oración.</p>
+                        <p><strong>Importancia Exegética:</strong> Las <strong>Coordinantes (Cc)</strong> unen elementos iguales (y, o, pero); las <strong>Subordinantes (Cs)</strong> crean dependencia lógica (porque, para que).</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>8. Vocativos e Interjecciones</h4>
+                        <p><strong>Vocativo (Voc):</strong> Cuando el autor se dirige directamente a alguien, llamándolo (Ej: "<em>Hermanos</em>", "<em>Hijo mío</em>").<br><br><strong>Interjección (Int):</strong> Palabras que expresan una emoción profunda (Ej: "<em>¡Ay!</em>", "<em>¡Oh!</em>"). Reflejan claramente el tono pastoral o profético del autor.</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>9. Las <span class="gram-term">Preposiciones<span class="tooltip">Palabra invariable que une términos mostrando la relación entre ellos.</span></span></h4>
+                        <p><strong>¿Qué son?</strong> Palabras invariables que unen términos y muestran la relación entre ellos (en, con, por, para, hacia).</p>
+                        <p><strong>Importancia Exegética:</strong> Actúan como puentes lógicos. Pueden indicar dirección ("hacia Dios"), posición ("en Cristo"), instrumento ("por gracia") o propósito ("para buenas obras").</p>
+                    </div>
+                </div>
+
+                <h3>⚡ 3.3 Formas Verbales Avanzadas</h3>
+                <h4>∞ <span class="gram-term">Infinitivos<span class="tooltip">Verbo en su forma pura, sin conjugar (-ar, -er, -ir).</span></span></h4>
+                <div class="highlight-box">
+                    <p><strong>Definición Simple:</strong> Es el verbo en su forma "pura", sin conjugar. En español terminan en -ar, -er, -ir.</p>
+                    <p><strong>Ejemplos:</strong> caminar, comer, vivir, ser, estar, saber, amar</p>
+                    <p><strong>En frases bíblicas:</strong> "para amar", "sin saber", "al oír", "comenzó a predicar"</p>
+                </div>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h4>Propósito</h4>
+                        <p><strong>Uso:</strong> Indica para qué se hace algo</p>
+                        <ul><li>"Vino <code>para salvar</code> al mundo"</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>Resultado</h4>
+                        <p><strong>Uso:</strong> Muestra qué resulta de una acción</p>
+                        <ul><li>"Suficiente <code>para alimentar</code> a todos"</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>Complemento</h4>
+                        <p><strong>Uso:</strong> Completa el significado de otro verbo</p>
+                        <ul><li>"Comenzó <code>a predicar</code>"</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>Sustantivo</h4>
+                        <p><strong>Uso:</strong> Funciona como un nombre</p>
+                        <ul><li>"<code>Amar</code> es lo más importante"</li></ul>
+                    </div>
+                </div>
+
+                <h4>🎭 <span class="gram-term">Participios<span class="tooltip">Forma verbal que funciona como adjetivo (-ado, -ido, -ando, -iendo).</span></span></h4>
+                <div class="highlight-box">
+                    <p><strong>Definición Simple:</strong> Es una forma verbal que combina características de verbo y adjetivo. Describe una acción pero también una condición o estado.</p>
+                    <p><strong>En Español:</strong> Terminan en -ando, -iendo (gerundios) o -ado, -ido (participios pasados)</p>
+                </div>
+                <div class="types-grid">
+                    <div class="type-card"><h4>Temporal</h4><ul><li>"<code>Llegando</code> a casa, oró"</li></ul></div>
+                    <div class="type-card"><h4>Causal</h4><ul><li>"<code>Estando</code> enfermo, no vino"</li></ul></div>
+                    <div class="type-card"><h4>Modal (Manera)</h4><ul><li>"Habló <code>llorando</code>"</li></ul></div>
+                    <div class="type-card"><h4>Condicional</h4><ul><li>"<code>Creyendo</code>, serás salvo"</li></ul></div>
+                    <div class="type-card"><h4>Concesivo</h4><ul><li>"<code>Siendo</code> pobre, era generoso"</li></ul></div>
+                    <div class="type-card"><h4>Circunstancial</h4><ul><li>"<code>Viviendo</code> en tiendas"</li></ul></div>
+                </div>
+
+                <h4>📝 <span class="gram-term">Imperativo<span class="tooltip">Modo verbal que expresa mandatos, órdenes o peticiones.</span></span></h4>
+                <div class="highlight-box"><p><strong>Definición Simple:</strong> Expresa mandatos, órdenes, peticiones o exhortaciones. ("Ven", "Creed")</p></div>
+                <div class="types-grid">
+                    <div class="type-card"><h4>Mandato</h4><p>"Sígueme" (Mt 4:19)</p></div>
+                    <div class="type-card"><h4>Prohibición</h4><p>"No temas" (Lc 1:30)</p></div>
+                    <div class="type-card"><h4>Petición</h4><p>"Danos hoy..." (Mt 6:11)</p></div>
+                    <div class="type-card"><h4>Permiso</h4><p>"Dejad que vengan..." (Mt 19:14)</p></div>
+                </div>
+
+                <h4>🔮 <span class="gram-term">Subjuntivo<span class="tooltip">Modo verbal que expresa acciones posibles, deseadas o hipotéticas.</span></span></h4>
+                <div class="highlight-box"><p><strong>Definición Simple:</strong> Expresa acciones posibles, deseadas o hipotéticas. ("Que venga", "Si fuera")</p></div>
+                <div class="types-grid">
+                    <div class="type-card"><h4>Propósito</h4><p>"Para que sepas..." (Lc 1:4)</p></div>
+                    <div class="type-card"><h4>Resultado</h4><p>"De modo que nadie se gloríe" (1 Co 1:29)</p></div>
+                    <div class="type-card"><h4>Condición</h4><p>"Si confesares..." (Ro 10:9)</p></div>
+                    <div class="type-card"><h4>Temor</h4><p>"No sea que..." (2 Co 12:20)</p></div>
+                </div>
+
+                <h3>🏷️ 3.4 El Caso <span class="gram-term">Genitivo<span class="tooltip">Caso griego que indica posesión, origen o relación (típicamente de...).</span></span> (Casos Griegos)</h3>
+                
+                <div class="table-container">
+                    <table class="standard-table">
+                        <thead>
+                            <tr>
+                                <th>Caso Griego</th>
+                                <th>Función Principal</th>
+                                <th>Pregunta</th>
+                                <th>Ejemplo en Español</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Nominativo</strong></td><td>Sujeto (quien hace la acción)</td><td>¿Quién?</td><td><code>Pablo</code> predica</td></tr>
+                            <tr><td><strong>Acusativo</strong></td><td>Objeto directo (a quien le pasa)</td><td>¿A quién? ¿Qué?</td><td>Pablo predica <code>el evangelio</code></td></tr>
+                            <tr><td><strong>Genitivo</strong></td><td>Posesión, origen, relación</td><td>¿De quién? ¿De qué?</td><td>El evangelio <code>de Dios</code></td></tr>
+                            <tr><td><strong>Dativo</strong></td><td>Objeto indirecto, instrumento</td><td>¿A quién? ¿Con qué?</td><td>Predica <code>a los gentiles</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ El Problema del Genitivo Ambiguo: "El amor de Dios"</h4>
+                    <p>Esta frase puede interpretarse de DOS maneras completamente diferentes:</p>
+                    <ul>
+                        <li><strong>Genitivo Subjetivo:</strong> "El amor QUE Dios tiene" (Dios es quien ama)</li>
+                        <li><strong>Genitivo Objetivo:</strong> "El amor HACIA Dios" (nosotros amamos a Dios)</li>
+                    </ul>
+                </div>
+                
+                <div class="genitive-grid">
+                    <div class="genitive-card"><h5>Posesivo</h5><p>"La casa <code>de Pedro</code>" (Propiedad)</p></div>
+                    <div class="genitive-card"><h5>Atributivo</h5><p>"Palabra <code>de verdad</code>" (Cualidad)</p></div>
+                    <div class="genitive-card"><h5>Fuente/Origen</h5><p>"Jesús <code>de Nazaret</code>" (Procedencia)</p></div>
+                    <div class="genitive-card"><h5>Objetivo</h5><p>"Amor <code>de Dios</code>" (Hacia Dios)</p></div>
+                    <div class="genitive-card"><h5>Subjetivo</h5><p>"Amor <code>de Dios</code>" (Dios ama)</p></div>
+                    <div class="genitive-card"><h5>Relación</h5><p>"Evangelio <code>de la paz</code>" (Vínculo)</p></div>
+                    <div class="genitive-card"><h5>Contenido</h5><p>"Lleno <code>de gozo</code>"</p></div>
+                    <div class="genitive-card"><h5>Material</h5><p>"Vaso <code>de barro</code>"</p></div>
+                    <div class="genitive-card"><h5>Partitivo</h5><p>"Algunos <code>de los discípulos</code>"</p></div>
+                    <div class="genitive-card"><h5>Separación</h5><p>"Libre <code>del pecado</code>"</p></div>
+                    <div class="genitive-card"><h5>Subordinación</h5><p>"Siervo <code>de Cristo</code>"</p></div>
+                </div>
+            </div>
+
+            <!-- CONTENIDO 2: SINTAXIS Y PATRONES DE ORACIÓN -->
+            <div id="paso3-sintaxis" class="sub-tab-content paso3-content">
+                <h3>🧩 3.5 Sintaxis y Funciones en la Oración</h3>
+                <p class="intro-text">Para un análisis infalible, no solo debemos saber qué <em>tipo</em> de palabra es (morfología), sino qué <em>hace</em> en la oración (sintaxis). Entender la estructura ósea nos permite trazar arcos precisos.</p>
+
+                <h4>⚡ Tipos de <span class="gram-term">Verbos<span class="tooltip">Palabra que expresa acción, proceso o estado.</span></span> (El Motor de la Oración)</h4>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h4>Verbo Intransitivo (Vi)</h4>
+                        <p>La acción está completa en sí misma y no recae en ningún objeto directo.</p>
+                        <p><strong>Ejemplo:</strong> "Jesús <em>lloró</em>."</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Verbo Transitivo (Vt)</h4>
+                        <p>La acción transita o recae directamente sobre un objeto (alguien o algo recibe la acción).</p>
+                        <p><strong>Ejemplo:</strong> "Dios amó <em>al mundo</em>."</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Verbo Copulativo / De Enlace (Vl)</h4>
+                        <p>No expresa acción, sino que conecta el sujeto con un atributo, estado o cualidad.</p>
+                        <p><strong>Ejemplo:</strong> "Dios <em>es</em> amor."</p>
+                    </div>
+                </div>
+
+                <h4>🎯 Elementos del Predicado (Objetos y Complementos)</h4>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h4>Objetos Directo e Indirecto</h4>
+                        <ul>
+                            <li style="margin-bottom: 8px;"><strong>Objeto Directo (DO):</strong> Recibe la acción directa del verbo transitivo. (Ej: Hizo <em>el desayuno</em>).</li>
+                            <li style="margin-bottom: 8px;"><strong>Objeto Indirecto (IO):</strong> El beneficiario de la acción. (Ej: Dio pan <em>a los hambrientos</em>).</li>
+                            <li><strong>Objeto de la Preposición (OP):</strong> La palabra gobernada por una preposición. (Ej: En <em>Cristo</em>).</li>
+                        </ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>Complementos del Predicado (Con Vl)</h4>
+                        <ul>
+                            <li style="margin-bottom: 8px;"><strong>Sustantivo Predicativo (PN):</strong> Renombra al sujeto tras un verbo copulativo. (Ej: Jesús es el <em>Señor</em>).</li>
+                            <li><strong>Adjetivo Predicativo (PA):</strong> Describe al sujeto tras un verbo copulativo. (Ej: Dios es <em>santo</em>).</li>
+                        </ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>Complementos del Objeto (Con Vt)</h4>
+                        <ul>
+                            <li style="margin-bottom: 8px;"><strong>Complemento del Objeto Nominal (OCN):</strong> Sustantivo que renombra al Objeto Directo. (Ej: Lo hicieron <em>rey</em>).</li>
+                            <li><strong>Complemento del Objeto Adjetival (OCA):</strong> Adjetivo que describe al Objeto Directo. (Ej: Hizo su camino <em>perfecto</em>).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4>📐 Patrones de Oraciones Simples</h4>
+                <div class="table-container">
+                    <table class="standard-table">
+                        <thead>
+                            <tr>
+                                <th>Patrón (Abrev. en Inglés)</th>
+                                <th>Estructura Sintáctica</th>
+                                <th>Ejemplo Práctico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>S-Vi</strong></td><td>Sujeto + Verbo Intransitivo</td><td>El gato despertó.</td></tr>
+                            <tr><td><strong>S-Vt-DO</strong></td><td>Sujeto + Verbo Transitivo + Objeto Directo</td><td>Dios amó al mundo.</td></tr>
+                            <tr><td><strong>S-Vl-PN/PA</strong></td><td>Sujeto + Verbo Copulativo + Predicado (Nominal/Adjetival)</td><td>Dios es amor (PN). / Dios es bueno (PA).</td></tr>
+                            <tr><td><strong>S-Vt-IO-DO</strong></td><td>Sujeto + Verbo Transitivo + Objeto Indirecto + Objeto Directo</td><td>Él nos (IO) dio vida (DO).</td></tr>
+                            <tr><td><strong>S-Vt-DO-OCN/OCA</strong></td><td>Sujeto + Verbo Transitivo + Objeto Directo + Complemento del Objeto</td><td>Lo (DO) llamaron Jesús (OCN). / Lo hizo listo (OCA).</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONTENIDO 3: GUÍA DE COLORES -->
+            <div id="paso3-colores" class="sub-tab-content paso3-content">
+                <div style="text-align:center; margin-bottom: 20px;">
+                    <h2>🎨 Guía de Colores BibleArc</h2>
+                    <p>Sistema Completo de Análisis Bíblico - Tres Niveles de Profundidad</p>
+                </div>
+                
+                <div class="color-tabs-container">
+                    <button class="color-tab-button active" onclick="openColorTab(event, 'general-colors')">
+                        📖 ANÁLISIS GENERAL
+                    </button>
+                    <button class="color-tab-button" onclick="openColorTab(event, 'profundo-colors')">
+                        🔬 ANÁLISIS PROFUNDO
+                    </button>
+                </div>
+                
+                <div id="general-colors" class="color-tab-content-inner active">
+                    <div class="palette-section">
+                        <h2>🎯 PALETA 0 - ANÁLISIS GENERAL RÁPIDO</h2>
+                        <div class="palette-info">
+                            <h3>✨ NIVEL PRINCIPIANTE</h3>
+                            <span class="level-badge badge-beginner">NIVEL 0: GENERAL</span>
+                            <p style="margin-top: 10px;"><strong>16 OPCIONES</strong> - Visión panorámica del texto</p>
+                            <p><strong>TIEMPO:</strong> ~30 minutos por pasaje</p>
+                            <p><strong>IDEAL PARA:</strong> Devocionales, grupos pequeños, primera lectura</p>
+                        </div>
+                    </div>
+                    
+                    <div class="color-grid">
+                        <div class="color-section red">
+                            <div class="color-header">
+                                <div class="color-box red-box"></div>
+                                <div class="color-title">
+                                    🔴 ROJO - ACTORES <span class="count-badge">3</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">SUSTANTIVOS - Actores de las Proposiciones</div>
+                                            <div class="tooltip-definition">Identifican QUIÉN o QUÉ en cada proposición. En griego tienen 5 casos que revelan su función sintáctica y teológica.</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Sustantivos comunes y propios<br>
+                                                • Nombres de personas (antropónimos)<br>
+                                                • Sustantivos abstractos<br>
+                                                • Sustantivos concretos<br>
+                                                • Topónimos (nombres de lugares)
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> Romanos 3:23 "Todos pecaron"<br><strong>Todos</strong> (sujeto/nominativo) = actor principal</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Resaltado Sólido</span> Personas/Sujetos principales</li>
+                                <li><span class="mark-type">Círculo</span> Ideas y conceptos clave</li>
+                                <li><span class="mark-type">Barra Base</span> Lugares y objetos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="color-section green">
+                            <div class="color-header">
+                                <div class="color-box green-box"></div>
+                                <div class="color-title">
+                                    🟢 VERDE - ACCIONES <span class="count-badge">2</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">VERBOS - Núcleo de la Proposición</div>
+                                            <div class="tooltip-definition">El "aspecto verbal" (tipo de acción) es más importante que el tiempo. En griego: presente = acción continua, aoristo = acción puntual.</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Verbos finitos (conjugados)<br>
+                                                • Verbos copulativos (ser, estar)<br>
+                                                • Verbos transitivos e intransitivos<br>
+                                                • Perífrasis verbales<br>
+                                                • Participios y gerundios (formas verbales)
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> Juan 3:16 "amó... dio"<br><strong>amó</strong> (aoristo) = acción completa</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Resaltado Sólido</span> Verbos principales</li>
+                                <li><span class="mark-type">Círculo</span> Verbos secundarios/participios</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="color-section blue">
+                            <div class="color-header">
+                                <div class="color-box blue-box"></div>
+                                <div class="color-title">
+                                    🔵 AZUL - GENITIVOS <span class="count-badge">2</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">GENITIVOS - Posesión y Relación</div>
+                                            <div class="tooltip-definition">Identifican de quién es algo o de dónde proviene. Vital para relaciones de pertenencia.</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Genitivos divinos (de Dios)<br>
+                                                • Genitivos humanos (del hombre)<br>
+                                                • Genitivos abstractos/de cosas
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> "Amor de Dios"<br><strong>de Dios</strong> = genitivo divino</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Resaltado Sólido</span> Genitivos Divinos (de Dios)</li>
+                                <li><span class="mark-type">Círculo</span> Genitivos Humanos/Otros</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="color-section yellow">
+                            <div class="color-header">
+                                <div class="color-box yellow-box"></div>
+                                <div class="color-title">
+                                    🟡 AMARILLO - PREPOSICIONES <span class="count-badge">2</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">PREPOSICIONES - Relaciones Contextuales</div>
+                                            <div class="tooltip-definition">En griego cada preposición tiene múltiples significados según el caso (genitivo/dativo/acusativo). Revelan propósito, causa, tiempo o lugar.</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Preposiciones simples (en, con, por)<br>
+                                                • Locuciones preposicionales (respecto a, en cuanto a, a fin de)<br>
+                                                • Preposiciones de lugar (sobre, bajo)<br>
+                                                • Preposiciones de tiempo (durante, desde)<br>
+                                                • Preposiciones de causa (por, debido a)
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> "Salvos por gracia"<br><strong>por</strong> = instrumento/medio (διά + gen.)</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Resaltado Sólido</span> Propósito/Causa (por, para)</li>
+                                <li><span class="mark-type">Círculo</span> Tiempo/Lugar (en, desde, hasta)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="color-section purple">
+                            <div class="color-header">
+                                <div class="color-box purple-box"></div>
+                                <div class="color-title">
+                                    🟣 MORADO - PRONOMBRES <span class="count-badge">2</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">PRONOMBRES - Referencias Cruzadas</div>
+                                            <div class="tooltip-definition">Rastrean actores a través del argumento. Cruciales para seguir el "hilo de pensamiento" del autor (método Piper).</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Pronombres personales (yo, tú, él)<br>
+                                                • Pronombres demostrativos (este, ese)<br>
+                                                • Pronombres relativos (que, quien, cual)<br>
+                                                • Pronombres posesivos (mi, tu, su)<br>
+                                                • Pronombres indefinidos (alguien, nadie)
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> Romanos 8:30 "A los que..."<br><strong>los que</strong> = conexión entre proposiciones</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Resaltado Sólido</span> Pronombres personales importantes</li>
+                                <li><span class="mark-type">Círculo</span> Pronombres relativos/posesivos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="color-section orange">
+                            <div class="color-header">
+                                <div class="color-box orange-box"></div>
+                                <div class="color-title">
+                                    🟠 NARANJA - DETERMINANTES <span class="count-badge">1</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">ARTÍCULOS - Peso Teológico en Griego</div>
+                                            <div class="tooltip-definition">En griego koiné, la presencia o ausencia del artículo cambia radicalmente el significado. Indica definición, énfasis o cualidad.</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Artículos definidos (el, la, los, las)<br>
+                                                • Artículos indefinidos (un, una, unos)<br>
+                                                • Demostrativos (este, ese, aquel)<br>
+                                                • Cuantificadores (todo, cada, algún)<br>
+                                                • Posesivos prenominales (mi, tu, su)
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> Jn 1:1 "θεός" (sin art.) = naturaleza divina<br>"ὁ θεός" (con art.) = EL Dios</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Ondulado</span> Artículos importantes (el, la, un)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="color-section pink">
+                            <div class="color-header">
+                                <div class="color-box pink-box"></div>
+                                <div class="color-title">
+                                    🩷 ROSADO - ADJETIVOS <span class="count-badge">2</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">ADJETIVOS - Calificadores</div>
+                                            <div class="tooltip-definition">Califican sustantivos. Añaden precisión teológica fundamental a los actores o conceptos.</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Adjetivos calificativos (bueno, santo)<br>
+                                                • Adjetivos relacionales (divino, humano)<br>
+                                                • Frases adjetivales
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> "Buen pastor"<br><strong>Buen</strong> = adjetivo calificativo</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Resaltado Sólido</span> Atributos principales</li>
+                                <li><span class="mark-type">Círculo</span> Adjetivos descriptivos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="color-section gray">
+                            <div class="color-header">
+                                <div class="color-box gray-box"></div>
+                                <div class="color-title">
+                                    🩶 GRIS - ESPECIALES <span class="count-badge">1</span>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">
+                                            <div class="tooltip-title">NEGACIONES/AFIRMACIONES - Crucial para Exégesis</div>
+                                            <div class="tooltip-definition">En griego hay dos negaciones: οὐ (declarativa) y μή (subjetiva). Cambiar una negación altera completamente la teología del texto.</div>
+                                            <div class="tooltip-categories">
+                                                <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                • Adverbios de negación (no, nunca, jamás)<br>
+                                                • Adverbios de afirmación (sí, ciertamente, amén)<br>
+                                                • Adverbios intensificadores (muy, mucho, sumamente)<br>
+                                                • Adverbios de modo (bien, mal, así)<br>
+                                                • Adverbios de cantidad (bastante, poco)
+                                            </div>
+                                            <div class="tooltip-example"><strong>Ejemplo:</strong> Ef 2:8-9 "no por obras"<br><strong>no</strong> (οὐκ) = negación absoluta enfática</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <ul class="usage-list">
+                                <li><span class="mark-type">Resaltado Sólido</span> Negaciones/Afirmaciones enfáticas</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="workflow">
+                        <h3>⚡ FLUJO DE TRABAJO SIMPLIFICADO</h3>
+                        <div class="workflow-grid">
+                            <div class="workflow-item">
+                                <h4>📖 PASO 1: Lectura</h4>
+                                <p>Lee el pasaje completo sin marcar nada (5 min)</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>🎭 PASO 2: Actores y Acciones</h4>
+                                <p>🔴 QUIÉN + 🟢 QUÉ HACEN (10 min)</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>🔗 PASO 3: Conexiones</h4>
+                                <p>🔵 Genitivos + 🟡 Preposiciones (10 min)</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>✨ PASO 4: Complementos</h4>
+                                <p>🟣 Pronombres + 🩷 Adjetivos (5 min)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="example-section">
+                        <h3>📝 EJEMPLO PRÁCTICO - Juan 3:16</h3>
+                        <div class="biblical-text">
+                            "<span style="background: rgba(111, 66, 193, 0.3);">←Porque</span> de tal manera 
+                            <span style="background: rgba(40, 167, 69, 0.3); font-weight: bold;">amó</span> 
+                            <span style="background: rgba(220, 53, 69, 0.3); font-weight: bold;">Dios</span> 
+                            al <span style="background: rgba(220, 53, 69, 0.2);">mundo</span>, 
+                            <span style="background: rgba(111, 66, 193, 0.3);">→que</span> 
+                            <span style="background: rgba(40, 167, 69, 0.3); font-weight: bold;">dio</span> 
+                            a <span style="text-decoration: underline; text-decoration-color: #e91e63;">su</span> 
+                            <span style="background: rgba(220, 53, 69, 0.3); font-weight: bold;">Hijo</span> 
+                            unigénito, 
+                            <span style="background: rgba(255, 193, 7, 0.3);">para que</span> 
+                            <span style="background: rgba(0, 123, 255, 0.3);">todo aquel que</span> 
+                            <span style="background: rgba(40, 167, 69, 0.2);">cree</span> 
+                            <span style="background: rgba(255, 193, 7, 0.3);">en</span> él 
+                            <span style="background: rgba(108, 117, 125, 0.3); font-weight: bold;">no</span> 
+                            <span style="background: rgba(40, 167, 69, 0.3); font-weight: bold;">perezca</span>, 
+                            <span style="background: rgba(111, 66, 193, 0.3);">↔sino</span> que 
+                            <span style="background: rgba(40, 167, 69, 0.3); font-weight: bold;">tenga</span> 
+                            <span style="background: rgba(220, 53, 69, 0.2);">vida eterna</span>."
+                        </div>
+                        <p style="text-align: center; font-weight: bold; margin-top: 15px;">
+                            ⏱️ Tiempo aproximado: 30 minutos
+                        </p>
+                    </div>
+                    
+                    <div class="progression-path">
+                        <h3>🚀 RUTA DE PROGRESIÓN</h3>
+                        <div class="progression-steps">
+                            <div class="step">
+                                <div class="step-number">0</div>
+                                <h4>GENERAL</h4>
+                                <p>Paleta única</p>
+                                <p>16 opciones</p>
+                                <p>~30 min</p>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <h4>INTERMEDIO</h4>
+                                <p>Paleta 1</p>
+                                <p>14 opciones</p>
+                                <p>~60 min</p>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <h4>AVANZADO</h4>
+                                <p>Paletas 1+2</p>
+                                <p>32 opciones</p>
+                                <p>~120 min</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="profundo-colors" class="color-tab-content-inner">
+                    <div class="palette-section">
+                        <h2>🔬 SISTEMA DE DOS PALETAS - ANÁLISIS PROFUNDO</h2>
+                        <div class="palette-info">
+                            <h3>⚡ CONFIGURACIÓN AVANZADA</h3>
+                            <span class="level-badge badge-intermediate">NIVEL 1: INTERMEDIO</span>
+                            <span class="level-badge badge-advanced">NIVEL 2: AVANZADO</span>
+                            <p style="margin-top: 10px;"><strong>PALETA 1:</strong> Elementos Principales (Primera pasada) - <span class="count-badge">14/16</span></p>
+                            <p><strong>PALETA 2:</strong> Relaciones y Modificadores (Segunda pasada) - <span class="count-badge">18/16</span></p>
+                            <p><strong>TOTAL:</strong> 32 opciones utilizadas perfectamente</p>
+                        </div>
+                    </div>
+                    
+                    <div class="palette-section">
+                        <h2>🔸 PALETA 1 - ELEMENTOS PRINCIPALES</h2>
+                        <p style="text-align: center; margin-bottom: 20px;"><em>Primera pasada: Identificación de actores y acciones</em></p>
+                        
+                        <div class="color-grid">
+                            <div class="color-section red">
+                                <div class="color-header">
+                                    <div class="color-box red-box"></div>
+                                    <div class="color-title">
+                                        🔴 ROJO - SUSTANTIVOS <span class="count-badge">3</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">SUSTANTIVOS - 5 Casos Griegos</div>
+                                                <div class="tooltip-definition">Distinguimos por importancia y función. En griego: Nominativo (sujeto), Genitivo (posesión), Dativo (objeto indirecto), Acusativo (objeto directo).</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías por nivel de importancia:</div>
+                                                    • <strong>Resaltado Sólido:</strong> Sustantivos de personas (θεός, Χριστός, ἄνθρωπος)<br>
+                                                    • <strong>Círculo:</strong> Sustantivos abstractos (πίστις=fe, χάρις=gracia, ἀγάπη=amor)<br>
+                                                    • <strong>Barra Base:</strong> Sustantivos concretos (ναός=templo, ἄρτος=pan)
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> Nominativo = sujeto<br>Genitivo = "de..."<br>Acusativo = objeto directo</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Personas (máxima importancia)</li>
+                                    <li><span class="mark-type">Círculo</span> Ideas/conceptos abstractos</li>
+                                    <li><span class="mark-type">Barra Base</span> Objetos/lugares concretos</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="color-section green">
+                                <div class="color-header">
+                                    <div class="color-box green-box"></div>
+                                    <div class="color-title">
+                                        🟢 VERDE - VERBOS <span class="count-badge">3</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">VERBOS - 6 Tiempos, 3 Voces, Aspecto Clave</div>
+                                                <div class="tooltip-definition">El aspecto es crucial: Presente (acción continua), Aoristo (puntual), Perfecto (estado resultante). La voz indica relación sujeto-acción.</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías por importancia:</div>
+                                                    • <strong>Resaltado Sólido:</strong> Verbos principales argumentales<br>
+                                                    • <strong>Círculo:</strong> Verbos secundarios de apoyo<br>
+                                                    • <strong>Barra Base:</strong> Infinitivo: forma básica del verbo (-ar, -er, -ir). No indica persona ni tiempo.Ej.: amar, comer, vivir.<br>Gerundio: expresa una acción en desarrollo (-ando, -iendo).Ej.: caminando, comiendo.<br>Participio: expresa generalmente acción terminada (-ado, -ido) y puede funcionar como adjetivo.Ej.: amado, comido.<br>Perífrasis verbal: combinación de dos verbos (uno auxiliar conjugado + una forma no personal) que expresan una sola acción o matizan su significado.Ej.: voy a estudiar, estoy leyendo, he terminado.
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> ἀγαπάω (presente) = amo continuamente<br>ἠγάπησα (aoristo) = amé (puntual)</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Verbos principales del argumento</li>
+                                    <li><span class="mark-type">Círculo</span> Verbos secundarios importantes</li>
+                                    <li><span class="mark-type">Barra Base</span> Participios/infinitivos</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="color-section purple">
+                                <div class="color-header">
+                                    <div class="color-box purple-box"></div>
+                                    <div class="color-title">
+                                        🟣 MORADO - PRONOMBRES <span class="count-badge">4</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">PRONOMBRES - Cohesión del Argumento</div>
+                                                <div class="tooltip-definition">Esenciales para rastrear actores y conceptos a través de proposiciones complejas. En griego concuerdan en género, número y caso.</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías por tipo:</div>
+                                                    • <strong>Resaltado Sólido:</strong> Pron. personales (ἐγώ=yo, σύ=tú, αὐτός=él)<br>
+                                                    • <strong>Círculo:</strong> Pron. relativos (ὅς=que/quien, ὅστις)<br>
+                                                    • <strong>Barra Base:</strong> Pron. posesivos (μου=mi, σου=tu)<br>
+                                                    • <strong>Ondulado:</strong> Pron. indefinidos (τις=alguien), interrogativos (τίς=quién)
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> ὅς (quien) conecta proposiciones<br>αὐτός puede = él, mismo</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Pronombres personales clave</li>
+                                    <li><span class="mark-type">Círculo</span> Pronombres relativos importantes</li>
+                                    <li><span class="mark-type">Barra Base</span> Pronombres posesivos</li>
+                                    <li><span class="mark-type">Ondulado</span> Pronombres indefinidos/interrogativos</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="color-section orange">
+                                <div class="color-header">
+                                    <div class="color-box orange-box"></div>
+                                    <div class="color-title">
+                                        🟠 NARANJA - DETERMINANTES <span class="count-badge">4</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">ARTÍCULOS - Definición Teológica Crucial</div>
+                                                <div class="tooltip-definition">El artículo griego (ὁ, ἡ, τό) marca definición, identidad conocida o énfasis. Su ausencia puede indicar cualidad o naturaleza (regla Colwell).</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías por función:</div>
+                                                    • <strong>Resaltado Sólido:</strong> Artículos definidos enfáticos (ὁ θεός = EL Dios)<br>
+                                                    • <strong>Círculo:</strong> Demostrativos (οὗτος=este, ἐκεῖνος=aquel)<br>
+                                                    • <strong>Barra Base:</strong> Cuantificadores (πᾶς=todo, τις=algún)<br>
+                                                    • <strong>Ondulado:</strong> Otros determinantes (ἕκαστος=cada)
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> Jn 1:1 - θεός (sin art.) vs ὁ θεός (con art.)</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Artículos definidos enfáticos</li>
+                                    <li><span class="mark-type">Círculo</span> Demostrativos importantes</li>
+                                    <li><span class="mark-type">Barra Base</span> Artículos indefinidos</li>
+                                    <li><span class="mark-type">Ondulado</span> Otros determinantes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="palette-section">
+                        <h2>🔹 PALETA 2 - RELACIONES Y MODIFICADORES</h2>
+                        <p style="text-align: center; margin-bottom: 20px;"><em>Segunda pasada: Conexiones lógicas y elementos secundarios</em></p>
+                        
+                        <div class="color-grid">
+                            <div class="color-section blue">
+                                <div class="color-header">
+                                    <div class="color-box blue-box"></div>
+                                    <div class="color-title">
+                                        🔵 AZUL - GENITIVOS <span class="count-badge">4</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">CASO GENITIVO - Relaciones y Pertenencia</div>
+                                                <div class="tooltip-definition">El genitivo expresa: posesión, origen, contenido, descripción, material, etc. Clave para entender de quién provienen o a quién pertenecen las cosas.</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías por tipo:</div>
+                                                    • <strong>Resaltado Sólido:</strong> De Dios / Divinos<br>
+                                                    • <strong>Círculo:</strong> Del Hombre / Humanos<br>
+                                                    • <strong>Barra Base:</strong> De Cosas / Conceptos Abstractos<br>
+                                                    • <strong>Ondulado:</strong> Atributivos / De Cualidad
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> "Amor de Dios"<br><strong>de Dios</strong> = genitivo divino</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> De Dios / Divinos</li>
+                                    <li><span class="mark-type">Círculo</span> Del Hombre / Humanos</li>
+                                    <li><span class="mark-type">Barra Base</span> De Cosas / Abstractos</li>
+                                    <li><span class="mark-type">Ondulado</span> Atributivos / Cualidad</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="color-section yellow">
+                                <div class="color-header">
+                                    <div class="color-box yellow-box"></div>
+                                    <div class="color-title">
+                                        🟡 AMARILLO - PREPOSICIONES <span class="count-badge">4</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">PREPOSICIONES GRIEGAS - Múltiples Casos</div>
+                                                <div class="tooltip-definition">Cada preposición cambia de significado según el caso que rija. εἰς (a/hacia), ἐν (en), ἐκ (de/desde), διά (por medio/a través), etc.</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                    • Preposiciones de propósito (para, a fin de)<br>
+                                                    • Preposiciones temporales (antes de, después de, durante)<br>
+                                                    • Preposiciones espaciales (sobre, bajo, junto a)<br>
+                                                    • Preposiciones instrumentales (por medio de, mediante)<br>
+                                                    • Locuciones preposicionales (respecto a, en cuanto a)
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> día + gen. = "por medio de"<br>día + acu. = "por causa de"</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Preposiciones propósito/causa</li>
+                                    <li><span class="mark-type">Círculo</span> Preposiciones de tiempo</li>
+                                    <li><span class="mark-type">Barra Base</span> Preposiciones de lugar</li>
+                                    <li><span class="mark-type">Ondulado</span> Otras preposiciones</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="color-section pink">
+                                <div class="color-header">
+                                    <div class="color-box pink-box"></div>
+                                    <div class="color-title">
+                                        🩷 ROSADO - ADJETIVOS <span class="count-badge">4</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">ADJETIVOS - Calificadores</div>
+                                                <div class="tooltip-definition">Los adjetivos califican y describen sustantivos. Añaden precisión teológica fundamental a los actores o conceptos en la oración.</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías por tipo:</div>
+                                                    • <strong>Resaltado Sólido:</strong> Atributos Divinos<br>
+                                                    • <strong>Círculo:</strong> Cualidades Espirituales/Morales<br>
+                                                    • <strong>Barra Base:</strong> Descriptivos Físicos/Materiales<br>
+                                                    • <strong>Ondulado:</strong> Relacionales / Otros
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> "El Buen Pastor"<br><strong>Buen</strong> = cualidad moral</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Atributos Divinos</li>
+                                    <li><span class="mark-type">Círculo</span> Cualidades Espirituales</li>
+                                    <li><span class="mark-type">Barra Base</span> Descriptivos Materiales</li>
+                                    <li><span class="mark-type">Ondulado</span> Relacionales / Otros</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="color-section gray">
+                                <div class="color-header">
+                                    <div class="color-box gray-box"></div>
+                                    <div class="color-title">
+                                        🩶 GRIS - ADVERBIOS/CONJUNCIONES <span class="count-badge">3</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">PARTÍCULAS MODALES Y NEGACIONES</div>
+                                                <div class="tooltip-definition">οὐ (negación objetiva), μή (negación subjetiva/prohibición). Adverbios modifican el verbo indicando modo, grado, tiempo o lugar.</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                    • Adverbios de negación (no, nunca, jamás, οὐ, μή)<br>
+                                                    • Adverbios de afirmación (sí, ciertamente, ναί)<br>
+                                                    • Adverbios de modo (bien, mal, así, οὕτως)<br>
+                                                    • Adverbios de cantidad (mucho, poco, πολύ)<br>
+                                                    • Adverbios intensificadores (muy, sumamente, λίαν)
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> οὐ (no) = negación objetiva<br>λίαν (muy) = intensificador</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Adverbios negación/afirmación</li>
+                                    <li><span class="mark-type">Círculo</span> Conjunciones subordinantes</li>
+                                    <li><span class="mark-type">Barra Base</span> Adverbios manera/cantidad</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="color-section lilac">
+                                <div class="color-header">
+                                    <div class="color-box lilac-box"></div>
+                                    <div class="color-title">
+                                        🔮 LILA - SECUNDARIOS <span class="count-badge">3</span>
+                                        <span class="info-icon">i
+                                            <span class="tooltip">
+                                                <div class="tooltip-title">ELEMENTOS SIMBÓLICOS Y ESPECIALES</div>
+                                                <div class="tooltip-definition">Numerales con significado teológico (7=plenitud, 12=pueblo de Dios), conjunciones especiales y partículas enfáticas hebreas.</div>
+                                                <div class="tooltip-categories">
+                                                    <div class="tooltip-categories-title">📚 Categorías incluidas:</div>
+                                                    • Numerales cardinales (uno, siete, doce)<br>
+                                                    • Numerales ordinales (primero, séptimo)<br>
+                                                    • Conjunciones especiales (ni, sino, mas, ἀλλά)<br>
+                                                    • Partículas expletivas (he aquí, ἰδού)<br>
+                                                    • Interjecciones bíblicas (¡ay!, οὐαί)
+                                                </div>
+                                                <div class="tooltip-example"><strong>Ejemplo:</strong> ἑπτά (siete) = plenitud<br>ἰδού (he aquí) = partícula</div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="usage-list">
+                                    <li><span class="mark-type">Resaltado Sólido</span> Numerales significativos</li>
+                                    <li><span class="mark-type">Círculo</span> Conjunciones específicas</li>
+                                    <li><span class="mark-type">Barra Base</span> Partículas expletivas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phrase-types">
+                        <h3>📝 TIPOS DE FRASES - ANOTACIONES FRONTALES</h3>
+                        <p style="text-align: center; margin-bottom: 20px;"><em>Usar en cualquiera de las dos paletas con colores coordinados</em></p>
+                        <div class="phrase-grid">
+                            <div class="phrase-item orange">
+                                <div class="phrase-annotation ann-orange">P</div>
+                                <div><strong>PREPOSICIONAL</strong></div>
+                                <div>en, con, por, para</div>
+                            </div>
+                            <div class="phrase-item blue">
+                                <div class="phrase-annotation ann-blue">G</div>
+                                <div><strong>GENITIVA</strong></div>
+                                <div>de, del, de la</div>
+                            </div>
+                            <div class="phrase-item green">
+                                <div class="phrase-annotation ann-green">I</div>
+                                <div><strong>INFINITIVA</strong></div>
+                                <div>-ar, -er, -ir</div>
+                            </div>
+                            <div class="phrase-item cyan">
+                                <div class="phrase-annotation ann-cyan">C</div>
+                                <div><strong>CONJUNCIÓN</strong></div>
+                                <div>y, pero, porque</div>
+                            </div>
+                            <div class="phrase-item green2">
+                                <div class="phrase-annotation ann-green2">Part</div>
+                                <div><strong>PARTICIPIAL</strong></div>
+                                <div>-ando, -iendo</div>
+                            </div>
+                            <div class="phrase-item blue2">
+                                <div class="phrase-annotation ann-blue2">Ap</div>
+                                <div><strong>APOSICIONAL</strong></div>
+                                <div>renombra</div>
+                            </div>
+                            <div class="phrase-item purple">
+                                <div class="phrase-annotation ann-purple">R</div>
+                                <div><strong>RELATIVA</strong></div>
+                                <div>que, quien, cual</div>
+                            </div>
+                            <div class="phrase-item red">
+                                <div class="phrase-annotation ann-red">S</div>
+                                <div><strong>SUSTANTIVAL</strong></div>
+                                <div>funciona como nombre</div>
+                            </div>
+                            <div class="phrase-item gray">
+                                <div class="phrase-annotation ann-gray">NM</div>
+                                <div><strong>NO MARCADA</strong></div>
+                                <div>casos especiales</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="workflow">
+                        <h3>⚡ FLUJO DE TRABAJO OPTIMIZADO</h3>
+                        <div class="workflow-grid">
+                            <div class="workflow-item">
+                                <h4>📖 PRIMERA LECTURA</h4>
+                                <p>Lectura exploratoria sin marcar. Identificar tema central y estructura general.</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>🔸 PALETA 1 - ELEMENTOS</h4>
+                                <p>Marcar sustantivos (rojo), verbos (verde), pronombres (morado), determinantes (naranja).</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>🔹 PALETA 2 - RELACIONES</h4>
+                                <p>Usar ventana paralela para genitivos (azul), preposiciones (amarillo), adjetivos (rosado).</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>📝 TIPOS DE FRASES</h4>
+                                <p>Añadir anotaciones frontales (P, G, I, C, Part, Ap, R, S, NM) con colores coordinados.</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>🔗 ANÁLISIS LÓGICO</h4>
+                                <p>Usar las herramientas de relaciones para establecer la lógica entre frases.</p>
+                            </div>
+                            <div class="workflow-item">
+                                <h4>📊 SÍNTESIS FINAL</h4>
+                                <p>Comparar ambas ventanas y crear el arqueo argumentativo del pasaje.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="secondary-note">
+                        <h4>📌 ELEMENTOS SECUNDARIOS AÑADIDOS</h4>
+                        <p><strong>Numerales significativos:</strong> uno, dos, siete, doce, mil (números con valor teológico)</p>
+                        <p><strong>Conjunciones específicas:</strong> ni, sino, mas (coordinantes con matiz especial)</p>
+                        <p><strong>Partículas expletivas:</strong> he aquí, he ahí (expresiones típicamente bíblicas)</p>
+                        <p style="margin-top: 15px; font-style: italic;"><strong>Nota:</strong> Estos elementos completan el análisis sin saturar el sistema visual, manteniendo el enfoque en lo teológicamente significativo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASO 4: DISECCIÓN (DIALS) CON SUB-PESTAÑAS -->
+        <section id="paso4" class="section">
+            <h2>✂️ Paso 4: Disección del Pasaje (Frases y Jerarquía)</h2>
+
+            <div class="sub-tabs-container">
+                <button class="sub-tab-btn paso4-btn active" onclick="openSubTab(event, 'paso4-dials', 'paso4')">🛠️ 1. El Método DIALS</button>
+                <button class="sub-tab-btn paso4-btn" onclick="openSubTab(event, 'paso4-frases', 'paso4')">🔤 2. Los 9 Tipos de Frases</button>
+            </div>
+
+            <div id="paso4-dials" class="sub-tab-content paso4-content active">
+                <h3>🛠️ 4.1 El Arqueo Bíblico (Las 4 Pasadas - DIALS)</h3>
+                <div class="example-box">
+                    <h4>PASO 1: DIVIDE (The First Pass)</h4>
+                    <p><strong>Qué hacer:</strong> Segmenta el texto línea por línea siguiendo estos sub-pasos:</p>
+                    <ul>
+                        <li><strong>Puntuación:</strong> Divide por comas, puntos y comas, y puntos.</li>
+                        <li><strong>Clasificación:</strong> Ponle etiqueta a la línea usando las anotaciones frontales (P, G, I, C, Part, Ap, R, S, NM).</li>
+                        <li><strong>Extracción:</strong> Saca frases intercaladas a su propia línea.</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>PASO 2: INDENT (The Second Pass - Jerarquía)</h4>
+                    <p><strong>Qué hacer:</strong> Aplica la jerarquía visual de lectura.</p>
+                    <ul>
+                        <li><strong>Margen Izquierdo:</strong> Solo para la Frase Ancla (Anchor Phrase).</li>
+                        <li><strong>Alineación Vertical:</strong> La frase subordinada debe comenzar exactamente debajo de la <em>Palabra Cabeza</em> que modifica en la línea superior.</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>PASO 3: CONNECT (The Third Pass)</h4>
+                    <p><strong>Qué hacer:</strong> Dibuja la relación con flechas visuales.</p>
+                    <ul>
+                        <li>🟦 <strong>[AZUL]:</strong> Exclusivamente para Frases Genitivas.</li>
+                        <li>🟩 <strong>[VERDE]:</strong> Para Frases Relativas.</li>
+                        <li>🟨 <strong>[AMARILLO]:</strong> Todas las demás subordinadas.</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>PASO 4: LABEL (The Fourth Pass)</h4>
+                    <p><strong>Qué hacer:</strong> Asigna etiquetas técnicas (Relaciones lógicas). <em>(Ver Paso 5)</em>.</p>
+                </div>
+                
+                <div class="info-box">
+                    <h4>🧠 La Gran Lista de Preguntas (Orden de Análisis Sintáctico)</h4>
+                    <p>Antes de trazar arcos, desarma la oración mentalmente siguiendo este orden exacto de ataque (Patrones de Oración):</p>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li style="margin-bottom: 5px;"><strong>¿Hay frases preposicionales, genitivos, vocativos o interjecciones?</strong> (Aíslalos primero para despejar el texto).</li>
+                        <li style="margin-bottom: 5px;"><strong>¿Cuáles son los verbos?</strong> (Identifica si son Vi, Vt o Vl).</li>
+                        <p style="margin: 5px 0 5px -20px; font-style: italic; color: #2a5298;">--- Para cada verbo descubierto, hazte las siguientes preguntas: ---</p>
+                        <li style="margin-bottom: 5px;"><strong>¿Cuál es el sujeto?</strong></li>
+                        <li style="margin-bottom: 5px;"><strong>¿Es un verbo copulativo (ser/estar)?</strong> Si es así, busca la palabra que renombra o describe al sujeto (PN / PA).</li>
+                        <li style="margin-bottom: 5px;"><strong>¿Hay Objeto Directo (DO)?</strong> Si lo hay, busca si tiene Complementos de Objeto (OCN / OCA) o un Objeto Indirecto (IO).</li>
+                        <li style="margin-bottom: 5px;"><strong>¿Hay adjetivos, adverbios o aposición (App)?</strong></li>
+                        <li><strong>¿Cómo se conectan las cláusulas?</strong> (Busca las conjunciones para establecer la dependencia lógica).</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="paso4-frases" class="sub-tab-content paso4-content">
+                <h3>🔤 4.2 Los 9 Tipos de Frases (Detallado)</h3>
+                <p class="intro-text">Piper identificó 9 tipos principales de frases que aparecen constantemente en la Biblia. Identificar estos tipos nos ayuda a extraer todas las proposiciones del texto y entender mejor el argumento del autor.</p>
+
+                <div class="subcategory-note" style="margin-bottom: 25px;">
+                    <strong>Nota:</strong> Las letras en la columna "Tipos de Frases" indican las estructuras gramaticales que típicamente expresan cada relación:
+                    <strong>U</strong>=Unmarked, <strong>Pr</strong>=Prepositional, <strong>Pa</strong>=Participle, <strong>C</strong>=Conjunction, 
+                    <strong>I</strong>=Infinitive, <strong>S</strong>=Substantival, <strong>Ap</strong>=Appositional
+                </div>
+
+                <div class="phrase-types">
+                    <h3>📝 TIPOS DE FRASES - ANOTACIONES FRONTALES</h3>
+                    <p style="text-align: center; margin-bottom: 20px;"><em>Usar en cualquiera de las dos paletas con colores coordinados</em></p>
+                    <div class="phrase-grid">
+                        <div class="phrase-item orange"><div class="phrase-annotation ann-orange">P</div><div><strong>PREPOSICIONAL</strong></div></div>
+                        <div class="phrase-item blue"><div class="phrase-annotation ann-blue">G</div><div><strong>GENITIVA</strong></div></div>
+                        <div class="phrase-item green"><div class="phrase-annotation ann-green">I</div><div><strong>INFINITIVA</strong></div></div>
+                        <div class="phrase-item cyan"><div class="phrase-annotation ann-cyan">C</div><div><strong>CONJUNCIÓN</strong></div></div>
+                        <div class="phrase-item green2"><div class="phrase-annotation ann-green2">Part</div><div><strong>PARTICIPIAL</strong></div></div>
+                        <div class="phrase-item blue2"><div class="phrase-annotation ann-blue2">Ap</div><div><strong>APOSICIONAL</strong></div></div>
+                        <div class="phrase-item purple"><div class="phrase-annotation ann-purple">R</div><div><strong>RELATIVA</strong></div></div>
+                        <div class="phrase-item red"><div class="phrase-annotation ann-red">S</div><div><strong>SUSTANTIVAL</strong></div></div>
+                        <div class="phrase-item gray"><div class="phrase-annotation ann-gray">NM</div><div><strong>NO MARCADA</strong></div></div>
+                    </div>
+                </div>
+
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h4>1. 🏷️ Frase Preposicional</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Comienza con <span class="gram-term">preposiciones<span class="tooltip">Palabra invariable que une términos mostrando relación (en, por, para).</span></span>: <code>en, con, por, para, hacia, desde, sobre, bajo, ante, tras, sin, mediante, durante</code></p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Da información adicional sobre lugar, tiempo, manera, causa o instrumento</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li><code>"Por la fe"</code> Abraham obedeció (medio/instrumento)</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>2. 🏷️ Frase Genitiva</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Usa las palabras: <code>de, del, de la, de los, de las</code></p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Responde las preguntas: ¿De quién? ¿De qué? ¿De dónde?</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li>El amor <code>"de Dios"</code> (origen/posesión)</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>3. ∞ Frase Infinitiva</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Usa el <span class="gram-term">verbo<span class="tooltip">Palabra que expresa acción o estado.</span></span> en forma <span class="gram-term">infinitiva<span class="tooltip">Verbo puro sin conjugar (-ar, -er, -ir).</span></span>: <code>caminar, ser, estar, saber, ir</code></p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Expresa propósito, resultado, complemento o acción abstracta</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li><code>"Para salvar"</code> al mundo (propósito)</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>4. 🔗 Frase de Conjunción</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Comienza con <span class="gram-term">conjunciones<span class="tooltip">Palabra que une ideas o proposiciones (y, pero, porque).</span></span>: <code>y, pero, porque, que, cuando, si, aunque</code></p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Muestra cómo se relacionan las ideas entre sí</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li><code>"Porque esperaba"</code> la ciudad (razón)</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>5. 🎭 Frase Participial</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Contiene <span class="gram-term">participios<span class="tooltip">Forma verbal que funciona como adjetivo (-ado, -ido, -ando, -iendo).</span></span>: <code>siendo, estando, viviendo, caminando, bendecido, amado</code></p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Describe condición, manera, tiempo o acción simultánea</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li><code>"Siendo extranjero"</code> (condición)</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>6. 🏷️ Frase Aposicional</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Renombra o explica un <span class="gram-term">sustantivo<span class="tooltip">Palabra que nombra personas, lugares, objetos o conceptos.</span></span> anterior, separado por comas</p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Da información adicional identificativa sobre alguien o algo</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li>Jesús, <code>"el Hijo de Dios"</code></li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>7. 🔗 Frase Relativa</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Comienza con <span class="gram-term">pronombres<span class="tooltip">Palabra que sustituye al sustantivo para evitar su repetición.</span></span> relativos: <code>que, quien, el cual, la cual, cuyo, donde, cuando</code></p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Define, describe o da más información sobre un sustantivo anterior</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li>La ciudad <code>"que tiene cimientos"</code></li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>8. 📝 Frase Sustantival</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Grupo de palabras con <span class="gram-term">verbo<span class="tooltip">Palabra que expresa acción o estado.</span></span> que funciona como un <span class="gram-term">sustantivo<span class="tooltip">Palabra que nombra personas, lugares, objetos o conceptos.</span></span></p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Puede ser sujeto, objeto o complemento en la oración</p>
+                        <h5>Ejemplos bíblicos:</h5>
+                        <ul><li>Creo <code>"que Jesús es el Cristo"</code> (objeto)</li></ul>
+                    </div>
+                    <div class="type-card">
+                        <h4>9. ❓ Frase No Marcada</h4>
+                        <h5>¿Cómo identificarla?</h5>
+                        <p>Cualquier construcción que no encaja en los otros 8 tipos</p>
+                        <h5>¿Qué hace?</h5>
+                        <p>Categoría residual para casos especiales, idiomáticos o únicos</p>
+                        <h5>Ejemplos:</h5>
+                        <ul><li>Construcciones idiomáticas especiales</li></ul>
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    <h4>⚠️ ¿Por qué es crucial identificar estos tipos?</h4>
+                    <p>Como dice Piper: <em>"Las proposiciones pueden estar <strong>ocultas en diferentes tipos de frases</strong>."</em> Si no sabemos qué tipo de frase estamos viendo, podemos perder proposiciones importantes del argumento del autor bíblico.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASO 5: ARQUEO BÍBLICO -->
+        <section id="paso5" class="section">
+            <h2>🔗 Paso 5: Arqueo Bíblico (Relaciones Lógicas)</h2>
+
+            <p class="intro-text">
+                Una vez identificadas las proposiciones, el siguiente paso es entender cómo se relacionan entre sí. Usa las pestañas para explorar desde las 18 relaciones clásicas hasta las 27 ampliadas.
+            </p>
+
+            <div class="sub-tabs-container">
+                <button class="sub-tab-btn paso5-btn active" onclick="openSubTab(event, 'paso5-18rels', 'paso5')">🤝 1. Las 18 Relaciones Lógicas</button>
+                <button class="sub-tab-btn paso5-btn" onclick="openSubTab(event, 'paso5-27rels', 'paso5')">📊 2. Las 27 Relaciones Ampliadas</button>
+                <button class="sub-tab-btn paso5-btn" onclick="openSubTab(event, 'paso5-aplicacion', 'paso5')">🧩 3. Conexiones y Aplicación</button>
+                <button class="sub-tab-btn paso5-btn" onclick="openSubTab(event, 'paso5-biblearc', 'paso5')">💻 4. Herramientas en BibleArc</button>
+            </div>
+
+            <div id="paso5-18rels" class="sub-tab-content paso5-content active">
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h4>🤝 Relaciones Coordinadas</h4>
+                        <p><strong>Características:</strong> Cada proposición es independiente. Una no apoya a la otra.</p>
+                        <p><strong>Ejemplo:</strong> "Fui al correo Y recogí a mi esposa"</p>
+                        <p><strong>Cantidad:</strong> 3 tipos</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>🏗️ Relaciones Subordinadas</h4>
+                        <p><strong>Características:</strong> Una proposición apoya, explica o fundamenta a otra.</p>
+                        <p><strong>Ejemplo:</strong> "Fui al correo PORQUE tenía que enviar una carta"</p>
+                        <p><strong>Cantidad:</strong> 15 tipos (divididos en 3 subcategorías)</p>
+                    </div>
+                </div>
+
+                <h3>🤝 5.1 Relaciones Coordinadas (3 tipos):</h3>
+                <div class="simple-list">
+                    <h4>Serie, Progresión y Alternativa</h4>
+                    <ol>
+                        <li><strong>Serie (S):</strong> Cada proposición hace su propia contribución independiente
+                            <br><strong>Conectores:</strong> y, también, ni, además
+                            <br><strong>Ejemplo:</strong> "amonestando a todos los hombres, Y enseñando a todos los hombres"</li>
+                        <li><strong>Progresión (P):</strong> Como serie, pero cada proposición es un paso hacia un clímax
+                            <br><strong>Conectores:</strong> entonces, luego, después, primero...luego
+                            <br><strong>Ejemplo:</strong> "primero la hoja, luego la espiga, y después el grano maduro"</li>
+                        <li><strong>Alternativa (A):</strong> Cada proposición expresa una posibilidad distinta
+                            <br><strong>Conectores:</strong> o, pero, mas, sino, mientras que
+                            <br><strong>Ejemplo:</strong> "¿Eres tú el que ha de venir, O esperaremos a otro?"</li>
+                    </ol>
+                </div>
+
+                <h3>🏗️ 5.2 Subordinadas por Declaración Distinta (8 tipos):</h3>
+                <div class="relations-grid">
+                    <div class="relation-card">
+                        <h5>Fundamento (G)</h5>
+                        <p><strong>Qué es:</strong> Una declaración y la razón que la apoya (razón va después)</p>
+                        <p><strong>Conectores:</strong> porque, pues, ya que, puesto que</p>
+                        <p><strong>Ejemplo:</strong> "No temáis, PORQUE he aquí, os traigo buenas nuevas"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Inferencia (∴)</h5>
+                        <p><strong>Qué es:</strong> Una declaración basada en razón anterior (razón va primero)</p>
+                        <p><strong>Conectores:</strong> por tanto, pues, así que, por lo cual</p>
+                        <p><strong>Ejemplo:</strong> "No he hallado delito; POR TANTO, le castigaré y soltaré"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Acción-Resultado (Ac/Res)</h5>
+                        <p><strong>Qué es:</strong> Una acción y su consecuencia natural</p>
+                        <p><strong>Conectores:</strong> de modo que, de tal manera que, con el resultado</p>
+                        <p><strong>Ejemplo:</strong> "se desató gran tormenta, DE MODO QUE las olas cubrían la barca"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Acción-Propósito (Ac/Pur)</h5>
+                        <p><strong>Qué es:</strong> Una acción y el objetivo que se busca</p>
+                        <p><strong>Conectores:</strong> para que, a fin de que, para</p>
+                        <p><strong>Ejemplo:</strong> "Esto lo digo PARA QUE nadie os engañe"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Condicional (If/Th)</h5>
+                        <p><strong>Qué es:</strong> Como Acción-Resultado, pero la acción es solo potencial</p>
+                        <p><strong>Conectores:</strong> si...entonces, siempre que, excepto</p>
+                        <p><strong>Ejemplo:</strong> "SI hubiera algún daño, ENTONCES pondrás vida por vida"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Temporal (T)</h5>
+                        <p><strong>Qué es:</strong> Una declaración y cuándo ocurre o es verdadera</p>
+                        <p><strong>Conectores:</strong> cuando, después, antes, mientras, hasta que</p>
+                        <p><strong>Ejemplo:</strong> "Y CUANDO ayunéis, no pongáis cara triste"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Locativa (L)</h5>
+                        <p><strong>Qué es:</strong> Una declaración y dónde ocurre o es verdadera</p>
+                        <p><strong>Conectores:</strong> donde, dondequiera</p>
+                        <p><strong>Ejemplo:</strong> "ADONDE tú vayas, iré yo"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Bilateral (BL)</h5>
+                        <p><strong>Qué es:</strong> Una proposición que apoya a otras dos (una antes y otra después)</p>
+                        <p><strong>Conectores:</strong> porque, pues, por tanto</p>
+                        <p><strong>Ejemplo:</strong> "no pudieron beber PORQUE eran amargas; POR TANTO le pusieron Mara"</p>
+                    </div>
+                </div>
+
+                <h3>🔄 5.3 Subordinadas por Reiteración (6 tipos):</h3>
+                <div class="relations-grid">
+                    <div class="relation-card">
+                        <h5>Acción-Manera (Ac/Mn)</h5>
+                        <p><strong>Qué es:</strong> Una acción y cómo se lleva a cabo</p>
+                        <p><strong>Conectores:</strong> por medio de, en que, por, gerundios</p>
+                        <p><strong>Ejemplo:</strong> "no dejó de dar testimonio, HACIENDO bien y dándoos lluvias"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Comparación (Cf)</h5>
+                        <p><strong>Qué es:</strong> Una acción comparada con algo similar para clarificarla</p>
+                        <p><strong>Conectores:</strong> como, así como, según, de la misma manera</p>
+                        <p><strong>Ejemplo:</strong> "Sed imitadores de mí, COMO también yo lo soy de Cristo"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Negativo-Positivo (-/+)</h5>
+                        <p><strong>Qué es:</strong> Dos declaraciones, una se niega para resaltar la otra</p>
+                        <p><strong>Conectores:</strong> no...sino, pero (en contraste)</p>
+                        <p><strong>Ejemplo:</strong> "NO seáis necios, SINO entended cuál es la voluntad del Señor"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Idea-Explicación (Id/Exp)</h5>
+                        <p><strong>Qué es:</strong> Una declaración y otra que aclara su significado</p>
+                        <p><strong>Conectores:</strong> esto es, es decir, que</p>
+                        <p><strong>Ejemplo:</strong> "hasta que pereció toda la nación, ES DECIR, los hombres de guerra"</p>
+                    </div>
+                    <div class="relation-card">
+                        <h5>Pregunta-Respuesta (Q/A)</h5>
+                        <p><strong>Qué es:</strong> Una pregunta y su respuesta correspondiente</p>
+                        <p><strong>Conectores:</strong> signos de interrogación</p>
+                        <p><strong>Ejemplo:</strong> "¿qué dice la Escritura? Y creyó Abraham a Dios"</p>
+                    </div>
+                </div>
+
+                <h3>⚔️ 5.4 Subordinadas por Declaración Contraria (1 tipo):</h3>
+                <div class="relations-grid">
+                    <div class="relation-card">
+                        <h5>Concesiva (Csv)</h5>
+                        <p><strong>Qué es:</strong> Una declaración principal que se destaca a pesar de algo contrario</p>
+                        <p><strong>Conectores:</strong> aunque, sin embargo, no obstante, a pesar de</p>
+                        <p><strong>Ejemplo:</strong> "siempre estaré listo para recordaros, AUNQUE vosotros ya las sabéis"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="paso5-27rels" class="sub-tab-content paso5-content">
+                <h3>🔍 5.5 Relaciones Detalladas del Método Expandido de Piper:</h3>
+                <div class="info-box">
+                    <p>Piper también desarrolló un sistema más detallado con subcategorías específicas que corresponden a las 18 relaciones básicas:</p>
+                </div>
+
+                <div class="types-grid">
+                    <div class="simple-list">
+                        <h4>📋 Apoyo por Reiteración (Restatement):</h4>
+                        <ul>
+                            <li><strong>ACCOMPANIMENT:</strong> Compañía</li>
+                            <li><strong>AGENCY:</strong> Agencia/Agente</li>
+                            <li><strong>ANSWER:</strong> Respuesta</li>
+                            <li><strong>COMPARISON:</strong> Comparación</li>
+                            <li><strong>CONTENT:</strong> Contenido</li>
+                            <li><strong>CONTEXT:</strong> Contexto</li>
+                            <li><strong>DISTINCTION:</strong> Distinción</li>
+                            <li><strong>EXAMPLE:</strong> Ejemplo</li>
+                            <li><strong>EXPLANATION:</strong> Explicación</li>
+                            <li><strong>MANNER:</strong> Manera</li>
+                            <li><strong>MEANS:</strong> Medios</li>
+                            <li><strong>NEGATIVE:</strong> Negativo</li>
+                            <li><strong>REFERENCE:</strong> Referencia</li>
+                            <li><strong>STANDARD:</strong> Estándar</li>
+                            <li><strong>SUBSTITUTION:</strong> Sustitución</li>
+                        </ul>
+                    </div>
+                    <div class="simple-list">
+                        <h4>📋 Apoyo por Declaración Distinta:</h4>
+                        <ul>
+                            <li><strong>ADVANTAGE:</strong> Ventaja</li>
+                            <li><strong>CONDITION:</strong> Condición</li>
+                            <li><strong>DESTINATION:</strong> Destino</li>
+                            <li><strong>DISADVANTAGE:</strong> Desventaja</li>
+                            <li><strong>GROUND:</strong> Fundamento</li>
+                            <li><strong>LOCATIVE:</strong> Locativo</li>
+                            <li><strong>PURPOSE:</strong> Propósito</li>
+                            <li><strong>RESULT:</strong> Resultado</li>
+                            <li><strong>SEPARATION:</strong> Separación</li>
+                            <li><strong>SOURCE:</strong> Fuente</li>
+                            <li><strong>TEMPORAL:</strong> Temporal</li>
+                        </ul>
+                        <h4 style="margin-top:20px;">📋 Declaración Contraria:</h4>
+                        <ul>
+                            <li><strong>CONCESSIVE:</strong> Concesiva</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>📊 5.6 Tabla Extendida de las 27 Relaciones de Fraseo (BibleArc)</h3>
+                <p class="intro-text">
+                    Esta tabla complementa el modelo base de las 18 relaciones, ofreciendo la definición precisa de cada subcategoría y su correspondencia con los tipos de frases identificados en el Paso 4.
+                </p>
+
+                <div class="subcategory-note">
+                    <strong>Nota:</strong> Las letras en la columna "Tipos de Frases" indican las estructuras gramaticales que típicamente expresan cada relación:
+                    <strong>U</strong>=Unmarked, <strong>Pr</strong>=Prepositional, <strong>Pa</strong>=Participle, <strong>C</strong>=Conjunction, 
+                    <strong>I</strong>=Infinitive, <strong>S</strong>=Substantival, <strong>Ap</strong>=Appositional
+                </div>
+                
+                <div class="table-container">
+                    <table class="relaciones-table">
+                        <tr class="category-header distinct-statement">
+                            <td colspan="4">APOYO POR DECLARACIÓN DISTINTA (Support by Distinct Statement)</td>
+                        </tr>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nombre de la Relación</th>
+                            <th>Definición</th>
+                            <th>Tipos de Frases</th>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">1</td>
+                            <td class="name-col">Fundamento<br><span class="english-name">(Ground)</span></td>
+                            <td class="definition-col">Una frase que indica el argumento o razón de la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">U</span> <span class="phrase-code">Pr</span> <span class="phrase-code">Pa</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">2</td>
+                            <td class="name-col">Resultado<br><span class="english-name">(Result)</span></td>
+                            <td class="definition-col">Una frase que indica la consecuencia o resultado de la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">U</span> <span class="phrase-code">Pa</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">3</td>
+                            <td class="name-col">Propósito<br><span class="english-name">(Purpose)</span></td>
+                            <td class="definition-col">Una frase que indica la meta o resultado deseado de la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">I</span> <span class="phrase-code">Pr</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">4</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Ventaja<br><span class="english-name">(Advantage)</span></td>
+                            <td class="definition-col">Una frase que indica que la frase ancla se realiza para beneficio de alguien o algo.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">5</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Desventaja<br><span class="english-name">(Disadvantage)</span></td>
+                            <td class="definition-col">Una frase que indica que la frase ancla se realiza para detrimento de alguien o algo.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">6</td>
+                            <td class="name-col">Condición<br><span class="english-name">(Condition)</span></td>
+                            <td class="definition-col">Una frase que indica qué debe ser verdad para que la frase ancla esté en efecto.</td>
+                            <td class="phrases-col"><span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">7</td>
+                            <td class="name-col">Temporal<br><span class="english-name">(Temporal)</span></td>
+                            <td class="definition-col">Una frase que indica el tiempo en que la frase ancla ocurre o es verdad.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">8</td>
+                            <td class="name-col">Locativa<br><span class="english-name">(Locative)</span></td>
+                            <td class="definition-col">Una frase que indica la ubicación donde la frase ancla ocurre o es verdad.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">9</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Fuente<br><span class="english-name">(Source)</span></td>
+                            <td class="definition-col">Una frase que indica el punto de origen del cual la frase ancla deriva o depende.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">10</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Destino<br><span class="english-name">(Destination)</span></td>
+                            <td class="definition-col">Una frase que indica el punto final al cual la frase ancla llega.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">11</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Separación<br><span class="english-name">(Separation)</span></td>
+                            <td class="definition-col">Una frase que indica que la frase ancla se está distanciando de un objeto o concepto.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        
+                        <tr class="category-header restatement">
+                            <td colspan="4">APOYO POR REITERACIÓN (Support by Restatement)</td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">12</td>
+                            <td class="name-col">Manera<br><span class="english-name">(Manner)</span></td>
+                            <td class="definition-col">Una frase que indica la forma en que se lleva a cabo la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pa</span> <span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">13</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Medios<br><span class="english-name">(Means)</span></td>
+                            <td class="definition-col">Una frase que indica el instrumento por el cual se realiza la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pa</span> <span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">14</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Agencia<br><span class="english-name">(Agency)</span></td>
+                            <td class="definition-col">Una frase que indica el agente personal por quien se ejecuta la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">15</td>
+                            <td class="name-col">Comparación<br><span class="english-name">(Comparison)</span></td>
+                            <td class="definition-col">Una frase usada para clarificar la frase ancla mostrando a qué se parece.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">16</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Estándar<br><span class="english-name">(Standard)</span></td>
+                            <td class="definition-col">Una frase que indica un punto de referencia al cual se ajusta la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">17</td>
+                            <td class="name-col">Negativa<br><span class="english-name">(Negative)</span></td>
+                            <td class="definition-col">Una frase que refuerza la frase ancla por contraste o reafirmándola de manera negativa.</td>
+                            <td class="phrases-col"><span class="phrase-code">U</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">18</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Sustitución<br><span class="english-name">(Substitution)</span></td>
+                            <td class="definition-col">Una frase que indica qué se da en lugar de o en intercambio por algo en la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">19</td>
+                            <td class="name-col">Explicación<br><span class="english-name">(Explanation)</span></td>
+                            <td class="definition-col">Una frase que clarifica el significado de la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">U</span> <span class="phrase-code">Ap</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">20</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Contenido<br><span class="english-name">(Content)</span></td>
+                            <td class="definition-col">Una frase que actúa como sujeto u objeto de la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">I</span> <span class="phrase-code">S</span> <span class="phrase-code">C</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">21</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Contexto<br><span class="english-name">(Context)</span></td>
+                            <td class="definition-col">Una frase que indica la esfera en la cual la frase ancla es verdad.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">22</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Distinción<br><span class="english-name">(Distinction)</span></td>
+                            <td class="definition-col">Una frase que clarifica la frase ancla distinguiéndola de algo más.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">23</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Ejemplo<br><span class="english-name">(Example)</span></td>
+                            <td class="definition-col">Una frase que proporciona una instancia específica de la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">U</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">24</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Acompañamiento<br><span class="english-name">(Accompaniment)</span></td>
+                            <td class="definition-col">Una frase que indica quién o qué se incluye con los ya mencionados en la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="sub-relation">
+                            <td class="number-col">25</td>
+                            <td class="name-col" style="padding-left: 25px;">↳ Referencia<br><span class="english-name">(Reference)</span></td>
+                            <td class="definition-col">Una frase que indica a qué está conectada la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">Pr</span></td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">26</td>
+                            <td class="name-col">Respuesta<br><span class="english-name">(Answer)</span></td>
+                            <td class="definition-col">Una frase que indica la respuesta a una pregunta.</td>
+                            <td class="phrases-col"><span class="phrase-code">U</span></td>
+                        </tr>
+                        
+                        <tr class="category-header contrary-statement">
+                            <td colspan="4">APOYO POR DECLARACIÓN CONTRARIA (Support by Contrary Statement)</td>
+                        </tr>
+                        <tr class="main-relation">
+                            <td class="number-col">27</td>
+                            <td class="name-col">Concesiva<br><span class="english-name">(Concessive)</span></td>
+                            <td class="definition-col">Una frase que reconoce un punto aparentemente contrario para apoyar la frase ancla.</td>
+                            <td class="phrases-col"><span class="phrase-code">C</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="paso5-aplicacion" class="sub-tab-content paso5-content">
+                <h3>🧩 5.7 Conexiones Finales</h3>
+                <p class="intro-text">
+                    Cruza la morfología que encontraste en los pasos 3 y 4 con la lógica que asignarás aquí en el paso 5.
+                </p>
+                <div class="connection-box">
+                    <h4>🎯 Principio Fundamental:</h4>
+                    <p>Los tipos de frases son la <strong>base</strong> para identificar las relaciones lógicas. Cada tipo de frase tiene tendencia a revelar ciertos tipos de relaciones textualmente.</p>
+                    
+                    <h4 style="margin-top:15px; border-bottom: 1px solid white; padding-bottom: 5px;">Conexiones Específicas:</h4>
+                    <ul>
+                        <li><strong>Frases Preposicionales</strong> → Suelen revelar Ac/Manera, Temporal, Locativa, Fundamento, Propósito.</li>
+                        <li><strong>Frases Participiales</strong> → Suelen revelar Ac/Manera, Comparación, Fundamento, Temporal, Condicional.</li>
+                        <li><strong>Frases de Conjunción</strong> → Revelan Serie, Fundamento, Inferencia, Contraste, Temporal.</li>
+                        <li><strong>Infinitivos</strong> → Suelen revelar Ac/Propósito, Ac/Resultado, Ac/Manera.</li>
+                        <li><strong>Genitivos</strong> → Suelen revelar Fundamento, Fuente, Contenido, Comparación, Temporal.</li>
+                        <li><strong>Frases Relativas</strong> → Proporcionan Idea-Explicación, Fundamento, Propósito.</li>
+                    </ul>
+                    <h4 style="margin-top:15px; border-bottom: 1px solid white; padding-bottom: 5px;">Conexiones con Formas Verbales:</h4>
+                    <ul>
+                        <li><strong>Infinitivos de propósito</strong> → Relación "Acción-Propósito"</li>
+                        <li><strong>Participios causales</strong> → Relación "Fundamento"</li>
+                        <li><strong>Participios temporales</strong> → Relación "Temporal"</li>
+                        <li><strong>Participios modales</strong> → Relación "Acción-Manera"</li>
+                        <li><strong>Subjuntivos de propósito</strong> → Relación "Acción-Propósito"</li>
+                        <li><strong>Condicionales</strong> → Relación "Condicional"</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>🔍 Cero Presuposiciones: El Filtro Teológico</h4>
+                    <p>En Filipenses 2:12-13, si no identificamos "porque" (γάρ) como <strong>Fundamento</strong>, podríamos pensar teológicamente que Dios actúa como resultado de nuestro trabajo. Al identificar el conector gramatical correctamente, la teología bíblica exacta se defiende sola: nuestro trabajo es posible PORQUE Dios obra primero.</p>
+                </div>
+            </div>
+
+            <!-- CONTENIDO 4: HERRAMIENTAS EN BIBLEARC (NUEVO) -->
+            <div id="paso5-biblearc" class="sub-tab-content paso5-content">
+                <h3>💻 5.8 Herramientas del Módulo de Phrasing en BibleArc</h3>
+                <p class="intro-text">El análisis visual en BibleArc permite desglosar el texto bíblico mediante una estructura visual, gramatical y lógica. A continuación, el resumen completo integrado de estas funciones para identificar adecuadamente cada herramienta en inglés:</p>
+
+                <div class="highlight-box">
+                    <h4>1. Identificación Sintáctica (Clave de Colores)</h4>
+                    <p>Esta herramienta permite marcar visualmente la <strong>clase de palabra</strong> o el tipo de frase dentro del texto para reconocer su función básica antes de analizar su lógica profunda.</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong style="color: #d39e00;">Subordinate Phrase (Amarillo):</strong> Identifica bloques de texto que dependen de una idea principal (cláusulas subordinadas).</li>
+                        <li><strong style="color: #004085;">Genitive Modifier (Azul):</strong> Resalta palabras en caso genitivo (generalmente unidas por "de"), indicando una relación de descripción o pertenencia entre sustantivos.</li>
+                        <li><strong style="color: #155724;">Relative Pronoun (Verde):</strong> Marca los pronombres ("que", "quien", "el cual") que funcionan como conectores hacia una nueva información sobre un antecedente.</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>2. Relaciones Lógicas (Menú "Core")</h4>
+                    <p>Se utiliza para definir la <strong>función lógica</strong> que una proposición (frase completa) ejerce sobre otra. Se divide en tres categorías de apoyo:</p>
+                    
+                    <h5 style="margin-top: 10px; color: #2a5298;">Apoyo por Reafirmación (Restatement)</h5>
+                    <p style="font-size: 0.9em; margin-bottom: 5px;">La frase secundaria aclara o expande la principal sin añadir conceptos esencialmente nuevos:</p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Manner / Means:</strong> Cómo o por qué medio se realiza la acción.</li>
+                        <li><strong>Comparison / Example:</strong> Ilustraciones o comparaciones de la idea.</li>
+                        <li><strong>Explanation / Content:</strong> Definición o detalle de lo que se acaba de decir.</li>
+                    </ul>
+
+                    <h5 style="margin-top: 10px; color: #2a5298;">Apoyo por Declaración Distinta (Distinct Statement)</h5>
+                    <p style="font-size: 0.9em; margin-bottom: 5px;">La frase secundaria aporta datos nuevos que sitúan o condicionan la acción:</p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Ground (Base):</strong> La razón o fundamento (el "porque").</li>
+                        <li><strong>Purpose / Result:</strong> El objetivo (para qué) o la consecuencia de la acción.</li>
+                        <li><strong>Condition:</strong> El requisito necesario (el "si...").</li>
+                        <li><strong>Temporal / Locative:</strong> Ubicación en tiempo o espacio.</li>
+                    </ul>
+
+                    <h5 style="margin-top: 10px; color: #2a5298;">Apoyo por Declaración Contraria (Contrary Statement)</h5>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Concessive:</strong> Indica un obstáculo que, a pesar de existir, no impide la acción principal (el "aunque").</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>3. Relaciones Genitivas (Menú "Genitive")</h4>
+                    <p>Esta herramienta es de alta precisión exegética. Se activa para determinar el significado exacto de la preposición "de" entre dos sustantivos.</p>
+                </div>
+                
+                <div class="table-container">
+                    <table class="standard-table">
+                        <thead>
+                            <tr>
+                                <th>Categoría</th>
+                                <th>Relación (Inglés)</th>
+                                <th>Ejemplo / Definición</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td rowspan="6"><strong>Más Comunes</strong></td><td><strong>Possessive</strong></td><td>Indica propiedad (La casa de Pedro).</td></tr>
+                            <tr><td><strong>Source</strong></td><td>El origen de donde emana algo (La paz de Dios).</td></tr>
+                            <tr><td><strong>Subjective</strong></td><td>El genitivo realiza la acción (El amor de Dios = Dios ama).</td></tr>
+                            <tr><td><strong>Objective</strong></td><td>El genitivo recibe la acción (El amor de Dios = Amor hacia Dios).</td></tr>
+                            <tr><td><strong>Epexegetical</strong></td><td>Define o aclara (El don del Espíritu = El don es el Espíritu).</td></tr>
+                            <tr><td><strong>Attributive</strong></td><td>Funciona como adjetivo (Cuerpo de pecado = Cuerpo pecaminoso).</td></tr>
+                            <tr><td rowspan="4"><strong>Menos Comunes</strong></td><td><strong>Contents</strong></td><td>Lo que contiene un recipiente (Copa de vino).</td></tr>
+                            <tr><td><strong>Material</strong></td><td>De qué está hecho (Altar de piedra).</td></tr>
+                            <tr><td><strong>Partitive</strong></td><td>Una porción de un conjunto (La mitad del grupo).</td></tr>
+                            <tr><td><strong>Separation</strong></td><td>Alejamiento o distinción (Lejos de la verdad).</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="connection-box">
+                    <h4>🔄 Resumen de flujo de trabajo en BibleArc:</h4>
+                    <ol style="margin-left: 20px;">
+                        <li>Se organiza el texto con <strong>sangrías</strong> para ver la jerarquía.</li>
+                        <li>Se aplican <strong>colores</strong> para identificar el tipo de palabras.</li>
+                        <li>Se asigna una relación <strong>Core</strong> para entender la lógica del argumento.</li>
+                        <li>Se asigna una relación <strong>Genitiva</strong> para precisar el significado de las frases sustantivadas.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <button class="back-to-top" onclick="scrollToTop()" title="Volver arriba">↑</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-btn');
+            const sections = document.querySelectorAll('.section');
+
+            // INYECCIÓN AISLADA DEL IFRAME MARKUP
+            // Esto asegura que tu código se renderice tal cual, sin heredar CSS externo
+            const rawHTML = document.getElementById('markup-raw-content').textContent;
+            const iframe = document.getElementById('markup-iframe');
+            if (iframe) {
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(rawHTML);
+                doc.close();
+            }
+
+            // 1. Ocultar todas excepto Paso 1
+            sections.forEach(sec => sec.style.display = 'none');
+            const firstSection = document.getElementById('paso1');
+            if(firstSection) firstSection.style.display = 'block';
+            
+            // 2. Lógica de clics en las pestañas principales (SPA)
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    
+                    navLinks.forEach(btn => btn.classList.remove('active'));
+                    sections.forEach(sec => {
+                        sec.style.display = 'none';
+                        sec.style.animation = 'none'; 
+                    });
+
+                    this.classList.add('active');
+
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if(targetSection) {
+                        targetSection.style.display = 'block';
+                        void targetSection.offsetWidth; 
+                        targetSection.style.animation = "fadeIn 0.5s ease-out forwards";
+                    }
+                });
+            });
+        });
+
+        // 3. Función GENÉRICA para las Sub-Pestañas de los Pasos (Ej: Paso 3, 4 y 5)
+        function openSubTab(event, tabId, groupClass) {
+            // Ocultar todos los contenidos de este grupo
+            const contents = document.querySelectorAll('.' + groupClass + '-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // Quitar clase active de los botones de este grupo
+            const buttons = document.querySelectorAll('.' + groupClass + '-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            // Activar el seleccionado
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // 4. Función exclusiva para las sub-pestañas INTERNAS de Colores
+        function openColorTab(event, tabName) {
+            const tabContents = document.getElementsByClassName('color-tab-content-inner');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabButtons = document.getElementsByClassName('color-tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            if(event) {
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        // Función para los Accesos Directos
+        function goToShortcut(stepId, tabId) {
+            // Simular clic en el menú principal
+            const navLink = document.querySelector(`a[href="#${stepId}"]`);
+            if (navLink) navLink.click();
+            
+            // Simular clic en la sub-pestaña si existe un evento onclick con el tabId
+            setTimeout(() => {
+                const subTabs = document.querySelectorAll('.sub-tab-btn');
+                subTabs.forEach(btn => {
+                    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${tabId}'`)) {
+                        btn.click();
+                    }
+                });
+                // Hacer scroll hasta el contenedor
+                document.getElementById(stepId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+
+        // Corrección dinámica global de los bordes para tooltips en pantalla principal
+        document.addEventListener('mouseover', function(e) {
+            const target = e.target.closest('.info-icon, .gram-term');
+            if (target) {
+                const tooltip = target.querySelector('.tooltip');
+                if (tooltip) {
+                    // Resetear el tooltip a estilos por defecto
+                    tooltip.style.left = '50%';
+                    tooltip.style.transform = 'translateX(-50%)';
+                    
+                    const rect = tooltip.getBoundingClientRect();
+                    // Si se corta por la izquierda
+                    if (rect.left < 10) {
+                        tooltip.style.left = '0';
+                        tooltip.style.transform = 'translateX(0)';
+                    } 
+                    // Si se corta por la derecha
+                    else if (rect.right > window.innerWidth - 10) {
+                        tooltip.style.left = 'auto';
+                        tooltip.style.right = '0';
+                        tooltip.style.transform = 'translateX(0)';
+                    }
+                }
+            }
+        });
+
+        // 5. Scroll To Top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
