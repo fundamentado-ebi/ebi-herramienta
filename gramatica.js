@@ -14,7 +14,7 @@ const coordinadas = [
         example: 'amonestando a todos los hombres, y enseñando a todos los hombres con toda sabiduría (Colosenses 1:28).',
         category: 'logical-relations',
         subcategory: 'coordinadas',
-        keywords: ['y', 'también', 'del mismo modo', 'ninguno', 'ni', 'en realidad', 'en verdad', 'mirad', 'de cierto', 'ahora bien', 'aun']
+        keywords: ['y', 'e', 'también', 'del mismo modo', 'ninguno', 'ni', 'en realidad', 'en verdad', 'mirad', 'de cierto', 'ahora bien', 'aun', 'además', 'asimismo', 'serie', 'series', 'coordinada', 'coordinadas']
     },
     {
         id: 'progresion',
@@ -26,7 +26,7 @@ const coordinadas = [
         example: 'primero la hoja, luego la espiga, y después el grano maduro en la espiga. (Marcos 4:28).',
         category: 'logical-relations',
         subcategory: 'coordinadas',
-        keywords: ['entonces', 'además', 'luego']
+        keywords: ['entonces', 'además', 'luego', 'después', 'primero', 'finalmente', 'progresión', 'progresion', 'progression', 'clímax']
     },
     {
         id: 'alternativa',
@@ -38,7 +38,7 @@ const coordinadas = [
         example: '¿Eres tú el que ha de venir, o esperaremos a otro? (Mateo 11:3).',
         category: 'logical-relations',
         subcategory: 'coordinadas',
-        keywords: ['mientras tanto', 'entre tanto que', 'o', 'pero', 'mas', 'mientras', 'por otro lado']
+        keywords: ['mientras tanto', 'entre tanto que', 'o', 'u', 'pero', 'mas', 'mientras', 'por otro lado', 'bien', 'o bien', 'alternativa', 'alternative']
     }
 ];
 
@@ -54,7 +54,7 @@ const subordinadas = [
         example: 'No temáis, porque he aquí, os traigo buenas nuevas de gran gozo (Lucas 2:10).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['porque', 'por', 'desde que', 'puesto que', 'si', 'por cuanto', 'ya que', 'por causa de', 'pues']
+        keywords: ['porque', 'por', 'desde que', 'puesto que', 'si', 'por cuanto', 'ya que', 'por causa de', 'pues', 'dado que', 'en vista de que', 'fundamento', 'ground', 'razón', 'causa', 'base']
     },
     {
         id: 'inferencia',
@@ -66,7 +66,7 @@ const subordinadas = [
         example: 'No he hallado en El ningún delito digno de muerte; por tanto, le castigaré y le soltaré. (Lucas 23:22).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['por lo tanto', 'pues', 'entonces', 'así que', 'por tanto', 'consecuentemente', 'en consecuencia', 'por eso', 'por consiguiente', 'ahora bien', 'así mismo']
+        keywords: ['por lo tanto', 'pues', 'entonces', 'así que', 'por tanto', 'consecuentemente', 'en consecuencia', 'por eso', 'por consiguiente', 'ahora bien', 'así mismo', 'por lo cual', 'de ahí que', 'inferencia', 'inference', 'conclusión']
     },
     {
         id: 'bilateral',
@@ -78,7 +78,7 @@ const subordinadas = [
         example: 'no pudieron beber las aguas de Mara porque eran amargas; por tanto al lugar le pusieron el nombre de Mara. (Éxodo 15:23).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['por', 'porque', 'por tanto', 'así']
+        keywords: ['por', 'porque', 'por tanto', 'así', 'bilateral', 'puente']
     },
     {
         id: 'accion-resultado',
@@ -90,7 +90,7 @@ const subordinadas = [
         example: 'se desató una gran tormenta en el mar, de modo que las olas cubrían la barca (Mateo 8:24).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['a fin de que', 'que', 'de modo que', 'de tal manera que', 'con el resultado', 'de manera que']
+        keywords: ['a fin de que', 'que', 'de modo que', 'de tal manera que', 'con el resultado', 'de manera que', 'así que', 'resultado', 'consecuencia', 'accion-resultado', 'action-result']
     },
     {
         id: 'accion-proposito',
@@ -102,7 +102,7 @@ const subordinadas = [
         example: 'Esto lo digo para que nadie os engañe (Colosenses 2:4).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['ya que', 'para que', 'para', 'a fin de que', 'con la mira de', 'no sea que']
+        keywords: ['ya que', 'para que', 'para', 'a fin de que', 'con la mira de', 'no sea que', 'con el fin de', 'con el propósito de', 'a fin de', 'propósito', 'proposito', 'purpose', 'meta', 'fin']
     },
     {
         id: 'condicional',
@@ -114,7 +114,7 @@ const subordinadas = [
         example: 'si hubiera algún otro daño, entonces pondrás como castigo vida por vida (Éxodo 21:23).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['si entonces', 'siempre que', 'excepto', 'cualquiera que', 'si']
+        keywords: ['si entonces', 'si...entonces', 'siempre que', 'excepto', 'cualquiera que', 'si', 'a menos que', 'con tal que', 'en caso de que', 'condicional', 'condición', 'conditional']
     },
     {
         id: 'temporal',
@@ -126,7 +126,7 @@ const subordinadas = [
         example: 'Y cuando ayunéis, no pongáis cara triste (Mateo 6:16).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['cuando', 'siempre que sea', 'antes', 'después', 'hasta que', 'mientras', 'entonces', 'ahora', 'al final', 'aun', 'todavía']
+        keywords: ['cuando', 'siempre que sea', 'antes', 'antes que', 'después', 'después que', 'hasta que', 'mientras', 'entonces', 'ahora', 'al final', 'aun', 'todavía', 'desde cuando', 'en cuanto', 'temporal', 'tiempo']
     },
     {
         id: 'locativa',
@@ -138,7 +138,7 @@ const subordinadas = [
         example: 'adonde tú vayas, iré yo (Rut 1:16).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['donde', 'donde sea', 'aquí', 'allí', 'allá', 'dondequiera']
+        keywords: ['donde', 'adonde', 'donde sea', 'aquí', 'allí', 'allá', 'dondequiera', 'en donde', 'locativa', 'lugar', 'locative']
     },
     {
         id: 'accion-manera',
@@ -150,7 +150,7 @@ const subordinadas = [
         example: 'no dejó de dar testimonio de sí mismo, haciendo bien y dándoos lluvias del cielo (Hechos 14:17).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['por', 'por medio', 'en que', 'gerundios', 'haciendo', 'siendo', 'estando']
+        keywords: ['por', 'por medio', 'por medio de', 'mediante', 'en que', 'gerundios', 'haciendo', 'siendo', 'estando', 'orando', 'andando', 'creyendo', 'manera', 'medios', 'manner', 'means']
     },
     {
         id: 'comparacion',
@@ -162,7 +162,7 @@ const subordinadas = [
         example: 'Sed imitadores de mí, como también yo lo soy de Cristo. (1 Corintios 11:1).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['como', 'de la misma forma', 'igualmente', 'así', 'así como', 'incluso como', 'tal como', 'según', 'de la misma manera', 'conforme a', 'así también']
+        keywords: ['como', 'de la misma forma', 'igualmente', 'así', 'así como', 'incluso como', 'tal como', 'según', 'de la misma manera', 'conforme a', 'así también', 'comparación', 'comparacion', 'comparison', 'estándar']
     },
     {
         id: 'negativo-positivo',
@@ -174,7 +174,7 @@ const subordinadas = [
         example: 'no seáis necios, sino entended cuál es la voluntad del Señor. (Efesios 5:17).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['no sino', 'sino', 'pero no']
+        keywords: ['no sino', 'no...sino', 'sino', 'pero no', 'no solamente', 'sino también', 'negativo-positivo', 'contraste']
     },
     {
         id: 'idea-explicacion',
@@ -186,7 +186,7 @@ const subordinadas = [
         example: 'hasta que pereció toda la nación, es decir, los hombres de guerra que salieron de Egipto (Josué 5:6).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['esto es', 'que es', 'que no es', 'que son', 'es decir']
+        keywords: ['esto es', 'que es', 'que no es', 'que son', 'es decir', 'a saber', 'o sea', 'en otras palabras', 'explicación', 'explicacion', 'idea-explicación']
     },
     {
         id: 'pregunta-respuesta',
@@ -198,7 +198,7 @@ const subordinadas = [
         example: '¿qué dice la Escritura? Y creyó Abraham a Dios, y le fue contado por justicia. (Romanos 4:3).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['qué', 'quién', 'cómo', 'cuándo', 'dónde', 'por qué']
+        keywords: ['qué', 'quién', 'cómo', 'cuándo', 'dónde', 'por qué', 'para qué', 'cuál', 'cuánto', 'pregunta', 'respuesta', 'pregunta-respuesta']
     },
     {
         id: 'concesiva',
@@ -210,7 +210,7 @@ const subordinadas = [
         example: 'siempre estaré listo para recordaros estas cosas, aunque vosotros ya las sabéis (2 Pedro 1:12).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['pero', 'pues', 'sino que', 'mas', 'aunque', 'no obstante', 'sin embargo', 'mucho más', 'sino', 'aun', 'ya', 'de otra manera', 'he aquí', 'a pesar de']
+        keywords: ['pero', 'pues', 'sino que', 'mas', 'aunque', 'no obstante', 'sin embargo', 'mucho más', 'sino', 'aun', 'ya', 'de otra manera', 'he aquí', 'a pesar de', 'aun cuando', 'si bien', 'concesiva', 'concessive']
     },
     {
         id: 'situacion-respuesta',
@@ -222,7 +222,7 @@ const subordinadas = [
         example: '¡Cuántas veces quise juntar a tus hijos, como la gallina junta sus pollitos debajo de sus alas, y no quisiste! (Mateo 23:37).',
         category: 'logical-relations',
         subcategory: 'subordinadas',
-        keywords: ['y respuesta inesperada', 'pero respuesta contraria']
+        keywords: ['y respuesta inesperada', 'pero respuesta contraria', 'situación-respuesta', 'situacion-respuesta', 'situation-response']
     }
 ];
 
@@ -239,7 +239,7 @@ const phraseTypes = [
         commonExample: '"La mujer que canta es mi madre", "El hombre quien ayudó fue Pedro"',
         category: 'phrase-types',
         subcategory: 'basic',
-        keywords: ['que', 'quien', 'el cual', 'la cual', 'cuyo', 'donde', 'cuando', 'which', 'who', 'whom', 'what', 'whose', 'that']
+        keywords: ['que', 'quien', 'quienes', 'el cual', 'la cual', 'los cuales', 'las cuales', 'cuyo', 'cuya', 'cuyos', 'cuyas', 'donde', 'cuando', 'which', 'who', 'whom', 'what', 'whose', 'that', 'relativa', 'frase relativa']
     },
     {
         id: 'substantival',
@@ -252,7 +252,7 @@ const phraseTypes = [
         commonExample: '"Que ames a Dios es lo más importante", "No entiendo lo que dices"',
         category: 'phrase-types',
         subcategory: 'basic',
-        keywords: ['lo que', 'el que', 'la que', 'what', 'that']
+        keywords: ['lo que', 'el que', 'la que', 'los que', 'las que', 'what', 'that', 'sustantival', 'sustantiva', 'frase sustantival']
     },
     {
         id: 'genitive',
@@ -265,7 +265,7 @@ const phraseTypes = [
         commonExample: '"El libro de María", "La paz de Dios"',
         category: 'phrase-types',
         subcategory: 'basic',
-        keywords: ['de', 'del', 'de la', 'de los', 'de las', 'of']
+        keywords: ['de', 'del', 'de la', 'de los', 'de las', 'de dios', 'de cristo', 'de fe', 'of', 'genitivo', 'genitiva', 'frase genitiva']
     },
     {
         id: 'prepositional',
@@ -279,10 +279,11 @@ const phraseTypes = [
         category: 'phrase-types',
         subcategory: 'structural',
         keywords: [
-            'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 
+            'a', 'al', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 
             'durante', 'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 
             'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía',
-            'in', 'on', 'at', 'by', 'for', 'with', 'from', 'to'
+            'a través de', 'en cuanto a', 'respecto a', 'acerca de', 'en cristo',
+            'in', 'on', 'at', 'by', 'for', 'with', 'from', 'to', 'preposicional', 'frase preposicional'
         ]
     },
     {
@@ -296,7 +297,7 @@ const phraseTypes = [
         commonExample: '"Los niños, cansados, se durmieron", "Corriendo hacia casa, tropezó"',
         category: 'phrase-types',
         subcategory: 'descriptive',
-        keywords: ['siendo', 'estando', 'habiendo', 'teniendo', 'corriendo', 'caminando', 'hablando', 'viviendo', 'ando', 'iendo', 'ado', 'ido', 'ing']
+        keywords: ['siendo', 'estando', 'habiendo', 'teniendo', 'corriendo', 'caminando', 'hablando', 'viviendo', 'orando', 'dando', 'sabiendo', 'creyendo', 'amado', 'llamado', 'bendecido', 'ando', 'iendo', 'ado', 'ido', 'ing', 'participial', 'participio', 'gerundio']
     },
     {
         id: 'unmarked',
@@ -309,7 +310,7 @@ const phraseTypes = [
         commonExample: '"Mañana temprano, reunión", "Él agotado, ella feliz"',
         category: 'phrase-types',
         subcategory: 'descriptive',
-        keywords: ['yuxtaposición', 'declaración', 'directa']
+        keywords: ['yuxtaposición', 'declaración', 'directa', 'no marcada', 'unmarked']
     },
     {
         id: 'conjunction',
@@ -325,7 +326,7 @@ const phraseTypes = [
         keywords: [
             'y', 'e', 'ni', 'o', 'u', 'pero', 'mas', 'sino', 'que', 
             'aunque', 'porque', 'si', 'cuando', 'mientras', 'pues', 'luego',
-            'and', 'but', 'or', 'that', 'if', 'when', 'while', 'because'
+            'and', 'but', 'or', 'that', 'if', 'when', 'while', 'because', 'conjunción', 'conjuncion'
         ]
     },
     {
@@ -339,7 +340,7 @@ const phraseTypes = [
         commonExample: '"Pedro, apóstol de Jesucristo", "Madrid, capital de España"',
         category: 'phrase-types',
         subcategory: 'descriptive',
-        keywords: ['hijo de', 'apóstol de', 'rey de', 'ciudad de', 'presidente de', 'capital de']
+        keywords: ['hijo de', 'apóstol de', 'rey de', 'ciudad de', 'presidente de', 'capital de', 'siervo de', 'aposicional', 'aposición', 'aposicion']
     },
     {
         id: 'infinitive',
@@ -352,7 +353,7 @@ const phraseTypes = [
         commonExample: '"No temas tomar a María", "Salió a buscar ayuda"',
         category: 'phrase-types',
         subcategory: 'structural',
-        keywords: ['para', 'a', 'tomar', 'hacer', 'ser', 'estar', 'ir', 'venir', 'to', 'ar', 'er', 'ir']
+        keywords: ['para', 'a', 'tomar', 'hacer', 'ser', 'estar', 'ir', 'venir', 'amar', 'vivir', 'creer', 'saber', 'to', 'ar', 'er', 'ir', 'infinitiva', 'infinitivo']
     },
     {
         id: 'adverbial',
@@ -365,7 +366,7 @@ const phraseTypes = [
         commonExample: '"Habló claramente", "Muy importante", "Bastante difícil"',
         category: 'phrase-types',
         subcategory: 'descriptive',
-        keywords: ['rápidamente', 'cuidadosamente', 'fielmente', 'inmediatamente', 'claramente', 'muy', 'bastante', 'entonces', 'aquí', 'allí', 'mente']
+        keywords: ['rápidamente', 'cuidadosamente', 'fielmente', 'inmediatamente', 'claramente', 'siempre', 'hoy', 'muy', 'bastante', 'entonces', 'aquí', 'allí', 'mente', 'adverbial', 'adverbio']
     },
     {
         id: 'exclamatory',
@@ -378,7 +379,7 @@ const phraseTypes = [
         commonExample: '"¡Qué grande es Dios!", "¡Cuán misericordioso!", "¡Cómo ama!"',
         category: 'phrase-types',
         subcategory: 'emphatic',
-        keywords: ['qué', 'cuán', 'cómo', 'quién', 'cuánto', 'cuánta', 'cuántos', 'cuántas']
+        keywords: ['qué', 'cuán', 'cómo', 'quién', 'cuánto', 'cuánta', 'cuántos', 'cuántas', 'ay', 'exclamativa', 'interjección']
     },
     {
         id: 'vocative',
@@ -391,51 +392,52 @@ const phraseTypes = [
         commonExample: '"Padre nuestro", "Oh Dios", "Señor Jesús"',
         category: 'phrase-types',
         subcategory: 'emphatic',
-        keywords: ['oh', 'señor', 'padre', 'dios', 'jesús', 'cristo', 'maestro']
+        keywords: ['oh', 'señor', 'padre', 'dios', 'jesús', 'cristo', 'maestro', 'hermanos', 'amados', 'vocativa', 'vocativo']
     }
 ];
 
 // 4. PREPOSICIONES GRIEGAS
 const greekPrepositions = [
-    { id: 'ana', title: 'ἀνά (ana)', icon: 'Ascendente', greekText: 'ἀνά', latinEquivalent: 'per, super', basicMeaning: 'De abajo arriba', withAccusative: 'Hacia arriba, durante (distributivo)', withGenitive: 'No se usa comúnmente', biblicalExamples: 'ἀνὰ μέσον (en medio de)', function: 'Expresa movimiento ascendente o distribución', category: 'prepositions', keywords: ['ana', 'ἀνά'] },
-    { id: 'eis', title: 'εἰς (eis)', icon: 'Hacia', greekText: 'εἰς', latinEquivalent: 'in (+ ac.)', basicMeaning: 'Hacia dentro', withAccusative: 'A, adentro, hacia (dirección)', withGenitive: 'No se usa', biblicalExamples: 'εἰς τὸν οὐρανόν', function: 'Indica dirección hacia el interior', category: 'prepositions', keywords: ['eis', 'εἰς'] },
-    { id: 'anti', title: 'ἀντί (anti)', icon: 'Intercambio', greekText: 'ἀντί', latinEquivalent: 'contra, pro', basicMeaning: 'Frente a / en lugar de', withAccusative: 'No se usa comúnmente', withGenitive: 'En vez de, en lugar de, por', biblicalExamples: 'ἀντὶ τούτων', function: 'Expresa substitución o intercambio', category: 'prepositions', keywords: ['anti', 'ἀντί'] },
-    { id: 'apo', title: 'ἀπό (apo)', icon: 'Alejamiento', greekText: 'ἀπό', latinEquivalent: 'a, ab', basicMeaning: 'Alejamiento', withAccusative: 'No se usa', withGenitive: 'De, desde, lejos de', biblicalExamples: 'ἀπὸ τῶν οὐρανῶν', function: 'Indica origen o separación', category: 'prepositions', keywords: ['apo', 'ἀπό'] },
-    { id: 'ek', title: 'ἐκ / ἐξ (ek/ex)', icon: 'Salida', greekText: 'ἐκ / ἐξ', latinEquivalent: 'ex, e', basicMeaning: 'Salida', withAccusative: 'No se usa', withGenitive: 'De, de dentro, fuera de', biblicalExamples: 'ἐκ τῆς καρδίας', function: 'Expresa salida del interior o origen', category: 'prepositions', keywords: ['ek', 'ex', 'ἐκ', 'ἐξ'] },
-    { id: 'pro', title: 'πρό (pro)', icon: 'Precedencia', greekText: 'πρό', latinEquivalent: 'pro, prae', basicMeaning: 'Delante, preferencia', withAccusative: 'No se usa comúnmente', withGenitive: 'Ante, antes de, en pro de', biblicalExamples: 'πρὸ τῶν αἰώνων', function: 'Indica anterioridad temporal o espacial', category: 'prepositions', keywords: ['pro', 'πρό'] },
-    { id: 'en', title: 'ἐν (en)', icon: 'Interior', greekText: 'ἐν', latinEquivalent: 'in (+ ab.)', basicMeaning: 'Dentro, en el interior', withAccusative: 'No se usa', withGenitive: 'No se usa', withDative: 'En, dentro de, por medio de', biblicalExamples: 'ἐν τῷ κόσμῳ', function: 'Indica ubicación interior o instrumento', category: 'prepositions', keywords: ['en', 'ἐν'] },
-    { id: 'syn', title: 'σύν (syn)', icon: 'Compañía', greekText: 'σύν', latinEquivalent: 'cum', basicMeaning: 'Compañía', withAccusative: 'No se usa', withGenitive: 'No se usa', withDative: 'Con, junto con', biblicalExamples: 'σὺν αὐτῷ', function: 'Expresa compañía o asociación', category: 'prepositions', keywords: ['syn', 'σύν'] },
-    { id: 'dia', title: 'διά (dia)', icon: 'Atravesar', greekText: 'διά', latinEquivalent: 'per, di-, dis-', basicMeaning: 'Por entre, a través de', withAccusative: 'Por (causa de)', withGenitive: 'Por, a través de, por medio de', biblicalExamples: 'διὰ τοῦτο, διὰ τῆς πίστεως', function: 'Indica medio, causa o paso a través', category: 'prepositions', keywords: ['dia', 'διά'] },
-    { id: 'kata', title: 'κατά (kata)', icon: 'Descendente', greekText: 'κατά', latinEquivalent: 'per, ad, secundum', basicMeaning: 'De arriba abajo', withAccusative: 'Hacia abajo, según', withGenitive: 'De (arriba abajo), contra', biblicalExamples: 'κατὰ σάρκα', function: 'Expresa conformidad o oposición', category: 'prepositions', keywords: ['kata', 'κατά'] },
-    { id: 'hyper', title: 'ὑπέρ (hyper)', icon: 'Superior', greekText: 'ὑπέρ', latinEquivalent: 'super', basicMeaning: 'Sobre, encima de', withAccusative: 'Más (allá) de', withGenitive: 'Sobre, a favor de, en nombre de', biblicalExamples: 'ὑπὲρ ἡμῶν', function: 'Indica superioridad o representación', category: 'prepositions', keywords: ['hyper', 'ὑπέρ'] },
-    { id: 'meta', title: 'μετά (meta)', icon: 'Entre', greekText: 'μετά', latinEquivalent: 'inter, cum, post, trans', basicMeaning: 'En medio de, entre', withAccusative: 'Después de', withGenitive: 'Con, en medio de', biblicalExamples: 'μετὰ ταῦτα, μεθ᾽ αὐτοῦ', function: 'Expresa compañía o posterioridad', category: 'prepositions', keywords: ['meta', 'μετά'] },
-    { id: 'epi', title: 'ἐπί (epi)', icon: 'Encima', greekText: 'ἐπί', latinEquivalent: 'in, super', basicMeaning: 'Sobre, encima', withAccusative: 'A, hacia; por, contra', withGenitive: 'Sobre, a, en (tiempo)', withDative: 'Sobre, en, junto a', biblicalExamples: 'ἐπὶ τῆς γῆς', function: 'Indica posición superior o dirección', category: 'prepositions', keywords: ['epi', 'ἐπί'] },
-    { id: 'para', title: 'παρά (para)', icon: 'AlLado', greekText: 'παρά', latinEquivalent: 'apud, ad', basicMeaning: 'Al lado', withAccusative: 'A, hacia, a lo largo de', withGenitive: 'De parte de', withDative: 'Junto a, al lado de', biblicalExamples: 'παρὰ θεοῦ', function: 'Indica proximidad o origen', category: 'prepositions', keywords: ['para', 'παρά'] },
-    { id: 'pros', title: 'πρός (pros)', icon: 'Presencia', greekText: 'πρός', latinEquivalent: 'ad', basicMeaning: 'En presencia de, junto a', withAccusative: 'A, hacia, contra, para', withGenitive: 'No se usa comúnmente', withDative: 'De lado de, de parte de', biblicalExamples: 'πρὸς τὸν θεόν', function: 'Indica dirección o relación', category: 'prepositions', keywords: ['pros', 'πρός'] },
-    { id: 'hypo', title: 'ὑπό (hypo)', icon: 'Debajo', greekText: 'ὑπό', latinEquivalent: 'sub', basicMeaning: 'Debajo de', withAccusative: 'Bajo, hacia', withGenitive: 'Bajo, por (agente)', biblicalExamples: 'ὑπὸ τὸν οὐρανόν', function: 'Indica posición inferior o agente', category: 'prepositions', keywords: ['hypo', 'ὑπό'] }
+    { id: 'ana', title: 'ἀνά (ana)', icon: 'Ascendente', greekText: 'ἀνά', latinEquivalent: 'per, super', basicMeaning: 'De abajo arriba', withAccusative: 'Hacia arriba, durante (distributivo)', withGenitive: 'No se usa comúnmente', biblicalExamples: 'ἀνὰ μέσον (en medio de)', function: 'Expresa movimiento ascendente o distribución', category: 'prepositions', keywords: ['ana', 'ἀνά', 'en medio de'] },
+    { id: 'eis', title: 'εἰς (eis)', icon: 'Hacia', greekText: 'εἰς', latinEquivalent: 'in (+ ac.)', basicMeaning: 'Hacia dentro', withAccusative: 'A, adentro, hacia (dirección)', withGenitive: 'No se usa', biblicalExamples: 'εἰς τὸν οὐρανόν', function: 'Indica dirección hacia el interior', category: 'prepositions', keywords: ['eis', 'εἰς', 'hacia', 'a', 'adentro'] },
+    { id: 'anti', title: 'ἀντί (anti)', icon: 'Intercambio', greekText: 'ἀντί', latinEquivalent: 'contra, pro', basicMeaning: 'Frente a / en lugar de', withAccusative: 'No se usa comúnmente', withGenitive: 'En vez de, en lugar de, por', biblicalExamples: 'ἀντὶ τούτων', function: 'Expresa substitución o intercambio', category: 'prepositions', keywords: ['anti', 'ἀντί', 'en lugar de', 'en vez de'] },
+    { id: 'apo', title: 'ἀπό (apo)', icon: 'Alejamiento', greekText: 'ἀπό', latinEquivalent: 'a, ab', basicMeaning: 'Alejamiento', withAccusative: 'No se usa', withGenitive: 'De, desde, lejos de', biblicalExamples: 'ἀπὸ τῶν οὐρανῶν', function: 'Indica origen o separación', category: 'prepositions', keywords: ['apo', 'ἀπό', 'desde', 'lejos de'] },
+    { id: 'ek', title: 'ἐκ / ἐξ (ek/ex)', icon: 'Salida', greekText: 'ἐκ / ἐξ', latinEquivalent: 'ex, e', basicMeaning: 'Salida', withAccusative: 'No se usa', withGenitive: 'De, de dentro, fuera de', biblicalExamples: 'ἐκ τῆς καρδίας', function: 'Expresa salida del interior o origen', category: 'prepositions', keywords: ['ek', 'ex', 'ἐκ', 'ἐξ', 'fuera de', 'de dentro'] },
+    { id: 'pro', title: 'πρό (pro)', icon: 'Precedencia', greekText: 'πρό', latinEquivalent: 'pro, prae', basicMeaning: 'Delante, preferencia', withAccusative: 'No se usa comúnmente', withGenitive: 'Ante, antes de, en pro de', biblicalExamples: 'πρὸ τῶν αἰώνων', function: 'Indica anterioridad temporal o espacial', category: 'prepositions', keywords: ['pro', 'πρό', 'antes de', 'ante'] },
+    { id: 'en', title: 'ἐν (en)', icon: 'Interior', greekText: 'ἐν', latinEquivalent: 'in (+ ab.)', basicMeaning: 'Dentro, en el interior', withAccusative: 'No se usa', withGenitive: 'No se usa', withDative: 'En, dentro de, por medio de', biblicalExamples: 'ἐν τῷ κόσμῳ', function: 'Indica ubicación interior o instrumento', category: 'prepositions', keywords: ['en', 'ἐν', 'dentro de'] },
+    { id: 'syn', title: 'σύν (syn)', icon: 'Compañía', greekText: 'σύν', latinEquivalent: 'cum', basicMeaning: 'Compañía', withAccusative: 'No se usa', withGenitive: 'No se usa', withDative: 'Con, junto con', biblicalExamples: 'σὺν αὐτῷ', function: 'Expresa compañía o asociación', category: 'prepositions', keywords: ['syn', 'σύν', 'con', 'junto con'] },
+    { id: 'dia', title: 'διά (dia)', icon: 'Atravesar', greekText: 'διά', latinEquivalent: 'per, di-, dis-', basicMeaning: 'Por entre, a través de', withAccusative: 'Por (causa de)', withGenitive: 'Por, a través de, por medio de', biblicalExamples: 'διὰ τοῦτο, διὰ τῆς πίστεως', function: 'Indica medio, causa o paso a través', category: 'prepositions', keywords: ['dia', 'διά', 'a través de', 'por medio de', 'por causa de'] },
+    { id: 'kata', title: 'κατά (kata)', icon: 'Descendente', greekText: 'κατά', latinEquivalent: 'per, ad, secundum', basicMeaning: 'De arriba abajo', withAccusative: 'Hacia abajo, según', withGenitive: 'De (arriba abajo), contra', biblicalExamples: 'κατὰ σάρκα', function: 'Expresa conformidad o oposición', category: 'prepositions', keywords: ['kata', 'κατά', 'según', 'conforme a', 'contra'] },
+    { id: 'hyper', title: 'ὑπέρ (hyper)', icon: 'Superior', greekText: 'ὑπέρ', latinEquivalent: 'super', basicMeaning: 'Sobre, encima de', withAccusative: 'Más (allá) de', withGenitive: 'Sobre, a favor de, en nombre de', biblicalExamples: 'ὑπὲρ ἡμῶν', function: 'Indica superioridad o representación', category: 'prepositions', keywords: ['hyper', 'ὑπέρ', 'a favor de', 'en nombre de'] },
+    { id: 'meta', title: 'μετά (meta)', icon: 'Entre', greekText: 'μετά', latinEquivalent: 'inter, cum, post, trans', basicMeaning: 'En medio de, entre', withAccusative: 'Después de', withGenitive: 'Con, en medio de', biblicalExamples: 'μετὰ ταῦτα, μεθ᾽ αὐτοῦ', function: 'Expresa compañía o posterioridad', category: 'prepositions', keywords: ['meta', 'μετά', 'después de', 'entre'] },
+    { id: 'epi', title: 'ἐπί (epi)', icon: 'Encima', greekText: 'ἐπί', latinEquivalent: 'in, super', basicMeaning: 'Sobre, encima', withAccusative: 'A, hacia; por, contra', withGenitive: 'Sobre, a, en (tiempo)', withDative: 'Sobre, en, junto a', biblicalExamples: 'ἐπὶ τῆς γῆς', function: 'Indica posición superior o dirección', category: 'prepositions', keywords: ['epi', 'ἐπί', 'sobre', 'encima'] },
+    { id: 'para', title: 'παρά (para)', icon: 'AlLado', greekText: 'παρά', latinEquivalent: 'apud, ad', basicMeaning: 'Al lado', withAccusative: 'A, hacia, a lo largo de', withGenitive: 'De parte de', withDative: 'Junto a, al lado de', biblicalExamples: 'παρὰ θεοῦ', function: 'Indica proximidad o origen', category: 'prepositions', keywords: ['para', 'παρά', 'de parte de', 'al lado de'] },
+    { id: 'pros', title: 'πρός (pros)', icon: 'Presencia', greekText: 'πρός', latinEquivalent: 'ad', basicMeaning: 'En presencia de, junto a', withAccusative: 'A, hacia, contra, para', withGenitive: 'No se usa comúnmente', withDative: 'De lado de, de parte de', biblicalExamples: 'πρὸς τὸν θεόν', function: 'Indica dirección o relación', category: 'prepositions', keywords: ['pros', 'πρός', 'hacia', 'junto a'] },
+    { id: 'hypo', title: 'ὑπό (hypo)', icon: 'Debajo', greekText: 'ὑπό', latinEquivalent: 'sub', basicMeaning: 'Debajo de', withAccusative: 'Bajo, hacia', withGenitive: 'Bajo, por (agente)', biblicalExamples: 'ὑπὸ τὸν οὐρανόν', function: 'Indica posición inferior o agente', category: 'prepositions', keywords: ['hypo', 'ὑπό', 'bajo', 'debajo de'] }
 ];
 
 // 5. EXPRESIONES GRAMATICALES
 const grammaticalExpressions = [
-    { id: 'para_siempre', title: 'para siempre', icon: 'Temporal', expression: 'para siempre', morphology: 'Locución adverbial de tiempo.', function: 'Expresa tiempo indefinido.', example: 'Tu misericordia es "para siempre"', importance: 'Indica duración.', category: 'expressions', keywords: ['para siempre'] },
-    { id: 'ciertamente', title: 'ciertamente', icon: 'Afirmación', expression: 'ciertamente', morphology: 'Adverbio de afirmación.', function: 'Refuerza veracidad.', example: '"Ciertamente" llevaré tu carga', importance: 'Intensifica.', category: 'expressions', keywords: ['ciertamente'] },
-    { id: 'siendo', title: 'siendo', icon: 'Gerundio', expression: 'siendo', morphology: 'Gerundio de "ser".', function: 'Marca proceso.', example: 'Noé, "siendo" advertido…', importance: 'Forma no personal.', category: 'expressions', keywords: ['siendo'] },
-    { id: 'advertido', title: 'advertido', icon: 'Participio', expression: 'advertido', morphology: 'Participio de "advertir".', function: 'Voz pasiva / adjetivo.', example: '"Advertido" por Dios', importance: 'Pasiva progresiva.', category: 'expressions', keywords: ['advertido'] },
-    { id: 'he_aqui', title: 'he aquí', icon: 'Enfático', expression: 'he aquí', morphology: 'Locución presentativa.', function: 'Introduce anuncio.', example: '"He aquí" yo estoy con vosotros', importance: 'Marcador de atención.', category: 'expressions', keywords: ['he aquí'] },
-    { id: 'por_tanto', title: 'por tanto', icon: 'Conclusión', expression: 'por tanto', morphology: 'Locución consecutiva.', function: 'Introduce conclusión.', example: '"Por tanto", id y haced discípulos', importance: 'Nexo lógico.', category: 'expressions', keywords: ['por tanto'] }
+    { id: 'para_siempre', title: 'para siempre', icon: 'Temporal', expression: 'para siempre', morphology: 'Locución adverbial de tiempo.', function: 'Expresa tiempo indefinido.', example: 'Tu misericordia es "para siempre"', importance: 'Indica duración.', category: 'expressions', keywords: ['para siempre', 'eternamente', 'por los siglos'] },
+    { id: 'ciertamente', title: 'ciertamente', icon: 'Afirmación', expression: 'ciertamente', morphology: 'Adverbio de afirmación.', function: 'Refuerza veracidad.', example: '"Ciertamente" llevaré tu carga', importance: 'Intensifica.', category: 'expressions', keywords: ['ciertamente', 'de cierto', 'en verdad', 'amén'] },
+    { id: 'siendo', title: 'siendo', icon: 'Gerundio', expression: 'siendo', morphology: 'Gerundio de "ser".', function: 'Marca proceso.', example: 'Noé, "siendo" advertido…', importance: 'Forma no personal.', category: 'expressions', keywords: ['siendo', 'estando', 'habiendo'] },
+    { id: 'advertido', title: 'advertido', icon: 'Participio', expression: 'advertido', morphology: 'Participio de "advertir".', function: 'Voz pasiva / adjetivo.', example: '"Advertido" por Dios', importance: 'Pasiva progresiva.', category: 'expressions', keywords: ['advertido', 'justificados', 'llamados', 'santificados'] },
+    { id: 'he_aqui', title: 'he aquí', icon: 'Enfático', expression: 'he aquí', morphology: 'Locución presentativa.', function: 'Introduce anuncio.', example: '"He aquí" yo estoy con vosotros', importance: 'Marcador de atención.', category: 'expressions', keywords: ['he aquí', 'he ahí', 'mirad'] },
+    { id: 'por_tanto', title: 'por tanto', icon: 'Conclusión', expression: 'por tanto', morphology: 'Locución consecutiva.', function: 'Introduce conclusión.', example: '"Por tanto", id y haced discípulos', importance: 'Nexo lógico.', category: 'expressions', keywords: ['por tanto', 'por lo tanto', 'así que', 'por consiguiente'] }
 ];
 
-// 6. MORFOLOGÍA ESPAÑOLA (9 Categorías Cromáticas Biblearc)
+// 6. MORFOLOGÍA ESPAÑOLA (Complementada con categorías clave de tu paleta)
 const morfologiaEspanola = [
-    { id: 'sustantivo', title: 'Sustantivo', icon: '🔴', description: 'Nombra personas, lugares, cosas o conceptos.', indicators: 'Dios, luz, Juan, amor, mundo', function: 'Los Actores y Objetos del texto.', category: 'morphology', keywords: ['dios', 'luz', 'juan', 'amor', 'mundo', 'pecado', 'verdad'] },
-    { id: 'verbo', title: 'Verbo', icon: '🟢', description: 'Son las acciones, movimientos o estados.', indicators: 'amó, andamos, dijo, es', function: 'Los Motores. Lo que está pasando.', category: 'morphology', keywords: ['amó', 'andamos', 'dijo', 'es', 'visto', 'limpiar', 'hacer'] },
-    { id: 'pronombre', title: 'Pronombre', icon: '🟣', description: 'Sustituye al sustantivo para no repetir su nombre.', indicators: 'él, nosotros, lo, le, te, nos', function: 'Los Dobles de Acción.', category: 'morphology', keywords: ['él', 'nosotros', 'vosotros', 'lo', 'le', 'te', 'nos', 'ellos', 'ellas', 'yo', 'tú', 'me', 'quien', 'cual'] },
-    { id: 'determinante', title: 'Determinante', icon: '🟠', description: 'Acompaña al sustantivo para presentarlo o indicar posesión.', indicators: 'el, la, los, las, un, este, su', function: 'Los Señaladores.', category: 'morphology', keywords: ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'este', 'esta', 'estos', 'estas', 'ese', 'esa', 'esos', 'esas', 'aquel', 'aquella', 'nuestro', 'nuestra', 'su', 'sus', 'mi', 'mis', 'tu', 'tus', 'toda', 'todo'] },
-    { id: 'preposicion_esp', title: 'Preposición', icon: '🟡', description: 'Une a otras palabras indicando posición, dirección, causa.', indicators: 'en, de, por, para, con, a', function: 'Los Puentes.', category: 'morphology', keywords: ['en', 'de', 'por', 'para', 'con', 'a', 'desde', 'hacia', 'hasta', 'sin', 'sobre', 'tras'] },
-    { id: 'adjetivo', title: 'Adjetivo', icon: '🩷', description: 'Palabras que califican o dicen "cómo es" un sustantivo.', indicators: 'eterna, santo, fiel, justo', function: 'Los Decoradores.', category: 'morphology', keywords: ['eterna', 'santo', 'alguna', 'fiel', 'justo', 'verdadero', 'bueno', 'malo', 'grande', 'pequeño'] },
-    { id: 'adverbio_conector', title: 'Conector / Adverbio', icon: '🩶', description: 'Unen ideas o modifican intensidad/negación de verbos.', indicators: 'y, pero, porque, si, mas, no', function: 'Bisagras y Lupas.', category: 'morphology', keywords: ['y', 'pero', 'porque', 'si', 'mas', 'no', 'también', 'hoy', 'nunca', 'jamás', 'siempre', 'entonces', 'luego', 'así'] },
-    { id: 'genitivo_esp', title: 'Genitivo / Relativo', icon: '🔵', description: 'Indican pertenencia o abren frases descriptivas (el cual).', indicators: 'de vida, el cual, lo que', function: 'Posesivos y Enganches.', category: 'morphology', keywords: ['de vida', 'el cual', 'la cual', 'los cuales', 'las cuales', 'lo que', 'cuyo', 'cuya'] },
-    { id: 'secundario', title: 'Secundario', icon: '🔮', description: 'Partículas menores o relleno gramatical.', indicators: 'oh, ay, amén', function: 'Los Extras.', category: 'morphology', keywords: ['oh', 'ay', 'amén', 'ea', 'uf'] }
+    { id: 'sust_general', title: 'Sustantivo (🔴 Rojo)', icon: '🔴', description: 'Nombra personas, lugares, objetos o conceptos abstractos (actores de la proposición).', indicators: 'Dios, Cristo, Jesús, Espíritu, fe, gracia, amor, mundo, pecado, verdad, iglesia, luz', function: 'Sujeto, objeto directo, objeto indirecto o término de preposición.', category: 'morphology', keywords: ['sustantivo', 'sustantivos', 'nombre', 'dios', 'cristo', 'jesús', 'espíritu', 'fe', 'gracia', 'amor', 'mundo', 'pecado', 'verdad', 'iglesia', 'luz', 'vida', 'evangelio'] },
+    { id: 'verbo_general', title: 'Verbo (🟢 Verde)', icon: '🟢', description: 'Expresa acción, proceso o estado (núcleo del predicado y motor de la proposición).', indicators: 'amó, dio, es, son, fue, creer, andar, salvar, orar, vivir, ser, estar', function: 'Núcleo verbal de la proposición (Indicativo, Imperativo, Subjuntivo, Infinitivo, Participio).', category: 'morphology', keywords: ['verbo', 'verbos', 'acción', 'acciones', 'indicativo', 'imperativo', 'subjuntivo', 'amó', 'dio', 'es', 'son', 'fue', 'creer', 'andar', 'salvar', 'orar', 'vivir', 'ser', 'estar'] },
+    { id: 'pron_personal', title: 'Pronombre Personal (🟣 Morado)', icon: '👤', description: 'Sustituye al sujeto u objeto para rastrear actores en el argumento.', indicators: 'yo, tú, él, ella, nosotros, vosotros, ellos, me, te, se, le, les, nos, os, lo, la', function: 'Núcleo del sujeto u objeto.', category: 'morphology', keywords: ['pronombre', 'pronombres', 'yo', 'tú', 'él', 'ella', 'nosotros', 'vosotros', 'ellos', 'me', 'te', 'le', 'les', 'se', 'nos', 'os', 'lo', 'la'] },
+    { id: 'pron_relativo', title: 'Pronombre Relativo (🟣 Morado)', icon: '🔗', description: 'Se refiere a un antecedente e introduce una frase relativa.', indicators: 'que, cual, el cual, la cual, quien, quienes, cuyo', function: 'Introduce subordinada adjetiva / relativa.', category: 'morphology', keywords: ['que', 'cual', 'quien', 'quienes', 'cuyo', 'el cual', 'la cual', 'los cuales'] },
+    { id: 'det_articulo', title: 'Determinante / Artículo (🟠 Naranja)', icon: '🟠', description: 'Acompaña al sustantivo para especificarlo, cuantificarlo o indicar posesión.', indicators: 'el, la, los, las, un, una, unos, unas, este, ese, aquel, todo, cada, mi, tu, su, nuestro, vuestro', function: 'Presenta y delimita al sustantivo (en griego marca definición o cualidad).', category: 'morphology', keywords: ['determinante', 'determinantes', 'artículo', 'artículos', 'articulo', 'articulos', 'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'este', 'esta', 'ese', 'aquel', 'todo', 'toda', 'todos', 'todas', 'cada', 'mi', 'tu', 'su', 'sus', 'nuestro', 'nuestra', 'vuestro', 'vuestra'] },
+    { id: 'adv_negacion', title: 'Adverbio de Negación / Modo (🩶 Gris)', icon: '🚫', description: 'Niega o modifica la acción del verbo, un adjetivo u otro adverbio.', indicators: 'no, nunca, jamás, tampoco, ciertamente, siempre, hoy, así, muy', function: 'Modifica el verbo (en griego οὐ = negación objetiva, μή = negación subjetiva).', category: 'morphology', keywords: ['adverbio', 'adverbios', 'negación', 'no', 'nunca', 'jamás', 'tampoco', 'siempre', 'hoy', 'así', 'muy', 'bien', 'mal'] },
+    { id: 'adj_calificativo', title: 'Adjetivo (🩷 Rosado)', icon: '🎨', description: 'Expresa cualidades o atributos que califican al sustantivo.', indicators: 'santo, justo, grande, bueno, malo, fiel, verdadero, eterno, eterna', function: 'Modifica al sustantivo (uso atributivo o predicativo).', category: 'morphology', keywords: ['adjetivo', 'adjetivos', 'santo', 'santa', 'santos', 'justo', 'grande', 'bueno', 'buen', 'malo', 'fiel', 'fieles', 'verdadero', 'eterno', 'eterna'] },
+    { id: 'preposicion_esp', title: 'Preposición (🟡 Amarillo)', icon: '🟡', description: 'Une a otras palabras indicando posición, dirección, tiempo, medio o causa.', indicators: 'en, de, por, para, con, a, desde, hacia, hasta, sin, sobre, tras', function: 'Los Puentes de relación sintáctica.', category: 'morphology', keywords: ['preposición', 'preposicion', 'preposiciones', 'en', 'de', 'por', 'para', 'con', 'a', 'desde', 'hacia', 'hasta', 'sin', 'sobre', 'tras'] },
+    { id: 'genitivo_esp', title: 'Genitivo / Relativo (🔵 Azul)', icon: '🔵', description: 'Indican pertenencia, origen o relación ("de...") o abren cláusulas descriptivas.', indicators: 'de Dios, de vida, el cual, la cual, lo que, cuyo', function: 'Posesivos y Enganches descriptivos.', category: 'morphology', keywords: ['genitivo', 'genitivos', 'de vida', 'de dios', 'el cual', 'la cual', 'los cuales', 'las cuales', 'lo que', 'cuyo', 'cuya'] },
+    { id: 'secundario', title: 'Secundario (🔮 Lila)', icon: '🔮', description: 'Numerales significativos, partículas menores o expresiones enfáticas.', indicators: 'oh, ay, amén, siete, doce, he aquí', function: 'Los Especiales / Extras.', category: 'morphology', keywords: ['secundario', 'secundarios', 'oh', 'ay', 'amén', 'amen', 'ea', 'siete', 'doce'] }
 ];
 
 // =============================================================================
@@ -490,17 +492,15 @@ function renderIdentification(matches) {
             } else if (match.category === 'prepositions') {
                 colorClass = 'match-phrase-preposicional';
             } else if (match.category === 'morphology') {
-                switch(match.id) {
-                    case 'sustantivo': colorClass = 'match-phrase-sustantival'; break;
-                    case 'verbo': colorClass = 'match-phrase-infinitiva'; break;
-                    case 'pronombre': colorClass = 'match-phrase-relativa'; break;
-                    case 'determinante': colorClass = 'match-phrase-exclamatory'; break;
-                    case 'preposicion_esp': colorClass = 'match-phrase-preposicional'; break;
-                    case 'adjetivo': colorClass = 'match-phrase-adjetival'; break;
-                    case 'adverbio_conector': colorClass = 'match-phrase-adverbial'; break;
-                    case 'genitivo_esp': colorClass = 'match-phrase-genitiva'; break;
-                    case 'secundario': colorClass = 'match-phrase-secundario'; break; // Requerirá un pequeño fix en CSS si es necesario
-                }
+                if (match.id.startsWith('sust_')) colorClass = 'match-phrase-sustantival';
+                else if (match.id.startsWith('verbo_')) colorClass = 'match-phrase-infinitiva';
+                else if (match.id.startsWith('det_')) colorClass = 'match-phrase-vocative';
+                else if (match.id.startsWith('pron_')) colorClass = 'match-phrase-relativa';
+                else if (match.id.startsWith('adj_')) colorClass = 'match-phrase-adjetival';
+                else if (match.id.startsWith('adv_')) colorClass = 'match-phrase-adverbial';
+                else if (match.id === 'preposicion_esp') colorClass = 'match-phrase-preposicional';
+                else if (match.id === 'genitivo_esp') colorClass = 'match-phrase-genitiva';
+                else if (match.id === 'secundario') colorClass = 'match-phrase-secundario';
             }
 
             const annTag = annotation ? `<div class="phrase-annotation ann-${match.id || 'default'}">${annotation}</div>` : '';

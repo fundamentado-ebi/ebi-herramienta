@@ -206,3 +206,101 @@ body {
                 padding-right: 0;
             }
         }
+
+        /* Galería colapsable de capturas de referencia de los 7 Lentes */
+        .lenses-gallery-details {
+            margin-top: 28px;
+            background: #f8f9fa;
+            border: 1px solid #dce4ec;
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        .lenses-gallery-details > summary {
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.08em;
+            color: #1e3c72;
+            user-select: none;
+        }
+        .lenses-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 20px;
+        }
+        .lens-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+        .lens-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .lens-number {
+            background: #e67e22;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .lens-header h3 {
+            margin: 0;
+            font-size: 1.15em;
+            color: #fff;
+        }
+        .lens-content {
+            padding: 18px;
+        }
+        .lens-image {
+            margin-bottom: 14px;
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px dashed #dcdde1;
+        }
+        .lens-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 420px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+        .lens-text {
+            font-size: 0.98em;
+            color: #555;
+            line-height: 1.65;
+        }
+        .lens-text strong {
+            color: #2c3e50;
+            background: #fdf2e9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        @media (min-width: 768px) {
+            .lens-content {
+                display: flex;
+                align-items: center;
+                gap: 24px;
+            }
+            .lens-image {
+                flex: 0 0 55%;
+                margin-bottom: 0;
+            }
+            .lens-text {
+                flex: 1;
+            }
+        }
+

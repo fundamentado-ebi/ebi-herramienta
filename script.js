@@ -1,16 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
-        const navLinks = document.querySelectorAll('.nav-btn');
         const sections = document.querySelectorAll('.section');
 
-        // INYECCIÓN AISLADA DEL IFRAME MARKUP
-        // Esto asegura que tu código se renderice tal cual, sin heredar CSS externo
-        const rawHTML = document.getElementById('markup-raw-content').textContent;
+        // INYECCIÓN AISLADA DEL IFRAME MARKUP (Desde <template> autocontenido)
+        const tplMarkup = document.getElementById('markup-raw-content');
         const iframe = document.getElementById('markup-iframe');
-        if (iframe) {
+        if (tplMarkup && iframe) {
+            const rawHTML = tplMarkup.innerHTML;
             const doc = iframe.contentWindow.document;
             doc.open();
             doc.write(rawHTML);
             doc.close();
+            const adjustIframeHeight = () => {
+                try {
+                    const h = Math.max(doc.documentElement.scrollHeight || 0, doc.body ? doc.body.scrollHeight : 0);
+                    if (h > 400) iframe.style.height = (h + 40) + 'px';
+                } catch (e) {}
+            };
+            iframe.onload = () => {
+                adjustIframeHeight();
+                try {
+                    doc.addEventListener('toggle', () => setTimeout(adjustIframeHeight, 60), true);
+                    if (typeof ResizeObserver !== 'undefined' && doc.body) {
+                        new ResizeObserver(adjustIframeHeight).observe(doc.body);
+                    }
+                } catch (e) {}
+            };
+        }
+
+        // Inicializar componentes interactivos de Sub-pestaña 1.5 (Explicación Markup)
+        if (typeof initExplicacionMarkup === 'function') {
+            initExplicacionMarkup();
         }
 
         // 1. Ocultar todas excepto Paso 1
@@ -18,44 +37,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstSection = document.getElementById('paso1');
         if (firstSection) firstSection.style.display = 'block';
 
-        // 2. Lógica de clics en las pestañas principales (SPA)
-        navLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                navLinks.forEach(btn => btn.classList.remove('active'));
-                sections.forEach(sec => {
-                    sec.style.display = 'none';
-                    sec.style.animation = 'none';
-                });
-
-                this.classList.add('active');
-
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-
-                if (targetSection) {
-                    targetSection.style.display = 'block';
-                    void targetSection.offsetWidth;
-                    targetSection.style.animation = "fadeIn 0.5s ease-out forwards";
-                }
-            });
-        });
+        // Navegación principal gestionada por selectMainSection() del menú lateral
     });
 
     // 3. Función GENÉRICA para las Sub-Pestañas de los Pasos (Ej: Paso 3, 4 y 5)
     function openSubTab(event, tabId, groupClass) {
-        // Ocultar todos los contenidos de este grupo
         const contents = document.querySelectorAll('.' + groupClass + '-content');
         contents.forEach(c => c.classList.remove('active'));
 
-        // Quitar clase active de los botones de este grupo
         const buttons = document.querySelectorAll('.' + groupClass + '-btn');
         buttons.forEach(b => b.classList.remove('active'));
 
-        // Activar el seleccionado
-        document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+        const targetEl = document.getElementById(tabId);
+        if (targetEl) targetEl.classList.add('active');
+
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        } else {
+            buttons.forEach(b => {
+                const oc = b.getAttribute('onclick') || '';
+                if (oc.includes(`'${tabId}'`)) b.classList.add('active');
+            });
+        }
+
+        document.querySelectorAll('.sidebar-sub-btn').forEach(sb => {
+            sb.classList.toggle('active-sub', sb.getAttribute('data-subtab') === tabId);
+        });
+        if (typeof updateBreadcrumb === 'function') updateBreadcrumb();
     }
 
     // 4. Función exclusiva para las sub-pestañas INTERNAS de Colores
@@ -76,24 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función para los Accesos Directos
-    function goToShortcut(stepId, tabId) {
-        // Simular clic en el menú principal
-        const navLink = document.querySelector(`a[href="#${stepId}"]`);
-        if (navLink) navLink.click();
-
-        // Simular clic en la sub-pestaña si existe un evento onclick con el tabId
-        setTimeout(() => {
-            const subTabs = document.querySelectorAll('.sub-tab-btn');
-            subTabs.forEach(btn => {
-                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${tabId}'`)) {
-                    btn.click();
-                }
-            });
-            // Hacer scroll hasta el contenedor
-            document.getElementById(stepId).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
-    }
+    // goToShortcut definido en el controlador de navegación lateral (más abajo)
 
     // Corrección dinámica global de los bordes para tooltips en pantalla principal
     document.addEventListener('mouseover', function (e) {
@@ -419,40 +410,52 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
                 <div class="phrase-selectors">
                     <select class="phrase-type">
-                        <option value="" data-bg="" data-color="">- Tipo -</option>
-                        <option value="F-GEN" data-bg="#007bff" data-color="#fff">🔵 Genitiva</option>
-                        <option value="F-PREP" data-bg="#ffc107" data-color="#333">🟡 Preposic.</option>
-                        <option value="F-VERB" data-bg="#28a745" data-color="#fff">🟢 Verbal</option>
-                        <option value="F-SUST" data-bg="#dc3545" data-color="#fff">🔴 Sustant.</option>
-                        <option value="F-ADJ" data-bg="#ff66b2" data-color="#fff">💖 Adjetival</option>
-                        <option value="F-ADV" data-bg="#6c757d" data-color="#fff">⚪ Adverbial</option>
+                        <option value="" data-bg="" data-color="">- Tipo de Frase -</option>
+                        <option value="F-NM" data-bg="#6c757d" data-color="#fff">⚪ [U] No Marcada</option>
+                        <option value="F-PREP" data-bg="#ffc107" data-color="#333">🟡 [Pr] Preposicional</option>
+                        <option value="F-GEN" data-bg="#007bff" data-color="#fff">🔵 [G] Genitiva</option>
+                        <option value="F-INF" data-bg="#28a745" data-color="#fff">🟢 [I] Infinitiva</option>
+                        <option value="F-PART" data-bg="#28a745" data-color="#fff">🟢 [Part] Participial</option>
+                        <option value="F-CONJ" data-bg="#6c757d" data-color="#fff">🩶 [C] Conjunción</option>
+                        <option value="F-AP" data-bg="#dc3545" data-color="#fff">🔴 [Ap] Aposicional</option>
+                        <option value="F-REL" data-bg="#6f42c1" data-color="#fff">🟣 [R] Relativa</option>
+                        <option value="F-SUST" data-bg="#dc3545" data-color="#fff">🔴 [S] Sustantival</option>
+                        <option value="F-ADJ" data-bg="#e91e63" data-color="#fff">🩷 Adjetival</option>
+                        <option value="F-ADV" data-bg="#6c757d" data-color="#fff">🩶 Adverbial</option>
                     </select>
                     <select class="logic-rel">
                         <option value="" data-bg="" data-color="">- Relación -</option>
-                        <optgroup label="Coordinadas">
+                        <optgroup label="Coordinadas (3)">
                             <option value="S">[S] Serie</option>
                             <option value="P">[P] Progresión</option>
                             <option value="A">[A] Alternativa</option>
                         </optgroup>
-                        <optgroup label="Declaración Distinta">
+                        <optgroup label="Declaración Distinta (8)">
                             <option value="G">[G] Fundamento (Ground)</option>
                             <option value="INF">[∴] Inferencia</option>
+                            <option value="BL">[BL] Bilateral</option>
                             <option value="AC-RES">[Ac/Res] Acción-Resultado</option>
                             <option value="AC-PUR">[Ac/Pur] Acción-Propósito</option>
                             <option value="IF-TH">[If/Th] Condicional</option>
                             <option value="T">[T] Temporal</option>
                             <option value="L">[L] Locativa</option>
-                            <option value="BL">[BL] Bilateral</option>
                         </optgroup>
-                        <optgroup label="Reiteración">
+                        <optgroup label="Reiteración (5)">
                             <option value="AC-MN">[Ac/Mn] Acción-Manera</option>
                             <option value="CF">[Cf] Comparación</option>
                             <option value="NEG-POS">[-/+] Negativo-Positivo</option>
                             <option value="ID-EXP">[Id/Exp] Idea-Explicación</option>
                             <option value="QA">[Q/A] Pregunta-Respuesta</option>
                         </optgroup>
-                        <optgroup label="Declaración Contraria">
+                        <optgroup label="Declaración Contraria (2)">
                             <option value="CSV">[Csv] Concesiva</option>
+                            <option value="SIT-R">[Sit/R] Situación-Respuesta</option>
+                        </optgroup>
+                        <optgroup label="Extendidas Opcionales (4)">
+                            <option value="BOTH-AND">[Both-And] Ambos-Y</option>
+                            <option value="GEN-SPEC">[Gen/Spec] General-Específico</option>
+                            <option value="FACT-INT">[Fact/Int] Hecho-Interpretación</option>
+                            <option value="ANT-FUL">[Ant/Ful] Anticipación-Cumplimiento</option>
                         </optgroup>
                     </select>
                 </div>
@@ -906,6 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (confirm("¿Limpiar por completo tu Mesa de Trabajo? ¡Borrará frases, colores y notas!")) {
                         workspace.innerHTML = '';
                         localStorage.removeItem('exegesisWorkSpaceV2');
+                        localStorage.removeItem('workspaceAutoSave');
                     }
                 } else {
                     activeBrushColor = btn.getAttribute('data-color');
@@ -989,7 +993,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 'genitivo', label: 'Genitivos' },
                 { id: 'preposicion', label: 'Preposiciones' },
                 { id: 'adjetivo', label: 'Adjetivos' },
-                { id: 'adverbio', label: 'Adverbios' }
+                { id: 'adverbio', label: 'Adverbios' },
+                { id: 'secundario', label: 'Secundarios' }
             ];
 
             let legendHTML = '';
@@ -1021,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const relVal = relSelect && relSelect.selectedIndex > 0 ? relSelect.options[relSelect.selectedIndex].text : '';
 
                 let badges = '';
-                if (typeVal && typeVal !== '- Tipo -') {
+                if (typeVal && typeVal !== '- Tipo -' && typeVal !== '- Tipo de Frase -') {
                     const typeBg = typeSelect.style.backgroundColor || '#e0e0e0';
                     const typeColor = typeSelect.style.color || '#333';
                     badges += `<span style="
@@ -1182,9 +1187,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { hex: '#dc3545', emoji: '🔴', name: 'ROJO' },
         { hex: '#fd7e14', emoji: '🟠', name: 'NARANJA' },
         { hex: '#007bff', emoji: '🔵', name: 'AZUL' },
-        { hex: '#ff66b2', emoji: '🩷', name: 'ROSADO' },
+        { hex: '#e91e63', emoji: '🩷', name: 'ROSADO' },
         { hex: '#6c757d', emoji: '🩶', name: 'GRIS' },
-        { hex: '#17a2b8', emoji: '🩵', name: 'CELESTE' },
+        { hex: '#b19cd9', emoji: '🔮', name: 'LILA' },
         { hex: '#6f42c1', emoji: '🟣', name: 'MORADO' }
     ];
 
@@ -1195,9 +1200,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'determinante', label: 'Determinantes (Vocativos, Exclamatorias)', defaultHex: '#fd7e14' },
         { id: 'genitivo', label: 'Genitivos', defaultHex: '#007bff' },
         { id: 'preposicion', label: 'Preposiciones', defaultHex: '#ffc107' },
-        { id: 'adjetivo', label: 'Adjetivos', defaultHex: '#ff66b2' },
+        { id: 'adjetivo', label: 'Adjetivos', defaultHex: '#e91e63' },
         { id: 'adverbio', label: 'Adverbios y Conjunciones', defaultHex: '#6c757d' },
-        { id: 'secundario', label: 'Secundarios', defaultHex: '#17a2b8' }
+        { id: 'secundario', label: 'Secundarios', defaultHex: '#b19cd9' }
     ];
 
     let userConfig = JSON.parse(localStorage.getItem('exegesisColorConfig')) || {};
@@ -1217,11 +1222,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (title.includes('sustantivos')) matchedCatId = 'sustantivo';
             if (title.includes('verbos')) matchedCatId = 'verbo';
             if (title.includes('pronombres')) matchedCatId = 'pronombre';
-            if (title.includes('artículos')) matchedCatId = 'determinante';
+            if (title.includes('artículos') || title.includes('determinantes')) matchedCatId = 'determinante';
             if (title.includes('genitivos')) matchedCatId = 'genitivo';
             if (title.includes('preposiciones')) matchedCatId = 'preposicion';
             if (title.includes('adjetivos')) matchedCatId = 'adjetivo';
             if (title.includes('adverbios')) matchedCatId = 'adverbio';
+            if (title.includes('secundarios')) matchedCatId = 'secundario';
             
             if (matchedCatId) {
                 const hex = userConfig[matchedCatId] || categories.find(c => c.id === matchedCatId).defaultHex;
@@ -1364,9 +1370,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const darkModeLabel  = document.getElementById('darkModeLabel');
     function applyDarkMode(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
-        document.body.style.background = isDark
-            ? 'linear-gradient(135deg, #0f0c29 0%, #1a1a2e 100%)'
-            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        document.body.style.background = isDark ? '#12151e' : '#f3f1ec';
+        if (typeof syncIframeDarkMode === 'function') syncIframeDarkMode(isDark);
         if (darkModeLabel) darkModeLabel.textContent = isDark ? '🌙 Activado' : 'Desactivado';
     }
     const savedDark = loadWorkspacePref('darkMode', false);
@@ -1569,4 +1574,509 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pdfPortraitBtn)   pdfPortraitBtn.addEventListener('click',  () => exportPdf('portrait'));
     if (pdfLandscapeBtn)  pdfLandscapeBtn.addEventListener('click', () => exportPdf('landscape'));
 
+});
+
+// =========================================================================
+// NAVEGACIÓN INTELIGENTE A CONCEPTOS CLAVE (goToConcept)
+// =========================================================================
+function goToConcept(stepId, subTabId, anchorId) {
+    if (typeof selectMainSection === 'function') {
+        selectMainSection(stepId);
+    }
+
+    setTimeout(() => {
+        if (subTabId) {
+            const contents = document.querySelectorAll('.' + stepId + '-content');
+            contents.forEach(c => c.classList.remove('active'));
+            const buttons = document.querySelectorAll('.' + stepId + '-btn');
+            buttons.forEach(b => {
+                b.classList.remove('active');
+                if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${subTabId}'`)) {
+                    b.classList.add('active');
+                }
+            });
+            const targetSub = document.getElementById(subTabId);
+            if (targetSub) targetSub.classList.add('active');
+            document.querySelectorAll('.sidebar-sub-btn').forEach(sb => {
+                sb.classList.toggle('active-sub', sb.getAttribute('data-subtab') === subTabId);
+            });
+            if (typeof updateBreadcrumb === 'function') updateBreadcrumb();
+        }
+
+        if (anchorId) {
+            const anchorEl = document.getElementById(anchorId);
+            if (anchorEl) {
+                anchorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                anchorEl.classList.remove('concept-highlight-flash');
+                void anchorEl.offsetWidth;
+                anchorEl.classList.add('concept-highlight-flash');
+            }
+        }
+    }, 60);
+}
+
+// =========================================================================
+// LÓGICA INTERACTIVA DE EXPLICACIÓN MARKUP (PASO 1 - SUB-PESTAÑA 1.5)
+// =========================================================================
+const mkGramaticaData = [
+    { id: 'sustantivo', colorHex: '#dc3545', emoji: '🔴', nombre: 'Sustantivos (Rojo)', meta: 'Los Actores y Objetos', desc: 'Nombran personas, lugares, objetos o conceptos abstractos.', ex: 'Dios, luz, Juan, amor, mundo, pecado, verdad.' },
+    { id: 'verbo', colorHex: '#28a745', emoji: '🟢', nombre: 'Verbos (Verde)', meta: 'Los Motores', desc: 'Expresan acciones, movimientos o estados. Indican lo que ocurre en el versículo.', ex: 'amó, andamos, dijo, es, hemos visto, limpiar.' },
+    { id: 'pronombre', colorHex: '#6f42c1', emoji: '🟣', nombre: 'Pronombres (Morado)', meta: 'Los Dobles de Acción', desc: 'Reemplazan al sustantivo o enlazan cláusulas relativas para rastrear actores.', ex: 'Él, nosotros, vosotros, lo, le, que, quien, el cual.' },
+    { id: 'determinante', colorHex: '#fd7e14', emoji: '🟠', nombre: 'Determinantes / Artículos (Naranja)', meta: 'Los Señaladores', desc: 'Acompañan al sustantivo para presentarlo, cuantificarlo o indicar posesión.', ex: 'el, la, los, un, este, nuestro, su, toda.' },
+    { id: 'preposicion', colorHex: '#eab308', emoji: '🟡', nombre: 'Preposiciones (Amarillo)', meta: 'Los Puentes', desc: 'Unen palabras indicando posición, dirección, tiempo, medio o causa.', ex: 'en, de, por, para, con, a, desde, hacia.' },
+    { id: 'genitivo', colorHex: '#007bff', emoji: '🔵', nombre: 'Genitivos (Azul)', meta: 'Posesión y Relación', desc: 'Indican pertenencia, origen o relación entre sustantivos ("de...").', ex: 'de Dios, de vida, de verdad, de Cristo.' },
+    { id: 'adjetivo', colorHex: '#e91e63', emoji: '🩷', nombre: 'Adjetivos (Rosado)', meta: 'Los Decoradores', desc: 'Califican, describen o añaden precisión teológica a un sustantivo.', ex: 'eterna, santo, fiel, justo, verdadero, buen.' },
+    { id: 'adverbio', colorHex: '#6c757d', emoji: '🩶', nombre: 'Adverbios y Conjunciones (Gris)', meta: 'Bisagras y Lupas', desc: 'Unen ideas o modifican verbos y adjetivos (incluyendo negaciones cruciales).', ex: 'y, pero, porque, si, mas, no, también, hoy.' },
+    { id: 'secundario', colorHex: '#b19cd9', emoji: '🔮', nombre: 'Secundarios (Lila)', meta: 'Los Especiales', desc: 'Numerales significativos, conjunciones especiales y partículas enfáticas.', ex: 'siete, doce, sino, he aquí, ¡ay!, amén.' }
+];
+
+const mkLentesData = [
+    { num: 1, name: 'Llamadores de Atención (Attention-Getters)', meta: 'Lente 1 — El Resaltador Visual', desc: 'Detiene la lectura ante repeticiones, contrastes, paradojas o énfasis del autor.', tags: ['Énfasis Principal', 'Repetición Exacta', 'Contraste / Paradoja', 'Repetición Conceptual'] },
+    { num: 2, name: 'Preguntas (Questions)', meta: 'Lente 2 — La Interrogación Inductiva', desc: 'Marca tensiones textuales y formula preguntas agudas al margen para que el texto responda.', tags: ['¿Quién?', '¿Qué?', '¿Cómo?', '¿Cuándo?', '¿Dónde?', '¿Por qué?', '¿Para qué?'] },
+    { num: 3, name: 'Tópicos (Topics)', meta: 'Lente 3 — El Mapeo de Temas', desc: 'Identifica los distintos temas presentes en el pasaje y distingue el Tópico Principal.', tags: ['Tópico Principal', 'Temas Secundarios', 'Actores Clave'] },
+    { num: 4, name: 'Mandatos+ (Commands+)', meta: 'Lente 4 — Anatomía de las Órdenes', desc: 'Aísla cada imperativo junto con su Ancla (base/razón en el evangelio), Fin, Medios y Maneras.', tags: ['Mandato', 'Ancla / Base o Razón', 'Propósito (Fin)', 'Medios', 'Maneras'] },
+    { num: 5, name: 'Contexto (Context)', meta: 'Lente 5 — Señales Literarias', desc: 'Conecta el pasaje con los párrafos anteriores y posteriores para evitar sacarlo de contexto.', tags: ['Contexto Anterior', 'Contexto Posterior', 'Puente Bilateral', 'Cita A.T.'] },
+    { num: 6, name: 'Transiciones (Transitions)', meta: 'Lente 6 — Giros del Discurso', desc: 'Identifica conectores y cambios de escena, tiempo, lugar, hablante o enfoque argumentativo.', tags: ['Conector Lógico', 'Cambio de Tiempo/Lugar', 'Cambio de Sujeto/Hablante', 'Giro Retórico'] },
+    { num: 7, name: 'Teología (Theology)', meta: 'Lente 7 — Síntesis Doctrinal', desc: 'Rastrea lo que el texto enseña sobre Dios, Cristo, el Espíritu y la redención sin eiségesis.', tags: ['Teología Propia', 'Cristología', 'Pneumatología', 'Soteriología', 'Eclesiología', 'Escatología', 'Antropología', 'Bibliología'] }
+];
+
+function initExplicacionMarkup() {
+    const btnContainer = document.getElementById('markup-palette-buttons');
+    if (btnContainer && btnContainer.children.length === 0) {
+        mkGramaticaData.forEach((item, idx) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'shortcut-btn';
+            btn.style.borderLeft = `4px solid ${item.colorHex}`;
+            btn.textContent = `${item.emoji} ${item.nombre.split(' (')[0]}`;
+            btn.onclick = () => showMkGramDetail(idx);
+            btnContainer.appendChild(btn);
+        });
+        showMkGramDetail(0);
+    }
+
+    const lentesContainer = document.getElementById('markup-lentes-cards');
+    if (lentesContainer && lentesContainer.children.length === 0) {
+        lentesContainer.innerHTML = mkLentesData.map(l => {
+            const tagsHtml = l.tags.map(t => `<span style="display:inline-block;background:#f1f5f9;color:#334155;font-size:0.78em;padding:3px 8px;border-radius:5px;border:1px solid #cbd5e1;margin:2px;">${t}</span>`).join('');
+            return `
+                <div class="type-card">
+                    <h4>${l.num}. ${l.name}</h4>
+                    <h5 style="font-size:0.9em;">${l.meta}</h5>
+                    <p style="font-size:0.92em;margin-bottom:10px;">${l.desc}</p>
+                    <div>${tagsHtml}</div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+function showMkGramDetail(idx) {
+    const d = mkGramaticaData[idx];
+    const box = document.getElementById('markup-gramatica-detail');
+    if (!box || !d) return;
+    box.style.borderLeftColor = d.colorHex;
+    box.innerHTML = `
+        <h4 style="color:${d.colorHex};margin-bottom:6px;">${d.emoji} ${d.nombre} — <em>"${d.meta}"</em></h4>
+        <p style="margin-bottom:8px;">${d.desc}</p>
+        <p><strong>Ejemplos bíblicos:</strong> <code>${d.ex}</code></p>
+    `;
+}
+
+function mkApplyCaso1Step1() {
+    const w1 = document.getElementById('mk-caso1-w1');
+    const w2 = document.getElementById('mk-caso1-w2');
+    const w3 = document.getElementById('mk-caso1-w3');
+    if (w1) { w1.style.color = '#dc3545'; w1.style.fontWeight = 'bold'; }
+    if (w3) { w3.style.color = '#dc3545'; w3.style.fontWeight = 'bold'; }
+    if (w2) { w2.style.color = '#28a745'; w2.style.fontWeight = 'bold'; }
+    const b2 = document.getElementById('mk-btn-caso1-2');
+    if (b2) b2.disabled = false;
+}
+function mkApplyCaso1Step2() {
+    const w1 = document.getElementById('mk-caso1-w1');
+    const w2 = document.getElementById('mk-caso1-w2');
+    if (w1) { w1.style.border = '2px solid #1e3c72'; w1.style.background = '#f8fafc'; w1.title = 'Lente 7: Teología Propia'; }
+    if (w2) { w2.style.border = '2px solid #1e3c72'; w2.style.background = '#f8fafc'; w2.title = 'Lente 1: Llamadores de Atención (Contraste)'; }
+    const exp = document.getElementById('mk-caso1-exp');
+    if (exp) exp.style.display = 'block';
+}
+function mkResetCaso1() {
+    ['mk-caso1-w1', 'mk-caso1-w2', 'mk-caso1-w3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style = 'padding: 2px 6px; border-radius: 4px; transition: all 0.25s;'; el.removeAttribute('title'); }
+    });
+    const b2 = document.getElementById('mk-btn-caso1-2');
+    if (b2) b2.disabled = true;
+    const exp = document.getElementById('mk-caso1-exp');
+    if (exp) exp.style.display = 'none';
+}
+
+function mkApplyCaso2Step1() {
+    ['mk-caso2-w1', 'mk-caso2-w2', 'mk-caso2-w3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style.color = '#28a745'; el.style.fontWeight = 'bold'; }
+    });
+    const b2 = document.getElementById('mk-btn-caso2-2');
+    if (b2) b2.disabled = false;
+}
+function mkApplyCaso2Step2() {
+    ['mk-caso2-w1', 'mk-caso2-w2', 'mk-caso2-w3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style.border = '2px solid #1e3c72'; el.style.background = '#f8fafc'; el.title = 'Lente 1: Repetición Conceptual'; }
+    });
+    const exp = document.getElementById('mk-caso2-exp');
+    if (exp) exp.style.display = 'block';
+}
+function mkResetCaso2() {
+    ['mk-caso2-w1', 'mk-caso2-w2', 'mk-caso2-w3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style = 'padding: 2px 6px; border-radius: 4px; transition: all 0.25s;'; el.removeAttribute('title'); }
+    });
+    const b2 = document.getElementById('mk-btn-caso2-2');
+    if (b2) b2.disabled = true;
+    const exp = document.getElementById('mk-caso2-exp');
+    if (exp) exp.style.display = 'none';
+}
+
+
+
+// =========================================================================
+// OPCIÓN A+ REFINADA: SIDEBAR, MIGAS DE PAN, CAJÓN DE CONSULTA Y CTRL+K
+// =========================================================================
+const STEP_TITLES = {
+    mesaInteractiva: '🛠️ Mesa de Trabajo Interactiva',
+    herramientaGramatical: '🔍 Búsqueda Gramatical',
+    paso1: 'Paso 1: Observación y Markup',
+    paso2: 'Paso 2: Fraseo (DIALS)',
+    paso3: 'Paso 3: Arqueo y Enmarcado',
+    paso4: 'Paso 4: Profundización y Verificación',
+    paso5: 'Paso 5: Consolidación y My Bible',
+    documentosSoporte: '📂 Documentos / Formatos',
+    configGeneral: '⚙️ Configuración'
+};
+
+function updateBreadcrumb() {
+    const bc = document.getElementById('topbarBreadcrumb');
+    if (!bc) return;
+    let activeSecId = 'paso1';
+    document.querySelectorAll('section.section').forEach(s => {
+        if (s.style.display !== 'none' && window.getComputedStyle(s).display !== 'none') {
+            activeSecId = s.id;
+        }
+    });
+    const stepName = STEP_TITLES[activeSecId] || activeSecId;
+    const activeSubBtn = document.querySelector('#' + activeSecId + ' .sub-tab-btn.active');
+    const subName = activeSubBtn ? activeSubBtn.textContent.trim() : '';
+    bc.innerHTML = '<span>Ruta:</span> <strong>' + stepName + '</strong>' + (subName ? ' <span>› ' + subName + '</span>' : '');
+}
+
+function selectMainSection(targetId, btnEl) {
+    document.body.classList.remove('mobile-sidebar-open');
+    document.querySelectorAll('.sidebar-nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sidebar-step-group').forEach(g => {
+        if (g.getAttribute('data-group') !== targetId) g.classList.remove('expanded');
+    });
+
+    const targetBtn = btnEl || document.querySelector('.sidebar-nav-btn[data-target="' + targetId + '"]');
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+        const grp = targetBtn.closest('.sidebar-step-group');
+        if (grp) grp.classList.add('expanded');
+    }
+
+    document.querySelectorAll('section.section').forEach(sec => {
+        sec.style.display = 'none';
+        sec.style.animation = 'none';
+    });
+
+    const targetSec = document.getElementById(targetId);
+    if (targetSec) {
+        targetSec.style.display = 'block';
+        void targetSec.offsetWidth;
+        targetSec.style.animation = 'fadeIn 0.35s ease-out forwards';
+    }
+    if (targetId === 'herramientaGramatical' && typeof renderGrammarElements === 'function') {
+        renderGrammarElements();
+    }
+    updateBreadcrumb();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.goToShortcut = function(stepId, tabId) {
+    selectMainSection(stepId);
+    setTimeout(() => {
+        if (tabId) {
+            const subTabs = document.querySelectorAll('.' + stepId + '-btn');
+            subTabs.forEach(btn => {
+                const oc = btn.getAttribute('onclick') || '';
+                if (oc.indexOf("'" + tabId + "'") !== -1) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            document.querySelectorAll('.' + stepId + '-content').forEach(c => c.classList.remove('active'));
+            const targetSub = document.getElementById(tabId);
+            if (targetSub) targetSub.classList.add('active');
+
+            document.querySelectorAll('.sidebar-sub-btn').forEach(sb => {
+                sb.classList.toggle('active-sub', sb.getAttribute('data-subtab') === tabId);
+            });
+        }
+        const secEl = document.getElementById(stepId);
+        if (secEl) secEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        updateBreadcrumb();
+    }, 50);
+};
+
+function syncIframeDarkMode(isDark) {
+    const ifr = document.getElementById('markup-iframe');
+    if (!ifr || !ifr.contentDocument || !ifr.contentDocument.body) return;
+    const b = ifr.contentDocument.body;
+    const c = ifr.contentDocument.querySelector('.container');
+    if (isDark) {
+        b.style.backgroundColor = '#12151e';
+        b.style.color = '#e2e8f0';
+        if (c) { c.style.backgroundColor = '#1c2234'; c.style.color = '#e2e8f0'; }
+    } else {
+        b.style.backgroundColor = '#f0f2f5';
+        b.style.color = '#333';
+        if (c) { c.style.backgroundColor = '#fff'; c.style.color = '#333'; }
+    }
+}
+
+function closeQuickJumps() {
+    const pop = document.getElementById('quickJumpsPopover');
+    const btn = document.getElementById('quickJumpsBtn');
+    if (pop) pop.classList.remove('open');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function openRefDrawer(tabKey) {
+    document.getElementById('refDrawerBackdrop')?.classList.add('open');
+    document.getElementById('refDrawer')?.classList.add('open');
+    renderDrawerTab(tabKey || 'colores');
+}
+
+function closeRefDrawer() {
+    document.getElementById('refDrawerBackdrop')?.classList.remove('open');
+    document.getElementById('refDrawer')?.classList.remove('open');
+}
+
+function renderDrawerTab(tabKey) {
+    document.querySelectorAll('.ref-drawer-tab').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('data-dtab') === tabKey);
+    });
+    const body = document.getElementById('refDrawerBody');
+    if (!body) return;
+
+    if (tabKey === 'colores') {
+        body.innerHTML = '<h4 style="margin-top:0;">Tus 9 Colores Gramaticales</h4>' +
+            mkGramaticaData.map(function(g) {
+                return '<div style="padding:8px 10px;border-left:4px solid ' + g.colorHex + ';margin-bottom:8px;border-radius:6px;background:rgba(148,163,184,0.08);">' +
+                    '<strong>' + g.emoji + ' ' + g.nombre + '</strong> — <em>' + g.meta + '</em><br><span style="font-size:0.9em;">' + g.desc + '</span>' +
+                '</div>';
+            }).join('');
+    } else if (tabKey === 'lentes') {
+        body.innerHTML = '<h4 style="margin-top:0;">Los 7 Lentes Oficiales (Markup)</h4>' +
+            mkLentesData.map(function(l) {
+                return '<div style="padding:8px 10px;border-left:4px solid #2a5298;margin-bottom:8px;border-radius:6px;background:rgba(148,163,184,0.08);">' +
+                    '<strong>' + l.num + '. ' + l.name + '</strong><br><span style="font-size:0.9em;">' + l.desc + '</span>' +
+                '</div>';
+            }).join('');
+    } else if (tabKey === 'frases') {
+        body.innerHTML = '<h4 style="margin-top:0;">Los 9 Tipos de Frases (Phrasing)</h4>' +
+            phraseTypes.slice(0, 9).map(function(p) {
+                return '<div style="padding:7px 10px;border-left:4px solid #007bff;margin-bottom:7px;border-radius:6px;background:rgba(148,163,184,0.08);">' +
+                    '<strong>' + p.title + '</strong><br><span style="font-size:0.88em;">' + p.description + '</span>' +
+                '</div>';
+            }).join('');
+    } else if (tabKey === 'rels18') {
+        const all18 = coordinadas.concat(subordinadas);
+        body.innerHTML = '<h4 style="margin-top:0;">18 Relaciones Lógicas (Discourse)</h4>' +
+            all18.map(function(r) {
+                return '<div style="padding:7px 10px;border-left:4px solid #ff7e5f;margin-bottom:7px;border-radius:6px;background:rgba(148,163,184,0.08);">' +
+                    '<strong>' + r.title + '</strong><br><span style="font-size:0.88em;">' + r.description + '</span>' +
+                '</div>';
+            }).join('');
+    } else if (tabKey === 'rels27') {
+        body.innerHTML = '<h4 style="margin-top:0;">27 Relaciones de Fraseo (Flechas Amarillas)</h4>' +
+            '<p style="font-size:0.9em;"><strong>Declaración Distinta (11):</strong> Fundamento (Ground), Resultado (Result), Propósito (Purpose), Ventaja (Advantage), Desventaja (Disadvantage), Condición (Condition), Temporal (Temporal), Locativa (Locative), Fuente (Source), Destino (Destination), Separación (Separation).</p>' +
+            '<p style="font-size:0.9em;"><strong>Reiteración (15):</strong> Manera (Manner), Medios (Means), Agencia (Agency), Comparación (Comparison), Estándar (Standard), Negativa (Negative), Sustitución (Substitution), Explicación (Explanation), Contenido (Content), Contexto (Context), Distinción (Distinction), Ejemplo (Example), Acompañamiento (Accompaniment), Referencia (Reference), Respuesta (Answer).</p>' +
+            '<p style="font-size:0.9em;"><strong>Declaración Contraria (1):</strong> Concesiva (Concessive).</p>';
+    } else if (tabKey === 'mybible') {
+        body.innerHTML = '<h4 style="margin-top:0;">Paleta Permanente en My Bible</h4>' +
+            '<ul style="padding-left:18px;line-height:1.6;">' +
+                '<li>🔴 <strong>Rojo:</strong> Sangre, redención y sacrificio de Cristo</li>' +
+                '<li>🟣 <strong>Morado:</strong> Persona de Cristo, gloria y venidas</li>' +
+                '<li>🟡 <strong>Amarillo oliva:</strong> Espíritu Santo y su obra</li>' +
+                '<li>🔵 <strong>Azul:</strong> Oración, gratitud y adoración</li>' +
+                '<li>🟢 <strong>Verde:</strong> Reino de Dios, vida nueva y fruto</li>' +
+                '<li>🟠 <strong>Naranja:</strong> Iglesia, comunión y misión</li>' +
+                '<li>🩶 <strong>Gris:</strong> Pecado, advertencias y consecuencias</li>' +
+                '<li>🩵 <strong>Turquesa:</strong> Promesas clave y esperanza eterna</li>' +
+                '<li>🩷 <strong>Rosa:</strong> Palabra clave repetida del libro</li>' +
+            '</ul>';
+    }
+}
+
+const CMD_TARGETS = [
+    { label: '🛠️ Mesa de Trabajo Interactiva', tag: 'Taller', step: 'mesaInteractiva', sub: 'mesa-herramientas' },
+    { label: '🧠 Asistente Exegético IA', tag: 'Taller', step: 'mesaInteractiva', sub: 'mesa-ai' },
+    { label: '🔍 Búsqueda Gramatical y Referencia', tag: 'Buscador', step: 'herramientaGramatical', sub: '' },
+    { label: '🎯 1.1 Introducción y Mapa Completo EBI', tag: 'Paso 1', step: 'paso1', sub: 'paso1-intro' },
+    { label: '🔍 1.2 Observación Básica', tag: 'Paso 1', step: 'paso1', sub: 'paso1-basica' },
+    { label: '📚 1.3 Teoría Gramatical (Morfología)', tag: 'Paso 1', step: 'paso1', sub: 'paso1-teoria' },
+    { label: '🎨 1.4 Guía de Colores Biblearc (9 Colores)', tag: 'Paso 1', step: 'paso1', sub: 'paso1-colores' },
+    { label: '🧬 1.5 Método Markup (2 Capas + Práctica)', tag: 'Paso 1', step: 'paso1', sub: 'paso1-explicacion-markup' },
+    { label: '💻 1.6 Guía Visual: Los 7 Lentes', tag: 'Paso 1', step: 'paso1', sub: 'paso1-markup' },
+    { label: '🛠️ 2.1 Los 5 Pases de DIALS y Flechas', tag: 'Paso 2', step: 'paso2', sub: 'paso2-dials' },
+    { label: '🔤 2.2 Los 9 Tipos de Frases', tag: 'Paso 2', step: 'paso2', sub: 'paso2-frases' },
+    { label: '📊 2.3 Tabla Extendida de las 27 Relaciones', tag: 'Paso 2', step: 'paso2', sub: 'paso2-27rels' },
+    { label: '💻 2.4 Módulo Phrasing y 19 Genitivos', tag: 'Paso 2', step: 'paso2', sub: 'paso2-biblearc' },
+    { label: '🤝 3.1 Las 18 Relaciones + Sit/R + 4 Extendidas', tag: 'Paso 3', step: 'paso3', sub: 'paso3-18rels' },
+    { label: '📐 3.2 Arcing vs. Bracketing y Niveles de Lógica', tag: 'Paso 3', step: 'paso3', sub: 'paso3-discourse' },
+    { label: '🧩 3.3 Conexiones Gramática → Lógica', tag: 'Paso 3', step: 'paso3', sub: 'paso3-aplicacion' },
+    { label: '🧩 4.1 Sintaxis y Patrones de Oración', tag: 'Paso 4', step: 'paso4', sub: 'paso4-sintaxis' },
+    { label: '🔬 4.2 Módulo Diagramming (Reed-Kellogg)', tag: 'Paso 4', step: 'paso4', sub: 'paso4-diagramming' },
+    { label: '🔎 4.3 Léxico Original y Correlación (Searching)', tag: 'Paso 4', step: 'paso4', sub: 'paso4-correlacion' },
+    { label: '✍️ 4.4 Paráfrasis y Contraste Bibliográfico', tag: 'Paso 4', step: 'paso4', sub: 'paso4-paraphrase' },
+    { label: '📖 5.1 Guía Permanente para My Bible', tag: 'Paso 5', step: 'paso5', sub: 'paso5-mybible' },
+    { label: '🔥 5.2 Saborear (Savor: Cabeza, Corazón, Manos)', tag: 'Paso 5', step: 'paso5', sub: 'paso5-savor' },
+    { label: '🎤 5.3 Bosquejo y Enseñanza (Notes)', tag: 'Paso 5', step: 'paso5', sub: 'paso5-notes' },
+    { label: '📂 Documentos y Formatos (Drive)', tag: 'Utilidad', step: 'documentosSoporte', sub: '' },
+    { label: '⚙️ Configuración Global', tag: 'Utilidad', step: 'configGeneral', sub: 'config-ai' }
+];
+
+function openCmdPalette() {
+    const ov = document.getElementById('cmdPaletteOverlay');
+    const inp = document.getElementById('cmdPaletteInput');
+    if (!ov || !inp) return;
+    ov.classList.add('open');
+    inp.value = '';
+    renderCmdList('');
+    setTimeout(function() { inp.focus(); }, 20);
+}
+
+function closeCmdPalette() {
+    document.getElementById('cmdPaletteOverlay')?.classList.remove('open');
+}
+
+function renderCmdList(query) {
+    const list = document.getElementById('cmdPaletteList');
+    if (!list) return;
+    const q = (query || '').toLowerCase().trim();
+    const matches = CMD_TARGETS.filter(function(item) {
+        return !q || item.label.toLowerCase().indexOf(q) !== -1 || item.tag.toLowerCase().indexOf(q) !== -1;
+    });
+    list.innerHTML = matches.map(function(m) {
+        return '<button type="button" class="cmd-palette-item" onclick="goToShortcut(\'' + m.step + '\',\'' + m.sub + '\');closeCmdPalette();"><span>' + m.label + '</span><span style="font-size:0.78em;opacity:0.7;font-weight:700;">' + m.tag + '</span></button>';
+    }).join('') || '<div style="padding:14px;text-align:center;opacity:0.7;">Sin coincidencias</div>';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('section.section').forEach(function(s) { s.style.display = 'none'; });
+    const p1 = document.getElementById('paso1');
+    if (p1) p1.style.display = 'block';
+
+    const sbBtn = document.getElementById('sidebarToggleBtn');
+    if (sbBtn) {
+        sbBtn.addEventListener('click', function() {
+            if (window.innerWidth <= 820) {
+                document.body.classList.toggle('mobile-sidebar-open');
+            } else {
+                document.body.classList.toggle('sidebar-collapsed');
+            }
+        });
+    }
+
+    const qjBtn = document.getElementById('quickJumpsBtn');
+    const qjPop = document.getElementById('quickJumpsPopover');
+    if (qjBtn && qjPop) {
+        qjBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = qjPop.classList.toggle('open');
+            qjBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+        document.addEventListener('click', function(e) {
+            if (!qjPop.contains(e.target) && e.target !== qjBtn) {
+                closeQuickJumps();
+            }
+        });
+    }
+
+    document.getElementById('openRefDrawerBtn')?.addEventListener('click', function() { openRefDrawer('colores'); });
+    document.getElementById('openCmdPaletteBtn')?.addEventListener('click', openCmdPalette);
+    document.getElementById('cmdPaletteInput')?.addEventListener('input', function(e) { renderCmdList(e.target.value); });
+
+    const scales = [1, 1.1, 1.2];
+    let scaleIdx = 0;
+    document.getElementById('cycleReadingScaleBtn')?.addEventListener('click', function() {
+        scaleIdx = (scaleIdx + 1) % scales.length;
+        document.documentElement.style.setProperty('--reading-scale', String(scales[scaleIdx]));
+    });
+
+    document.getElementById('quickDarkModeBtn')?.addEventListener('click', function() {
+        const cfgToggle = document.getElementById('darkModeToggle');
+        if (cfgToggle) {
+            cfgToggle.checked = !cfgToggle.checked;
+            cfgToggle.dispatchEvent(new Event('change'));
+        } else {
+            const nextDark = !document.body.classList.contains('dark-mode');
+            document.body.classList.toggle('dark-mode', nextDark);
+            document.body.style.background = nextDark ? '#12151e' : '#f3f1ec';
+            syncIframeDarkMode(nextDark);
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            openCmdPalette();
+        } else if (e.key === 'Escape') {
+            closeCmdPalette();
+            closeRefDrawer();
+            closeQuickJumps();
+            document.body.classList.remove('mobile-sidebar-open');
+        }
+    });
+
+    const orderedFlow = [
+        ['paso1', 'paso1-intro', 'Ir a Observación Básica →', 'paso1', 'paso1-basica'],
+        ['paso1', 'paso1-basica', 'Ir a Teoría Gramatical →', 'paso1', 'paso1-teoria'],
+        ['paso1', 'paso1-teoria', 'Ir a Guía de Colores →', 'paso1', 'paso1-colores'],
+        ['paso1', 'paso1-colores', 'Ir a Método Markup (2 Capas) →', 'paso1', 'paso1-explicacion-markup'],
+        ['paso1', 'paso1-explicacion-markup', 'Ir a Guía Visual: 7 Lentes →', 'paso1', 'paso1-markup'],
+        ['paso1', 'paso1-markup', 'Avanzar al Paso 2: Fraseo (DIALS) →', 'paso2', 'paso2-dials'],
+        ['paso2', 'paso2-dials', 'Ir a Los 9 Tipos de Frases →', 'paso2', 'paso2-frases'],
+        ['paso2', 'paso2-frases', 'Ir a Tabla de 27 Relaciones →', 'paso2', 'paso2-27rels'],
+        ['paso2', 'paso2-27rels', 'Ir a Phrasing y 19 Genitivos →', 'paso2', 'paso2-biblearc'],
+        ['paso2', 'paso2-biblearc', 'Avanzar al Paso 3: Arqueo y Enmarcado →', 'paso3', 'paso3-18rels'],
+        ['paso3', 'paso3-18rels', 'Ir a Arcing vs. Bracketing →', 'paso3', 'paso3-discourse'],
+        ['paso3', 'paso3-discourse', 'Ir a Conexiones y Filtro →', 'paso3', 'paso3-aplicacion'],
+        ['paso3', 'paso3-aplicacion', 'Avanzar al Paso 4: Profundización →', 'paso4', 'paso4-sintaxis'],
+        ['paso4', 'paso4-sintaxis', 'Ir a Módulo Diagramming →', 'paso4', 'paso4-diagramming'],
+        ['paso4', 'paso4-diagramming', 'Ir a Léxico y Correlación →', 'paso4', 'paso4-correlacion'],
+        ['paso4', 'paso4-correlacion', 'Ir a Paráfrasis y Contraste →', 'paso4', 'paso4-paraphrase'],
+        ['paso4', 'paso4-paraphrase', 'Avanzar al Paso 5: My Bible y Vida →', 'paso5', 'paso5-mybible'],
+        ['paso5', 'paso5-mybible', 'Ir a Saborear (Savor) →', 'paso5', 'paso5-savor'],
+        ['paso5', 'paso5-savor', 'Ir a Bosquejo (Notes) →', 'paso5', 'paso5-notes']
+    ];
+
+    orderedFlow.forEach(function(item) {
+        const subId = item[1];
+        const btnText = item[2];
+        const nextStep = item[3];
+        const nextSub = item[4];
+        const el = document.getElementById(subId);
+        if (el && !el.querySelector('.step-next-footer')) {
+            const foot = document.createElement('div');
+            foot.className = 'step-next-footer';
+            foot.innerHTML = '<span style="font-size:0.84em;opacity:0.75;">💡 Atajo: presiona <code>Ctrl+K</code> para saltar a cualquier sección</span><button type="button" class="next-step-pill-btn" onclick="goToShortcut(\'' + nextStep + '\',\'' + nextSub + '\')">' + btnText + '</button>';
+            el.appendChild(foot);
+        }
+    });
+
+    updateBreadcrumb();
 });
