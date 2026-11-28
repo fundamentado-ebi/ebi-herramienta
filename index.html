@@ -4,17 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mesa de Trabajo y Guía Completa de Exégesis Bíblica Inductiva (Método John Piper y Biblearc) con Pizarra Interactiva, Fraseo DIALS, 9 Biblias locales y Asistente IA.">
     <title>Guía Completa de Exégesis Bíblica - Método John Piper</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E%F0%9F%93%96%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./pizarra.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Roboto+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <!-- html2canvas para Exportar Imagen -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- jsPDF puro para control exacto de página (corrige bugs en blanco) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas para Exportar Imagen (diferido para no bloquear render inicial) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF puro para control exacto de página (diferido) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body class="refined-layout">
@@ -43,6 +47,8 @@
     <!-- MENÚ DESPLEGABLE DE ACCESOS DIRECTOS -->
     <div id="quickJumpsPopover" class="quick-jumps-popover" role="menu">
         <div class="quick-jumps-title">⚡ Accesos Directos</div>
+        <button type="button" class="quick-jump-item" onclick="goToShortcut('mesaInteractiva', 'mesa-pizarra'); closeQuickJumps();"><span>🎨 Pizarra Bíblica</span><span>Taller</span></button>
+        <button type="button" class="quick-jump-item" onclick="goToShortcut('mesaInteractiva', 'mesa-herramientas'); closeQuickJumps();"><span>📐 Fraseo (DIALS)</span><span>Taller</span></button>
         <button type="button" class="quick-jump-item" onclick="goToShortcut('paso1', 'paso1-colores'); closeQuickJumps();"><span>🎨 Guía de Colores</span><span>Paso 1.4</span></button>
         <button type="button" class="quick-jump-item" onclick="goToShortcut('paso1', 'paso1-markup'); closeQuickJumps();"><span>🔎 7 Lentes Markup</span><span>Paso 1.6</span></button>
         <button type="button" class="quick-jump-item" onclick="goToShortcut('paso2', 'paso2-frases'); closeQuickJumps();"><span>🔤 Tipos de Frases</span><span>Paso 2.2</span></button>
@@ -63,7 +69,8 @@
                     <span class="sidebar-label-text">Mesa de Trabajo</span>
                 </button>
                 <div class="sidebar-sublist">
-                    <button type="button" class="sidebar-sub-btn" data-subtab="mesa-herramientas" onclick="goToShortcut('mesaInteractiva', 'mesa-herramientas')">🛠️ Herramientas de Análisis</button>
+                    <button type="button" class="sidebar-sub-btn" data-subtab="mesa-pizarra" onclick="goToShortcut('mesaInteractiva', 'mesa-pizarra')">🎨 Pizarra y Marcado Bíblico</button>
+                    <button type="button" class="sidebar-sub-btn" data-subtab="mesa-herramientas" onclick="goToShortcut('mesaInteractiva', 'mesa-herramientas')">📐 Fraseo y Notas (DIALS)</button>
                     <button type="button" class="sidebar-sub-btn" data-subtab="mesa-ai" onclick="goToShortcut('mesaInteractiva', 'mesa-ai')">🧠 Asistente Exegético IA</button>
                 </div>
             </div>
@@ -168,14 +175,15 @@
     </aside>
 
     <!-- CONTENEDOR PRINCIPAL -->
-    <div class="container">
+    <main class="container" role="main">
         <div class="header">
             <div>
                 <h1>📖 Guía de Exégesis Bíblica</h1>
                 <p>Mesa de Trabajo y Flujo Inductivo de 5 Pasos (Método John Piper &amp; Biblearc)</p>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button type="button" class="shortcut-btn" onclick="selectMainSection('mesaInteractiva')">🛠️ Abrir Mesa Interactiva</button>
+                <button type="button" class="shortcut-btn" onclick="goToShortcut('mesaInteractiva', 'mesa-pizarra')">🎨 Abrir Pizarra Bíblica</button>
+                <button type="button" class="shortcut-btn" onclick="goToShortcut('mesaInteractiva', 'mesa-herramientas')">📐 Fraseo (DIALS)</button>
                 <button type="button" class="shortcut-btn" onclick="openRefDrawer('colores')">📚 Chuleta de Referencia</button>
             </div>
         </div>
@@ -185,14 +193,144 @@
 
             <div class="sub-tabs-container"
                 style="justify-content: flex-start; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
-                <button class="sub-tab-btn mesa-tab-btn active"
-                    onclick="openSubTab(event, 'mesa-herramientas', 'mesa-tab')">🛠️ Herramientas de Análisis</button>
-                <button class="sub-tab-btn mesa-tab-btn" onclick="openSubTab(event, 'mesa-ai', 'mesa-tab')">🧠 Asistente
-                    Exegético IA</button>
+                <button type="button" class="sub-tab-btn mesa-tab-btn mesaInteractiva-btn active"
+                    onclick="openSubTab(event, 'mesa-pizarra', 'mesa-tab')">🎨 Pizarra y Marcado Bíblico</button>
+                <button type="button" class="sub-tab-btn mesa-tab-btn mesaInteractiva-btn"
+                    onclick="openSubTab(event, 'mesa-herramientas', 'mesa-tab')">📐 Fraseo y Notas (DIALS)</button>
+                <button type="button" class="sub-tab-btn mesa-tab-btn mesaInteractiva-btn"
+                    onclick="openSubTab(event, 'mesa-ai', 'mesa-tab')">🧠 Asistente Exegético IA</button>
             </div>
 
-            <!-- PESTAÑA 1: MESA DE HERRAMIENTAS ORIGINAL -->
-            <div id="mesa-herramientas" class="sub-tab-content mesa-tab-content active">
+            <!-- PESTAÑA 1: PIZARRA INTERACTIVA COMPLETA (9 BIBLIAS + 14 MARCAS + CANVAS + PDF) -->
+            <div id="mesa-pizarra" class="sub-tab-content mesa-tab-content mesaInteractiva-content active">
+                <div class="pz-root" id="pzRoot">
+                    <div class="pz-subnav-bar">
+                        <div class="pz-subnav-left">
+                            <button type="button" class="pz-nav-pill active" data-pzview="pz-view-verses">
+                                <span>📑 Textos en Pizarra</span>
+                                <span class="pz-badge" id="pzNavBadgeCount">0</span>
+                            </button>
+                            <button type="button" class="pz-nav-pill" data-pzview="pz-view-config">
+                                <span>⚙️ Cargar Textos y Biblias</span>
+                            </button>
+                        </div>
+                        <div class="pz-subnav-right">
+                            <select id="pzQuickJumpSelect" class="pz-select pz-quick-jump-select" aria-label="Abrir bloque rápido en la Pizarra">
+                                <option value="">⚡ Abrir bloque en Pizarra...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- VISTA A: LISTADO DE BLOQUES / VERSÍCULOS -->
+                    <div class="pz-view-panel active" id="pz-view-verses">
+                        <div class="pz-view-header">
+                            <h3>📑 Textos Cargados <span class="pz-count-pill" id="pzVerseCount">0</span></h3>
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                                <input type="text" class="pz-search-input" id="pzSearchInput" aria-label="Filtrar textos de la pizarra" placeholder="🔎 Filtrar por título, cita o palabra..." />
+                                <button type="button" class="pz-btn pz-btn-gold" id="pzBtnQuickGoUpload">➕ Cargar más textos</button>
+                            </div>
+                        </div>
+                        <div class="pz-verse-list" id="pzVerseList"></div>
+                    </div>
+
+                    <!-- VISTA B: CARGAR TEXTOS, 9 BIBLIAS Y SESIONES -->
+                    <div class="pz-view-panel" id="pz-view-config">
+                        <div class="pz-view-header">
+                            <h3>⚙️ Cargar Textos, 9 Biblias Locales y Sesión</h3>
+                            <button type="button" class="pz-btn" id="pzBtnBackToVerses">← Ver Textos Cargados</button>
+                        </div>
+
+                        <div class="pz-config-card">
+                            <h4>📄 Modo de Trabajo y Carga de Textos</h4>
+                            <div class="pz-mode-bar">
+                                <div class="pz-mode-switch" role="tablist" aria-label="Tipo de texto">
+                                    <button type="button" class="pz-mode-btn active" id="pzBtnModeBible" data-mode="bible" role="tab">📖 Texto Bíblico</button>
+                                    <button type="button" class="pz-mode-btn" id="pzBtnModeNormal" data-mode="normal" role="tab">📝 Texto Normal</button>
+                                </div>
+                                <div class="pz-bible-controls" id="pzBibleControlsBar">
+                                    <label for="pzBibleVersionSelect" class="pz-field-label">Versión:</label>
+                                    <select id="pzBibleVersionSelect" class="pz-select" title="Selecciona cualquiera de las 9 Biblias locales de biblias/">
+                                        <option value="LBLA">LBLA — La Biblia de las Américas</option>
+                                        <option value="NBLA">NBLA — Nueva Biblia de las Américas</option>
+                                        <option value="RVR1960">RVR1960 — Reina-Valera 1960</option>
+                                        <option value="NVI">NVI — Nueva Versión Internacional</option>
+                                        <option value="NTV">NTV — Nueva Traducción Viviente</option>
+                                        <option value="RVC">RVC — Reina Valera Contemporánea</option>
+                                        <option value="DHH94I">DHH94I — Dios Habla Hoy</option>
+                                        <option value="DHHS94">DHHS94 — Dios Habla Hoy Estándar</option>
+                                        <option value="TLAI">TLAI — Traducción en Lenguaje Actual</option>
+                                    </select>
+                                    <label for="pzBibleChunkSelect" class="pz-field-label">Bloques:</label>
+                                    <select id="pzBibleChunkSelect" class="pz-select" title="Cómo dividir pasajes de varios versículos">
+                                        <option value="auto3">Auto (máx. 3 versos/bloque)</option>
+                                        <option value="1">1 versículo por bloque</option>
+                                        <option value="2">2 versículos por bloque</option>
+                                        <option value="4">4 versículos por bloque</option>
+                                        <option value="all">Pasaje completo (sin dividir)</option>
+                                    </select>
+                                    <label for="pzBibleLayoutSelect" class="pz-field-label">Formato:</label>
+                                    <select id="pzBibleLayoutSelect" class="pz-select" title="Mostrar versículos con salto de línea o seguidos en un mismo párrafo">
+                                        <option value="lines">Separados (salto de línea)</option>
+                                        <option value="inline">Seguidos (sin salto de línea)</option>
+                                    </select>
+                                    <span class="pz-bible-status" id="pzBibleLoadStatus">📚 9 Biblias disponibles</span>
+                                </div>
+                                <div class="pz-bible-controls hidden" id="pzNormalControlsBar">
+                                    <label for="pzNormalSplitSelect" class="pz-field-label">Dividir texto:</label>
+                                    <select id="pzNormalSplitSelect" class="pz-select" title="Cómo dividir textos largos en bloques cómodos">
+                                        <option value="natural">Auto (bloques naturales por puntuación)</option>
+                                        <option value="sentence">Por oración (cada punto)</option>
+                                        <option value="none">Por párrafo (sin dividir)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="pz-upload-grid">
+                                <div class="pz-drop-zone" id="pzDropZone">
+                                    <div class="pz-dz-icon">📄</div>
+                                    <strong>Arrastra aquí tu archivo .PDF, .MD o .TXT</strong>
+                                    <span id="pzDropZoneHint">Acepta solo citas (español o inglés, completas o abreviadas) o cita + texto</span>
+                                    <input type="file" id="pzFileInput" accept=".pdf,.md,.txt,.text" style="display:none" />
+                                </div>
+
+                                <div class="pz-paste-box">
+                                    <textarea id="pzPasteInput" aria-label="Pegar citas bíblicas o texto para la pizarra" placeholder="Pega solo citas o cita + texto (español o inglés, completas o abreviadas):&#10;Salmos 94:22&#10;Col 1:15-17&#10;John 3:16&#10;1 Cor. 13:4-7"></textarea>
+                                    <div class="pz-paste-actions">
+                                        <span id="pzPasteHint" style="font-size:0.78rem;color:var(--pz-text-muted);">Modo Bíblico: resuelve citas y rangos automáticamente desde biblias/</span>
+                                        <div style="display:flex;gap:8px;">
+                                            <button type="button" class="pz-btn" id="pzBtnAppendPaste">➕ Agregar</button>
+                                            <button type="button" class="pz-btn pz-btn-gold" id="pzBtnReplacePaste">📥 Cargar lista</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pz-config-card">
+                            <h4>🛠️ Apariencia del Lienzo, Sesiones (.json) y Biblia Manual</h4>
+                            <div class="pz-config-actions-row">
+                                <div style="display:inline-flex;align-items:center;gap:8px;margin-right:6px;">
+                                    <label for="pzBoardThemeSelect" class="pz-field-label">Fondo del Lienzo:</label>
+                                    <select id="pzBoardThemeSelect" class="pz-select" title="Cambiar fondo de la Pizarra Interactiva al abrir un bloque">
+                                        <option value="0">🌑 Pizarra (Negro)</option>
+                                        <option value="1">🌌 Oscuro (Azul Noche)</option>
+                                        <option value="2">📄 Claro (Día)</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="pz-btn" id="pzBtnLoadBibleJson" title="Cargar archivo local de Biblia (.json) si abres index.html directamente desde file:// sin servidor">📚 Biblia Local (.json)</button>
+                                <button type="button" class="pz-btn" id="pzBtnExportSession">💾 Guardar Sesión (.json)</button>
+                                <button type="button" class="pz-btn" id="pzBtnImportSession">📂 Abrir Sesión (.json)</button>
+                                <button type="button" class="pz-btn pz-btn-danger" id="pzBtnClearList">🗑️ Limpiar Listado</button>
+                                <input type="file" id="pzBibleJsonInput" accept=".json" style="display:none" />
+                                <input type="file" id="pzSessionJsonInput" accept=".json" style="display:none" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 2: FRASEO Y NOTAS (DIALS) -->
+            <div id="mesa-herramientas" class="sub-tab-content mesa-tab-content mesaInteractiva-content">
                 <div class="workspace-controls">
                     <div class="lens-toggles">
                         <label class="lens-toggle"><input type="checkbox" id="toggleGrammar" checked> 🎨 Ver
@@ -201,33 +339,32 @@
                         <label class="lens-toggle"><input type="checkbox" id="toggleStructure" checked> 📐 Ver
                             Estructura</label>
                     </div>
-                    <button id="exportWorkspaceBtn" class="shortcut-btn" style="background:#007bff; color:#fff;">📸
+                    <button type="button" id="exportWorkspaceBtn" class="shortcut-btn" style="background:#007bff; color:#fff;">📸
                         Exportar Análisis (PNG)</button>
-                    <button id="exportPdfPortraitBtn" class="shortcut-btn" style="background:#e74c3c; color:#fff;">📄
+                    <button type="button" id="exportPdfPortraitBtn" class="shortcut-btn" style="background:#e74c3c; color:#fff;">📄
                         PDF Vertical</button>
-                    <button id="exportPdfLandscapeBtn" class="shortcut-btn" style="background:#c0392b; color:#fff;">📄
+                    <button type="button" id="exportPdfLandscapeBtn" class="shortcut-btn" style="background:#c0392b; color:#fff;">📄
                         PDF Horizontal</button>
                 </div>
 
-                <!-- =============================================  -->
-                <!-- SELECTOR DE PASAJE BÍBLICO                    -->
-                <!-- =============================================  -->
-                <div id="passageSelectorBar" style="
-                    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-                    border: 1px solid rgba(138,79,255,0.3);
-                    border-radius: 12px; padding: 12px 16px; margin-bottom: 12px;
-                    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-                ">
-                    <span
-                        style="color:#a78bfa; font-size:13px; font-weight:700; letter-spacing:0.5px; white-space:nowrap;">📖
-                        PASAJE A ESTUDIAR:</span>
+                <!-- SELECTOR DE PASAJE BÍBLICO (CONECTADO A LAS 9 BIBLIAS LOCALES + FALLBACK ONLINE) -->
+                <div id="passageSelectorBar" class="passage-selector-bar">
+                    <span class="passage-selector-title">📖 PASAJE:</span>
 
-                    <select id="bibleBook" style="
-                        background:#0f0f23; color:#e0e0e0; border:1px solid rgba(138,79,255,0.4);
-                        border-radius:8px; padding:6px 10px; font-size:13px; cursor:pointer; flex:1; min-width:150px;
-                    ">
-                        <optgroup label="── ANTIGUO TESTAMENTO ──" style="color:#888;">
+                    <select id="phrasingBibleVersion" class="passage-select-ctrl" style="max-width: 112px; font-weight: 700;" aria-label="Versión Bíblica para Fraseo" title="Versión desde biblias/">
+                        <option value="LBLA" selected>LBLA</option>
+                        <option value="NBLA">NBLA</option>
+                        <option value="RVR1960">RVR1960</option>
+                        <option value="NVI">NVI</option>
+                        <option value="NTV">NTV</option>
+                        <option value="RVC">RVC</option>
+                        <option value="DHH94I">DHH94I</option>
+                        <option value="DHHS94">DHHS94</option>
+                        <option value="TLAI">TLAI</option>
+                    </select>
+
+                    <select id="bibleBook" class="passage-select-ctrl" style="flex:1; min-width:145px;" aria-label="Libro bíblico">
+                        <optgroup label="── ANTIGUO TESTAMENTO ──">
                             <option value="Génesis|AT|Gn">Génesis</option>
                             <option value="Éxodo|AT|Ex">Éxodo</option>
                             <option value="Levítico|AT|Lv">Levítico</option>
@@ -268,7 +405,7 @@
                             <option value="Zacarías|AT|Zac">Zacarías</option>
                             <option value="Malaquías|AT|Mal">Malaquías</option>
                         </optgroup>
-                        <optgroup label="── NUEVO TESTAMENTO ──" style="color:#888;">
+                        <optgroup label="── NUEVO TESTAMENTO ──">
                             <option value="Mateo|NT|Mt">Mateo</option>
                             <option value="Marcos|NT|Mr">Marcos</option>
                             <option value="Lucas|NT|Lc">Lucas</option>
@@ -299,138 +436,119 @@
                         </optgroup>
                     </select>
 
-                    <input type="number" id="bibleChapter" min="1" max="150" value="1" placeholder="Cap." style="
-                        width:60px; background:#0f0f23; color:#e0e0e0;
-                        border:1px solid rgba(138,79,255,0.4); border-radius:8px;
-                        padding:6px 8px; font-size:13px; text-align:center;
-                    ">
+                    <input type="number" id="bibleChapter" class="passage-num-ctrl" min="1" max="150" value="1" placeholder="Cap." aria-label="Capítulo">
+                    <span style="color:#94a3b8; font-size:12px;">v.</span>
+                    <input type="number" id="bibleVerseStart" class="passage-num-ctrl" min="1" max="200" value="1" placeholder="Ini" aria-label="Versículo inicial">
+                    <span style="color:#94a3b8; font-size:12px;">—</span>
+                    <input type="number" id="bibleVerseEnd" class="passage-num-ctrl" min="1" max="200" value="14" placeholder="Fin" aria-label="Versículo final">
 
-                    <span style="color:#888; font-size:12px;">v.</span>
-
-                    <input type="number" id="bibleVerseStart" min="1" max="200" value="1" placeholder="Ini" style="
-                        width:55px; background:#0f0f23; color:#e0e0e0;
-                        border:1px solid rgba(138,79,255,0.4); border-radius:8px;
-                        padding:6px 8px; font-size:13px; text-align:center;
-                    ">
-
-                    <span style="color:#888; font-size:12px;">—</span>
-
-                    <input type="number" id="bibleVerseEnd" min="1" max="200" value="14" placeholder="Fin" style="
-                        width:55px; background:#0f0f23; color:#e0e0e0;
-                        border:1px solid rgba(138,79,255,0.4); border-radius:8px;
-                        padding:6px 8px; font-size:13px; text-align:center;
-                    ">
-
-                    <button id="btnOpenBibleGateway" style="
-                        background: linear-gradient(135deg,#7c3aed,#4f46e5);
-                        color:#fff; border:none; border-radius:8px;
-                        padding:7px 14px; font-size:13px; font-weight:600;
-                        cursor:pointer; white-space:nowrap;
-                        transition: opacity 0.2s, transform 0.1s;
-                    " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                        📖 Abrir en BibleGateway (LBLA)
+                    <button type="button" id="btnOpenBibleGateway" class="passage-btn-bg">
+                        📖 BibleGateway
                     </button>
 
-                    <button id="btnSetActivePassage" style="
-                        background: rgba(138,79,255,0.15);
-                        color:#a78bfa; border:1px solid rgba(138,79,255,0.4); border-radius:8px;
-                        padding:7px 12px; font-size:12px; font-weight:600;
-                        cursor:pointer; white-space:nowrap;
-                        transition: background 0.2s;
-                    " title="Registrar este pasaje como el que está estudiando (para el interlineal)">
-                        ✅ Fijar como pasaje activo
+                    <button type="button" id="btnSetActivePassage" class="passage-btn-pin" title="Registrar este pasaje como el que está estudiando (para el interlineal)">
+                        ✅ Fijar pasaje
                     </button>
 
-                    <button id="btnLoadPassageText" style="
-                        background: linear-gradient(135deg, #10b981, #059669);
-                        color:#fff; border:none; border-radius:8px;
-                        padding:7px 14px; font-size:12px; font-weight:600;
-                        cursor:pointer; white-space:nowrap;
-                        transition: opacity 0.2s, transform 0.1s;
-                    " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"
-                       title="Obtener el texto bíblico automáticamente y cargarlo en la Mesa de Trabajo">
-                        📥 Cargar a Mesa de Trabajo
+                    <button type="button" id="btnLoadPassageText" class="passage-btn-load" title="Obtener el texto bíblico desde las Biblias locales (o API de respaldo) y cargarlo al Fraseo">
+                        📥 Cargar a Fraseo
                     </button>
 
-                    <div id="activePassageBadge" style="
-                        background: rgba(16,185,129,0.15);
-                        border: 1px solid rgba(16,185,129,0.4);
-                        border-radius: 20px; padding: 4px 12px;
-                        color: #10b981; font-size: 12px; font-weight: 700;
-                        display: none; white-space: nowrap;
-                    ">
+                    <div id="activePassageBadge" class="active-passage-badge">
                         📌 <span id="activePassageLabel">—</span>
                     </div>
                 </div>
 
                 <div class="interactive-toolbar">
-                    <button class="color-tool" data-color="#dc3545" title="Sustantivos (Rojo)">
+                    <button type="button" class="color-tool" data-color="#dc3545" title="Sustantivos (Rojo)">
                         <span class="color-dot" style="background-color: #dc3545"></span> Sustantivos
                     </button>
-                    <button class="color-tool" data-color="#28a745" title="Verbos (Verde)">
+                    <button type="button" class="color-tool" data-color="#28a745" title="Verbos (Verde)">
                         <span class="color-dot" style="background-color: #28a745"></span> Verbos
                     </button>
-                    <button class="color-tool" data-color="#6f42c1" title="Pronombres (Morado)">
+                    <button type="button" class="color-tool" data-color="#6f42c1" title="Pronombres (Morado)">
                         <span class="color-dot" style="background-color: #6f42c1"></span> Pronombres
                     </button>
-                    <button class="color-tool" data-color="#fd7e14" title="Artículos (Naranja)">
+                    <button type="button" class="color-tool" data-color="#fd7e14" title="Artículos (Naranja)">
                         <span class="color-dot" style="background-color: #fd7e14"></span> Artículos
                     </button>
-                    <button class="color-tool" data-color="#007bff" title="Genitivos (Azul)">
+                    <button type="button" class="color-tool" data-color="#007bff" title="Genitivos (Azul)">
                         <span class="color-dot" style="background-color: #007bff"></span> Genitivos
                     </button>
-                    <button class="color-tool" data-color="#ffc107" title="Preposiciones (Amarillo)">
+                    <button type="button" class="color-tool" data-color="#ffc107" title="Preposiciones (Amarillo)">
                         <span class="color-dot" style="background-color: #ffc107"></span> Preposiciones
                     </button>
-                    <button class="color-tool" data-color="#e91e63" title="Adjetivos (Rosado)">
+                    <button type="button" class="color-tool" data-color="#e91e63" title="Adjetivos (Rosado)">
                         <span class="color-dot" style="background-color: #e91e63"></span> Adjetivos
                     </button>
-                    <button class="color-tool" data-color="#6c757d" title="Adverbios / Conj. (Gris)">
+                    <button type="button" class="color-tool" data-color="#6c757d" title="Adverbios / Conj. (Gris)">
                         <span class="color-dot" style="background-color: #6c757d"></span> Adverbios / Conj.
                     </button>
-                    <button class="color-tool" data-color="#b19cd9" title="Secundarios (Lila)">
+                    <button type="button" class="color-tool" data-color="#b19cd9" title="Secundarios (Lila)">
                         <span class="color-dot" style="background-color: #b19cd9"></span> Secundarios
                     </button>
-                    <button class="color-tool clear-tool" id="clearHighlight" title="Borrar Formato">🧹
+                    <button type="button" class="color-tool clear-tool" id="clearHighlight" title="Borrar Formato">🧹
                         Borrador</button>
-                    <button class="color-tool clear-all-tool" id="clearAllWorkspace" title="Limpiar todo el panel"
+                    <button type="button" class="color-tool clear-all-tool" id="clearAllWorkspace" title="Limpiar todo el panel"
                         style="background: #dc3545; color: white;">🗑️ Limpiar Todo</button>
                 </div>
+
+                <!-- BARRA DE CONTROL ESTRUCTURAL DIALS (Divide, Indent, Arrows, Label, Savor) -->
+                <div class="dials-helper-bar">
+                    <div class="dials-helper-actions">
+                        <span class="dials-helper-label">📐 DIALS:</span>
+                        <button type="button" id="btnDialsAddLine" class="dials-btn" title="Añadir nueva línea de frase (también puedes pulsar Enter en mitad de una línea para dividirla)">➕ Línea (Enter)</button>
+                        <button type="button" id="btnDialsOutdent" class="dials-btn" title="Reducir sangría (Shift + Tab)">⇤ Menos sangría</button>
+                        <button type="button" id="btnDialsIndent" class="dials-btn" title="Aumentar sangría subordinada y activar flecha (Tab)">⇥ Sangrar (Tab)</button>
+                        <button type="button" class="dials-btn" onclick="openRefDrawer('rels27')" title="Consultar las 27 relaciones subordinadas">📊 27 Rels</button>
+                        <button type="button" class="dials-btn" onclick="openRefDrawer('gen19')" title="Consultar las 19 relaciones genitivas">📘 19 Genitivos</button>
+                    </div>
+                    <div class="dials-legend">
+                        <span title="Frase Genitiva [GEN]: Flecha azul + 19 relaciones de genitivo"><strong style="color:#2563eb;">🟦 └─▶</strong> Genitiva (19)</span>
+                        <span title="Frase Relativa [REL]: Flecha verde apuntando al antecedente (nunca lleva etiqueta)"><strong style="color:#16a34a;">🟩 └─▶</strong> Relativa (sin etiq.)</span>
+                        <span title="Frases Subordinadas [PR, PA, INF, AP, SUB]: Flecha amarilla + 27 relaciones subordinadas"><strong style="color:#ca8a04;">🟨 └─▶</strong> Subordinada (27)</span>
+                    </div>
+                </div>
+
                 <div class="interactive-workspace" contenteditable="true"
-                    aria-placeholder="Pega aquí el texto bíblico para comenzar a trabajar..."></div>
+                    aria-placeholder="Pega aquí el texto bíblico o cárgalo arriba para dividir (Enter), sangrar (Tab) y etiquetar (DIALS)..."></div>
             </div>
 
-            <!-- PESTAÑA 2: ASISTENTE IA -->
-            <div id="mesa-ai" class="sub-tab-content mesa-tab-content">
+            <!-- PESTAÑA 3: ASISTENTE IA -->
+            <div id="mesa-ai" class="sub-tab-content mesa-tab-content mesaInteractiva-content">
                 <div id="aiPanel" class="ai-panel" style="margin-top: 0;">
-                    <div class="ai-header">
-                        <h3>🤖 Asistente Exegético IA (Gemini)</h3>
-                        <!-- Se removió el botón X porque ahora es una pestaña fija -->
+                    <div class="ai-header" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;">
+                        <h3 style="margin:0;">🤖 Asistente Exegético IA — Flujo Oficial 5 Etapas EBI</h3>
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <label for="aiOutputMode" style="font-size:0.82rem;font-weight:700;opacity:0.9;">Salida:</label>
+                            <select id="aiOutputMode" class="passage-select-ctrl" style="padding:5px 10px;font-size:0.82rem;font-weight:700;" title="Elige si deseas respuesta en Markdown directo o como aplicación web SPA HTML interactiva de 5 pestañas">
+                                <option value="TEXTO" selected>📝 Modo Texto (Markdown)</option>
+                                <option value="HTML">🌐 Modo HTML (SPA 5 Pestañas)</option>
+                            </select>
+                            <button type="button" id="btnAiResetChat" class="shortcut-btn" style="padding:5px 10px;font-size:0.8rem;" title="Limpiar conversación para analizar un nuevo pasaje">🔄 Nueva Sesión</button>
+                        </div>
                     </div>
                     <div class="ai-body">
                         <div class="ai-chat-history" id="aiChatHistory">
                             <div class="chat-message system-msg">
-                                <strong>¡Hola!</strong> Soy tu Asistente Exegético, programado con el <em>"Monster
-                                    Prompt V3"</em> — Análisis en <strong>4 Etapas</strong>.<br><br>
-                                1. Puedes usar la API internamente configurando tu clave en ⚙️ Configuración.<br>
-                                2. O puedes copiar el hiper-prompt armado pulsando el botón gris, y pegarlo en ChatGPT o
-                                Claude.<br><br>
-                                <strong>📖 Añade abajo tu pasaje bíblico (RV60 por defecto):</strong>
+                                <strong>¡Hola!</strong> Soy tu Asistente Exegético Doctoral, alineado 100% con tus <strong>5 Pasos EBI y Biblearc</strong>:<br>
+                                <strong>1️⃣ Markup</strong> (9 Colores + 7 Lentes exhaustivos) · <strong>2️⃣ Fraseo DIALS</strong> (9 Frases, Flechas 🟦🟩🟨, 19 Genitivos, 27 Subordinadas + Cromatismo palabra por palabra) · <strong>3️⃣ Discourse</strong> (18+4 Relaciones, Levels of Logic y <em>Main Point Summary</em>) · <strong>4️⃣ Profundización</strong> (Concordancia 5 Niveles, Paráfrasis y Diagramming) · <strong>5️⃣ My Bible, Savor y Bosquejo</strong>.<br><br>
+                                • Elige arriba <strong>📝 Modo Texto</strong> o <strong>🌐 Modo HTML (SPA interactiva descargable)</strong>.<br>
+                                • Versión base por defecto: <strong>LBLA</strong> (puedes indicar otra al pegar el pasaje, o enviarlo con un clic desde <strong>Pizarra</strong> o <strong>Fraseo</strong>).
                             </div>
                         </div>
                     </div>
                     <div class="ai-footer">
-                        <textarea id="aiInput"
-                            placeholder="Pega el pasaje bíblico puro aquí (Ej. Juan 1:1-5) o pon 'Continúa' si te lo pide..."></textarea>
+                        <textarea id="aiInput" aria-label="Pasaje bíblico o instrucción para el Asistente IA"
+                            placeholder="Pega el pasaje bíblico aquí (Ej. Hebreos 12:1-2, LBLA por defecto) o déjalo vacío para copiar solo el Prompt Maestro..."></textarea>
                         <div class="ai-actions">
-                            <button id="btnAiCopyPrompt" class="ai-btn copy-prompt"
-                                title="Unifica el texto con el Monster Prompt y lo copia">📋 Copiar Prompt para
-                                ChatGPT</button>
-                            <button id="btnAiAnalyze" class="ai-btn run-ai"
-                                title="Analizar el texto con la cuenta Gemini integrada">🚀 Analizar Directo
+                            <button type="button" id="btnAiCopyPrompt" class="ai-btn copy-prompt"
+                                title="Copia el Prompt Maestro de 5 Etapas (unido a tu pasaje y modo si escribiste uno abajo)">📋 Copiar Prompt (ChatGPT / Claude)</button>
+                            <button type="button" id="btnAiAnalyze" class="ai-btn run-ai"
+                                title="Analizar directamente con tu API de Gemini configurada">🚀 Analizar Directo
                                 (API)</button>
-                            <button id="btnAiNextStage" class="ai-btn next-stage" style="display: none;"
-                                title="Responder afirmativamente a la pausa">⏭️ Siguiente Etapa</button>
+                            <button type="button" id="btnAiNextStage" class="ai-btn next-stage" style="display: none;"
+                                title="Confirmar punto de control y avanzar a la siguiente etapa">⏭️ Siguiente Etapa</button>
                         </div>
                     </div>
                 </div>
@@ -444,25 +562,24 @@
                     navegador.</p>
             </div>
             <div class="sub-tabs-container" style="margin-top: 15px; margin-bottom: 25px;">
-                <button class="sub-tab-btn config-btn active" onclick="openSubTab(event, 'config-ai', 'config')">🤖
+                <button type="button" class="sub-tab-btn config-btn configGeneral-btn active" onclick="openSubTab(event, 'config-ai', 'config')">🤖
                     Inteligencia Artificial</button>
-                <button class="sub-tab-btn config-btn" onclick="openSubTab(event, 'config-ui', 'config')">👁️ Interfaz y
+                <button type="button" class="sub-tab-btn config-btn configGeneral-btn" onclick="openSubTab(event, 'config-ui', 'config')">👁️ Interfaz y
                     Vista</button>
-                <button class="sub-tab-btn config-btn" onclick="openSubTab(event, 'config-session', 'config')">💾 Sesión
+                <button type="button" class="sub-tab-btn config-btn configGeneral-btn" onclick="openSubTab(event, 'config-session', 'config')">💾 Sesión
                     y Data</button>
-                <button class="sub-tab-btn config-btn" onclick="openSubTab(event, 'config-colors', 'config')">🎨 Colores
+                <button type="button" class="sub-tab-btn config-btn configGeneral-btn" onclick="openSubTab(event, 'config-colors', 'config')">🎨 Colores
                     Analíticos</button>
             </div>
 
-            <div id="config-ai" class="sub-tab-content config-content active">
+            <div id="config-ai" class="sub-tab-content config-content configGeneral-content active">
                 <div class="config-cards-grid">
                     <!-- PANEL 1: API KEY -->
                     <div class="config-panel-card"
                         style="background: transparent; border: none; box-shadow: none; padding: 0;">
                         <div style="margin-bottom: 15px;">
-                            <h3 style="font-size: 1.1em; font-weight: 700; color: #1e293b; margin-bottom: 5px;">🤖
-                                Configuración de Inteligencia Artificial</h3>
-                            <p style="font-size: 0.85em; color: #64748b;">Configura tus APIs de Gemini. Puedes tener una
+                            <h3 class="config-ai-heading">🤖 Configuración de Inteligencia Artificial</h3>
+                            <p class="config-ai-subheading">Configura tus APIs de Gemini. Puedes tener una
                                 gratuita y una de pago y elegir cómo usarlas.</p>
                         </div>
 
@@ -479,23 +596,22 @@
                                         <div class="api-subtitle">1500 req/día | Sin costo</div>
                                     </div>
                                 </div>
-                                <label class="config-label">API Key</label>
+                                <label class="config-label" for="geminiApiKeyFree">API Key</label>
                                 <input type="password" id="geminiApiKeyFree" class="config-input api-input"
                                     placeholder="AIzaSy..." />
-                                <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer"
                                     class="api-link">Obtener API Key gratuita ➜</a>
 
-                                <label class="config-label" style="margin-top: 10px;">Modelo</label>
+                                <label class="config-label" for="geminiModelFree" style="margin-top: 10px;">Modelo</label>
                                 <select id="geminiModelFree" class="config-select api-input">
-                                    <option value="gemini-2.5-flash">Gemini 2.5 Flash (Potente)</option>
-                                    <option value="gemini-2.0-flash">Gemini 2.0 Flash ⭐ (Recomendado gratuito)</option>
-                                    <option value="gemini-2.5-flash-preview-09-2025">Gemini 2.5 Flash Preview</option>
-                                    <option value="gemini-1.5-flash">Gemini 1.5 Flash (Rápido)</option>
+                                    <option value="gemini-2.5-flash">Gemini 2.5 Flash ⭐ (Recomendado gratuito)</option>
+                                    <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite (Ultra rápido)</option>
+                                    <option value="gemini-2.0-flash">Gemini 2.0 Flash (Estable)</option>
                                 </select>
 
                                 <div class="api-actions">
-                                    <button id="btnSaveFree" class="btn-api save-free">💾 Guardar</button>
-                                    <button id="btnTestFree" class="btn-api test-btn">🧪 Probar</button>
+                                    <button type="button" id="btnSaveFree" class="btn-api save-free">💾 Guardar</button>
+                                    <button type="button" id="btnTestFree" class="btn-api test-btn">🧪 Probar</button>
                                     <span id="statusFree" class="api-status"></span>
                                 </div>
                             </div>
@@ -509,31 +625,29 @@
                                         <div class="api-subtitle">Sin límites | Modelos Pro</div>
                                     </div>
                                 </div>
-                                <label class="config-label">API Key</label>
+                                <label class="config-label" for="geminiApiKeyPaid">API Key</label>
                                 <input type="password" id="geminiApiKeyPaid" class="config-input api-input"
                                     placeholder="AIzaSy..." />
 
-                                <label class="config-label" style="margin-top: 26px;">Modelo</label>
+                                <label class="config-label" for="geminiModelPaid" style="margin-top: 26px;">Modelo</label>
                                 <select id="geminiModelPaid" class="config-select api-input">
                                     <option value="gemini-2.5-flash">Gemini 2.5 Flash ⭐ (Recomendado pago)</option>
                                     <option value="gemini-2.5-pro">Gemini 2.5 Pro 🔥 (Máxima potencia)</option>
                                     <option value="gemini-2.0-flash">Gemini 2.0 Flash (Estable)</option>
-                                    <option value="gemini-1.5-pro">Gemini 1.5 Pro (Calidad)</option>
-                                    <option value="gemini-1.5-flash">Gemini 1.5 Flash (Rápido)</option>
                                 </select>
 
                                 <div class="api-actions">
-                                    <button id="btnSavePaid" class="btn-api save-paid">💾 Guardar</button>
-                                    <button id="btnTestPaid" class="btn-api test-btn">🧪 Probar</button>
+                                    <button type="button" id="btnSavePaid" class="btn-api save-paid">💾 Guardar</button>
+                                    <button type="button" id="btnTestPaid" class="btn-api test-btn">🧪 Probar</button>
                                     <span id="statusPaid" class="api-status"></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Modo de Uso -->
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px;">
-                            <label class="config-label" style="display: flex; align-items: center; gap: 5px;">⚡ Modo de
-                                uso:</label>
+                        <div class="api-mode-card">
+                            <div class="config-label" style="display: flex; align-items: center; gap: 5px;">⚡ Modo de
+                                uso:</div>
                             <div class="mode-toggles-container">
                                 <label class="mode-pill-label">
                                     <input type="radio" name="geminiApiModeGroup" value="free" class="mode-radio">
@@ -573,7 +687,7 @@
                         </div>
                         <div class="config-grid">
                             <div class="config-item">
-                                <label class="config-label">Fuente Lexicográfica (Fase 3)</label>
+                                <label class="config-label" for="dictionaryBase">Fuente Lexicográfica (Fase 3)</label>
                                 <select id="dictionaryBase" class="config-select">
                                     <option value="strong">📖 Números Strong (Tradicional)</option>
                                     <option value="vine">📚 Diccionario de Vine</option>
@@ -582,7 +696,7 @@
                                 </select>
                             </div>
                             <div class="config-item span-2">
-                                <label class="config-label">Temperatura Exegética: <span id="tempValue"
+                                <label class="config-label" for="aiTemperature">Temperatura Exegética: <span id="tempValue"
                                         class="highlight-val">0.2</span></label>
                                 <input type="range" id="aiTemperature" min="0" max="1" step="0.1" value="0.2"
                                     class="config-slider gradient-slider" />
@@ -596,7 +710,7 @@
                 </div>
             </div>
 
-            <div id="config-ui" class="sub-tab-content config-content">
+            <div id="config-ui" class="sub-tab-content config-content configGeneral-content">
                 <div class="config-cards-grid">
                     <!-- PANEL 2: INTERFAZ -->
                     <div class="config-panel-card glass-card">
@@ -611,7 +725,7 @@
                         <div class="config-grid">
                             <div class="config-item flex-row-between">
                                 <div>
-                                    <label class="config-label">Modo Oscuro Nocturno</label>
+                                    <label class="config-label" for="darkModeToggle">Modo Oscuro Nocturno</label>
                                     <p class="config-sub-label">Ideal para descansar la vista de forma elegante.</p>
                                 </div>
                                 <div class="toggle-container">
@@ -623,14 +737,14 @@
                                 </div>
                             </div>
                             <div class="config-item">
-                                <label class="config-label">Tamaño del Texto Relativo: <span id="fontSizeValue"
+                                <label class="config-label" for="workspaceFontSize">Tamaño del Texto Relativo: <span id="fontSizeValue"
                                         class="highlight-val">16</span>px</label>
                                 <input type="range" id="workspaceFontSize" min="12" max="24" step="1" value="16"
                                     class="config-slider blue-slider" />
                                 <div class="slider-labels"><span>Pequeño (12)</span><span>Gigante (24)</span></div>
                             </div>
                             <div class="config-item span-2">
-                                <label class="config-label">Tipografía de la Mesa de Trabajo</label>
+                                <div class="config-label">Tipografía de la Mesa de Trabajo</div>
                                 <div class="radio-pill-group">
                                     <label class="radio-pill">
                                         <input type="radio" name="fontFamily" value="system" id="fontSystem">
@@ -654,7 +768,7 @@
                 </div>
             </div>
 
-            <div id="config-session" class="sub-tab-content config-content">
+            <div id="config-session" class="sub-tab-content config-content configGeneral-content">
                 <div class="config-cards-grid">
                     <!-- PANEL 3: AUTO-GUARDADO -->
                     <div class="config-panel-card glass-card">
@@ -669,7 +783,7 @@
                         <div class="config-grid">
                             <div class="config-item flex-row-between">
                                 <div>
-                                    <label class="config-label">Respaldo Automático Constante</label>
+                                    <label class="config-label" for="autoSaveToggle">Respaldo Automático Constante</label>
                                     <p class="config-sub-label">Guarda avances en el caché local pacíficamente en
                                         segundo plano.</p>
                                 </div>
@@ -682,7 +796,7 @@
                                 </div>
                             </div>
                             <div class="config-item">
-                                <label class="config-label">Frecuencia Estricta de Auto-Guardado: <span
+                                <label class="config-label" for="autoSaveInterval">Frecuencia Estricta de Auto-Guardado: <span
                                         id="autoSaveIntervalValue" class="highlight-val">5</span> min</label>
                                 <input type="range" id="autoSaveInterval" min="1" max="30" step="1" value="5"
                                     class="config-slider green-slider" />
@@ -703,7 +817,7 @@
                 </div>
             </div>
 
-            <div id="config-colors" class="sub-tab-content config-content">
+            <div id="config-colors" class="sub-tab-content config-content configGeneral-content">
                 <div class="config-cards-grid">
                     <!-- PANEL 4: COLORES -->
                     <div class="config-panel-card glass-card" style="grid-column: 1 / -1;">
@@ -725,298 +839,39 @@
         </section>
 
         <section id="documentosSoporte" class="section" style="display: none;">
-            <div
-                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid #e1e8f0; padding-bottom: 20px;">
+            <div class="docs-topbar">
                 <div>
                     <h2 style="margin-bottom: 5px; border: none; padding: 0;">📂 Documentos y Formatos</h2>
-                    <p style="color: #64748b; font-size: 0.9em; margin: 0;">Los documentos se obtienen en vivo
-                        directamente desde tu nueva carpeta de Google Drive.</p>
+                    <p class="docs-subtitle">Los documentos se obtienen bajo demanda directamente desde tu carpeta sincronizada de Google Drive.</p>
                 </div>
-                <div style="background: #f1f5f9; padding: 4px; border-radius: 8px; display: flex; gap: 5px;">
-                    <button id="btnViewGrid" class="view-btn active"
-                        style="border: none; background: white; padding: 8px; border-radius: 6px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: bold; color: #4f46e5;">🗂️
-                        Tarjetas</button>
-                    <button id="btnViewList" class="view-btn"
-                        style="border: none; background: transparent; padding: 8px; border-radius: 6px; cursor: pointer; color: #64748b;">📝
-                        Lista</button>
+                <div class="docs-view-toggle">
+                    <button type="button" id="btnViewGrid" class="docs-view-btn active">🗂️ Tarjetas</button>
+                    <button type="button" id="btnViewList" class="docs-view-btn">📝 Lista</button>
                 </div>
             </div>
 
-            <div id="docsLoadingState" style="text-align: center; padding: 40px; color: #64748b; display: none;">
+            <div id="docsLoadingState" class="docs-loading-state" style="display: none;">
                 Cargando formatos de Drive... ☁️</div>
-            <div id="docsErrorState"
-                style="background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 15px; border-radius: 8px; display: none; margin-bottom: 20px;">
-            </div>
+            <div id="docsErrorState" class="docs-error-state" style="display: none;"></div>
 
             <div id="driveDocsContainer" class="docs-grid-view">
-                <!-- Por defecto un bloque pidiendo el enlace -->
-                <div
-                    style="background: white; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 40px; text-align: center;">
-                    <h3 style="margin-top: 0;">Conexión a Drive Pendiente</h3>
-                    <p style="color: #64748b;">Abre el archivo <code>index.html</code> (aprox. línea 590) e ingresa la
-                        URL de tu nuevo Apps Script.</p>
+                <div class="docs-empty-card">
+                    <h3 style="margin-top: 0;">Conexión a Drive Lista</h3>
+                    <p class="docs-subtitle">Los documentos se cargarán automáticamente al abrir esta sección (puedes actualizar <code>EXEGESIS_DRIVE_URL</code> en <code>script.js</code>).</p>
                 </div>
             </div>
-
-            <style>
-                /* Estilos internos para evitar llenar style.css */
-                .docs-grid-view {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                    gap: 20px;
-                }
-
-                .doc-card {
-                    background: white;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 12px;
-                    padding: 20px;
-                    transition: transform 0.2s, box-shadow 0.2s;
-                    position: relative;
-                    overflow: hidden;
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                .doc-card:hover {
-                    transform: translateY(-3px);
-                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-                }
-
-                .doc-card::before {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    bottom: 0;
-                    width: 4px;
-                    background: #e2e8f0;
-                    transition: background 0.2s;
-                }
-
-                .doc-card:hover::before {
-                    background: #4b6bfb;
-                }
-
-                .doc-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    margin-bottom: 15px;
-                }
-
-                .doc-icon {
-                    background: #f8fafc;
-                    padding: 12px;
-                    border-radius: 10px;
-                    font-size: 24px;
-                }
-
-                .doc-actions {
-                    display: flex;
-                    gap: 8px;
-                }
-
-                .doc-actions a {
-                    color: #64748b;
-                    text-decoration: none;
-                    padding: 8px;
-                    border-radius: 50%;
-                    transition: background 0.2s;
-                }
-
-                .doc-actions a:hover {
-                    background: #f1f5f9;
-                    color: #4f46e5;
-                }
-
-                .doc-title {
-                    font-weight: bold;
-                    color: #1e293b;
-                    font-size: 1.1em;
-                    margin-bottom: 8px;
-                    line-height: 1.3;
-                }
-
-                .doc-tags {
-                    display: flex;
-                    gap: 10px;
-                    font-size: 0.8em;
-                    color: #64748b;
-                    font-weight: bold;
-                    margin-bottom: 20px;
-                }
-
-                .doc-tags span {
-                    background: #f1f5f9;
-                    padding: 3px 8px;
-                    border-radius: 4px;
-                    border: 1px solid #e2e8f0;
-                }
-
-                .doc-footer {
-                    font-size: 0.8em;
-                    color: #94a3b8;
-                    border-top: 1px solid #f1f5f9;
-                    padding-top: 12px;
-                    margin-top: auto;
-                }
-
-                /* List View */
-                .docs-list-view {
-                    display: block;
-                    overflow-x: auto;
-                    background: white;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 12px;
-                }
-
-                .docs-list-view table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    text-align: left;
-                }
-
-                .docs-list-view th {
-                    background: #f8fafc;
-                    padding: 15px 20px;
-                    font-weight: bold;
-                    color: #475569;
-                    border-bottom: 1px solid #e2e8f0;
-                }
-
-                .docs-list-view td {
-                    padding: 12px 20px;
-                    border-bottom: 1px solid #f1f5f9;
-                    color: #1e293b;
-                }
-
-                .docs-list-view tr:last-child td {
-                    border-bottom: none;
-                }
-
-                .docs-list-view tr:hover {
-                    background: #f8fafc;
-                }
-            </style>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    // ==============================================================================
-                    // Pega aquí la URL Web App de tu Google Apps Script de ESTE NUEVO PROYECTO
-                    const EXEGESIS_DRIVE_URL = "https://script.google.com/macros/s/AKfycbyunWSWNZhQr14De-GBapf2y7hV_wl3LnYYoqho4r2HeC2iDXH-2mNpdPI0haKfdkFb/exec";
-                    // ==============================================================================
-
-                    const viewGridBtn = document.getElementById('btnViewGrid');
-                    const viewListBtn = document.getElementById('btnViewList');
-                    const container = document.getElementById('driveDocsContainer');
-                    const loading = document.getElementById('docsLoadingState');
-                    const errorState = document.getElementById('docsErrorState');
-
-                    let loadedDocs = [];
-                    let currentMode = 'grid'; // 'grid' | 'list'
-
-                    function renderDocs() {
-                        container.innerHTML = '';
-
-                        if (loadedDocs.length === 0) {
-                            container.innerHTML = '<div style="text-align: center; padding: 30px; color: #94a3b8;">La carpeta está vacía.</div>';
-                            return;
-                        }
-
-                        if (currentMode === 'grid') {
-                            container.className = 'docs-grid-view';
-                            loadedDocs.forEach(doc => {
-                                container.innerHTML += `
-                                    <div class="doc-card">
-                                        <div class="doc-header">
-                                            <div class="doc-icon">📄</div>
-                                            <div class="doc-actions">
-                                                <a href="${doc.urlDrive}" target="_blank" title="Descargar">⬇️</a>
-                                                <a href="${doc.urlDrive}" target="_blank" title="Imprimir/Ver">🖨️</a>
-                                            </div>
-                                        </div>
-                                        <div class="doc-title">${doc.nombre}</div>
-                                        <div class="doc-tags">
-                                            <span>${doc.extension.toUpperCase()}</span>
-                                            <span style="color:#4f46e5; background:#e0e7ff; border-color:#c7d2fe;">${doc.tamaño}</span>
-                                        </div>
-                                        <div class="doc-footer">☁️ Drive Sync • ${doc.fecha}</div>
-                                    </div>
-                                `;
-                            });
-                        } else {
-                            container.className = 'docs-list-view';
-                            let html = '<table><thead><tr><th>Nombre</th><th>Tipo</th><th>Tamaño</th><th>Fecha</th><th style="text-align:right">Abrir</th></tr></thead><tbody>';
-                            loadedDocs.forEach(doc => {
-                                html += `
-                                    <tr>
-                                        <td style="font-weight: bold;">📄 ${doc.nombre}</td>
-                                        <td><span style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold;">${doc.extension.toUpperCase()}</span></td>
-                                        <td style="color:#4f46e5; font-weight: bold;">${doc.tamaño}</td>
-                                        <td style="color: #64748b; font-size: 0.9em;">${doc.fecha}</td>
-                                        <td style="text-align: right;">
-                                            <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                                                <a href="${doc.urlDrive}" target="_blank" style="text-decoration:none; display:inline-block; padding: 6px; background: #f1f5f9; border-radius: 6px; color: #64748b;" title="Descargar">⬇️</a>
-                                                <a href="${doc.urlDrive}" target="_blank" style="text-decoration:none; display:inline-block; padding: 6px; background: #f1f5f9; border-radius: 6px; color: #64748b;" title="Imprimir/Ver">🖨️</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `;
-                            });
-                            html += '</tbody></table>';
-                            container.innerHTML = html;
-                        }
-                    }
-
-                    // Botones de Toggle
-                    viewGridBtn.addEventListener('click', () => {
-                        currentMode = 'grid';
-                        viewGridBtn.style.background = 'white'; viewGridBtn.style.color = '#4f46e5'; viewGridBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)'; viewGridBtn.style.fontWeight = 'bold';
-                        viewListBtn.style.background = 'transparent'; viewListBtn.style.color = '#64748b'; viewListBtn.style.boxShadow = 'none'; viewListBtn.style.fontWeight = 'normal';
-                        if (loadedDocs.length > 0) renderDocs();
-                    });
-
-                    viewListBtn.addEventListener('click', () => {
-                        currentMode = 'list';
-                        viewListBtn.style.background = 'white'; viewListBtn.style.color = '#4f46e5'; viewListBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)'; viewListBtn.style.fontWeight = 'bold';
-                        viewGridBtn.style.background = 'transparent'; viewGridBtn.style.color = '#64748b'; viewGridBtn.style.boxShadow = 'none'; viewGridBtn.style.fontWeight = 'normal';
-                        if (loadedDocs.length > 0) renderDocs();
-                    });
-
-                    // Fetch the API
-                    if (EXEGESIS_DRIVE_URL.trim() !== '') {
-                        loading.style.display = 'block';
-                        container.style.display = 'none';
-                        fetch(EXEGESIS_DRIVE_URL)
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.error) throw new Error(data.error);
-                                loadedDocs = data;
-                                loading.style.display = 'none';
-                                container.style.display = 'grid'; // Grid is default
-                                renderDocs();
-                            })
-                            .catch(err => {
-                                loading.style.display = 'none';
-                                errorState.style.display = 'block';
-                                errorState.innerHTML = "Error cargando archivos: " + err.message;
-                            });
-                    }
-                });
-            </script>
         </section>
 
         <section id="paso1" class="section">
             <h2>🔍 Paso 1: Observación y Marcado (Markup: Gramática y 7 Lentes)</h2>
 
             <div class="sub-tabs-container">
-                <button class="sub-tab-btn paso1-btn active" onclick="openSubTab(event, 'paso1-intro', 'paso1')">🎯 1. Introducción y Mapa EBI</button>
-                <button class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-basica', 'paso1')">🔍 2. Observación Básica</button>
-                <button class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-teoria', 'paso1')">📚 3. Teoría Gramatical (Morfología)</button>
-                <button class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-colores', 'paso1')">🎨 4. Guía de Colores (Capa 1)</button>
-                <button class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-explicacion-markup', 'paso1')">🧬 5. Método Markup (2 Capas + Práctica)</button>
-                <button class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-markup', 'paso1')">💻 6. Guía Visual: Los 7 Lentes</button>
+                <button type="button" class="sub-tab-btn paso1-btn active" onclick="openSubTab(event, 'paso1-intro', 'paso1')">🎯 1. Introducción y Mapa EBI</button>
+                <button type="button" class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-basica', 'paso1')">🔍 2. Observación Básica</button>
+                <button type="button" class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-teoria', 'paso1')">📚 3. Teoría Gramatical (Morfología)</button>
+                <button type="button" class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-colores', 'paso1')">🎨 4. Guía de Colores (Capa 1)</button>
+                <button type="button" class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-explicacion-markup', 'paso1')">🧬 5. Método Markup (2 Capas + Práctica)</button>
+                <button type="button" class="sub-tab-btn paso1-btn" onclick="openSubTab(event, 'paso1-markup', 'paso1')">💻 6. Guía Visual: Los 7 Lentes</button>
             </div>
 
             <!-- SUB-PESTAÑA 1.1: INTRODUCCIÓN Y MAPA MAESTRO EBI -->
@@ -1500,10 +1355,10 @@
         </div>
 
         <div class="color-tabs-container">
-            <button class="color-tab-button active" onclick="openColorTab(event, 'general-colors')">
+            <button type="button" class="color-tab-button active" onclick="openColorTab(event, 'general-colors')">
                 📖 ANÁLISIS GENERAL
             </button>
-            <button class="color-tab-button" onclick="openColorTab(event, 'profundo-colors')">
+            <button type="button" class="color-tab-button" onclick="openColorTab(event, 'profundo-colors')">
                 🔬 ANÁLISIS PROFUNDO
             </button>
         </div>
@@ -2539,15 +2394,15 @@
             <div class="biblearc-panel">
                 <div class="panel-header"><span>←</span><span>Tópicos</span><span>→</span></div>
                 <div class="note-area"><div><span style="background-color: #ddd; padding: 2px 5px;">Me llamó la Atención</span></div><span class="note-text" style="text-decoration: underline;">Detalles relacionados</span></div>
-                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">View all colors</div>
+                <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">Ver todos los colores</div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #27ae60;"></span><span class="item-text">Sobre Dios</span><span class="item-separator">=</span></div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text">Sobre Cristo</span><span class="item-separator">=</span></div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #e74c3c;"></span><span class="item-text">Sobre El Espíritu Santo</span><span class="item-separator">=</span></div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #e67e22;"></span><span class="item-text">Sobre el Hombre</span><span class="item-separator">=</span></div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #9b59b6;"></span><span class="item-text">Salvación</span><span class="item-separator">=</span></div>
-                <div class="color-list-item"><span class="color-dot" style="background-color: #ff9ff3;"></span><span class="item-text">Fé</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #ff9ff3;"></span><span class="item-text">Fe</span><span class="item-separator">=</span></div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #48dbfb;"></span><span class="item-text">Otro</span><span class="item-separator">=</span></div>
-                <div style="margin-top: 15px; color: #555;">Add a color</div>
+                <div style="margin-top: 15px; color: #555;">Añadir un color</div>
                 <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ○ ● ○ ○ ○ ○ ⚙</div>
             </div>
         </div>
@@ -2560,7 +2415,7 @@
             <p>Identifica y desglosa los mandatos utilizando el lente de "Mandatos+", vinculando el mandato a sus motivos y medios de ejecución.</p>
             <ul>
                 <li><strong>Lentes:</strong> Mandatos+</li>
-                <li><strong>Aplicación:</strong> Reconocer la instrucción exacta separando: Ancla/base o razon, El Proposito, Medios y Maneras.</li>
+                <li><strong>Aplicación:</strong> Reconocer la instrucción exacta separando: Ancla/base o razón, El Propósito, Medios y Maneras.</li>
             </ul>
             <div class="objective">
                 <strong>Objetivo Exegético:</strong> Extraer la instrucción de forma literal y textual, entendiendo los requisitos exactos que demanda el texto bíblico, separando el mandato de la explicación sin añadir cargas o atenuantes externos.
@@ -2571,8 +2426,8 @@
                 <div class="panel-header"><span>←</span><span>Mandatos+</span><span>→</span></div>
                 <div class="note-area">
                     <div style="background-color: #ddd; padding: 2px 5px; display: inline-block; margin-bottom: 8px;">Mandatos</div><br>
-                    <div style="margin-bottom: 4px;"><span style="text-decoration: underline; color: #555;">Ancla/base o razon</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Ancla / Base o Razón (Anchor)</span>La verdad, motivo o fundamento (generalmente una verdad del evangelio) que sostiene y motiva el mandato imperativo, evitando el moralismo aislado.</span></span></div>
-                    <div style="margin-bottom: 4px;"><span style="border: 1px solid #333; border-radius: 10px; padding: 2px 5px; color: #333;">El Proposito</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Objetivos</span>El propósito o resultado exacto que se busca alcanzar con el mandato. Responde a la pregunta textual "¿Para qué?". (Ej: "para que seáis salvos").</span></span></div>
+                    <div style="margin-bottom: 4px;"><span style="text-decoration: underline; color: #555;">Ancla/base o razón</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Ancla / Base o Razón (Anchor)</span>La verdad, motivo o fundamento (generalmente una verdad del evangelio) que sostiene y motiva el mandato imperativo, evitando el moralismo aislado.</span></span></div>
+                    <div style="margin-bottom: 4px;"><span style="border: 1px solid #333; border-radius: 10px; padding: 2px 5px; color: #333;">El Propósito</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Objetivos</span>El propósito o resultado exacto que se busca alcanzar con el mandato. Responde a la pregunta textual "¿Para qué?". (Ej: "para que seáis salvos").</span></span></div>
                     <div style="margin-bottom: 4px;"><span style="text-decoration: underline dotted; color: #2980b9;">Medios</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Medios</span>El instrumento, recurso o método textual por el cual se debe cumplir el mandato. Responde al "¿Por medio de qué?". (Ej: "por la palabra").</span></span></div>
                     <div><span style="text-decoration: underline wavy; color: #2980b9;">Maneras</span> <span class="info-icon">i<span class="tooltip"><span class="tooltip-title">Maneras</span>La actitud o forma descrita en la que se debe llevar a cabo el mandato. Responde al "¿Cómo?". (Suele presentarse como participios: "con gozo", "orando").</span></span></div>
                 </div>
@@ -2643,7 +2498,7 @@
                 <div class="color-list-item"><span class="color-dot" style="background-color: #9b59b6;"></span><span class="item-text">Cambio de: Lugar</span><span class="item-separator">=</span></div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #27ae60;"></span><span class="item-text">Cambio de: Hablante</span><span class="item-separator">=</span></div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text">Cambio de: Sujeto</span><span class="item-separator">=</span></div>
-                <div class="color-list-item"><span class="color-dot" style="background-color: #e67e22;"></span><span class="item-text">Cambio retorico</span><span class="item-separator">=</span></div>
+                <div class="color-list-item"><span class="color-dot" style="background-color: #e67e22;"></span><span class="item-text">Cambio retórico</span><span class="item-separator">=</span></div>
                 <div style="text-align: center; font-size: 1.5em; color: #ddd; margin-top: 15px;">○ ○ ○ ○ ○ ● ○ ○ ⚙</div>
             </div>
         </div>
@@ -2656,7 +2511,7 @@
             <p>Solo después de haber observado, preguntado y analizado la estructura (Pasos 1-7), se deben extraer conclusiones temáticas y teológicas.</p>
             <ul>
                 <li><strong>Lentes:</strong> Teología</li>
-                <li><strong>Aplicación:</strong> Identifica el tema central del pasaje usando Topico principal y etiqueta las declaraciones de Doctrina basándote estrictamente en los datos recolectados.</li>
+                <li><strong>Aplicación:</strong> Identifica el tema central del pasaje usando Tópico principal y etiqueta las declaraciones de Doctrina basándote estrictamente en los datos recolectados.</li>
             </ul>
             <div class="objective">
                 <strong>Objetivo Exegético:</strong> Construir una teología que emerge limpiamente del texto (exégesis neutral), evitando el sesgo de leer el texto buscando confirmar una postura preestablecida (eiségesis).
@@ -2666,8 +2521,8 @@
             <div class="biblearc-panel">
                 <div class="panel-header"><span>←</span><span>Teología</span><span>→</span></div>
                 <div class="note-area">
-                    <div style="background-color: #ddd; padding: 2px 5px; display: inline-block;">Decaracion Teologica</div><br>
-                    <div style="border: 1px solid #333; border-radius: 15px; padding: 2px 8px; margin-top: 5px; display: inline-block;">Topico principal</div>
+                    <div style="background-color: #ddd; padding: 2px 5px; display: inline-block;">Declaración Teológica</div><br>
+                    <div style="border: 1px solid #333; border-radius: 15px; padding: 2px 8px; margin-top: 5px; display: inline-block;">Tópico principal</div>
                 </div>
                 <div style="background-color: #f0f0f0; padding: 5px; margin: 10px -20px 10px -20px; font-weight: bold; padding-left: 20px;">Ver todos los colores</div>
                 <div class="color-list-item"><span class="color-dot" style="background-color: #f1c40f;"></span><span class="item-text" style="color: #999;">Enter a label here</span><span class="item-separator">=</span></div>
@@ -2815,10 +2670,10 @@
             </p>
 
             <div class="sub-tabs-container">
-                <button class="sub-tab-btn paso2-btn active" onclick="openSubTab(event, 'paso2-dials', 'paso2')">🛠️ 1. Los 5 Pases (DIALS) y Flechas</button>
-                <button class="sub-tab-btn paso2-btn" onclick="openSubTab(event, 'paso2-frases', 'paso2')">🔤 2. Los 9 Tipos de Frases</button>
-                <button class="sub-tab-btn paso2-btn" onclick="openSubTab(event, 'paso2-27rels', 'paso2')">📊 3. Las 27 Relaciones (Flechas Amarillas)</button>
-                <button class="sub-tab-btn paso2-btn" onclick="openSubTab(event, 'paso2-biblearc', 'paso2')">💻 4. Módulo Phrasing y 19 Genitivos</button>
+                <button type="button" class="sub-tab-btn paso2-btn active" onclick="openSubTab(event, 'paso2-dials', 'paso2')">🛠️ 1. Los 5 Pases (DIALS) y Flechas</button>
+                <button type="button" class="sub-tab-btn paso2-btn" onclick="openSubTab(event, 'paso2-frases', 'paso2')">🔤 2. Los 9 Tipos de Frases</button>
+                <button type="button" class="sub-tab-btn paso2-btn" onclick="openSubTab(event, 'paso2-27rels', 'paso2')">📊 3. Las 27 Relaciones (Flechas Amarillas)</button>
+                <button type="button" class="sub-tab-btn paso2-btn" onclick="openSubTab(event, 'paso2-biblearc', 'paso2')">💻 4. Módulo Phrasing y 19 Genitivos</button>
             </div>
 
             <div id="paso2-dials" class="sub-tab-content paso2-content active">
@@ -3425,9 +3280,9 @@
             </p>
 
             <div class="sub-tabs-container">
-                <button class="sub-tab-btn paso3-btn active" onclick="openSubTab(event, 'paso3-18rels', 'paso3')">🤝 1. Las 18 Relaciones + 4 Extendidas</button>
-                <button class="sub-tab-btn paso3-btn" onclick="openSubTab(event, 'paso3-discourse', 'paso3')">📐 2. Arcing vs. Bracketing y Géneros</button>
-                <button class="sub-tab-btn paso3-btn" onclick="openSubTab(event, 'paso3-aplicacion', 'paso3')">🧩 3. Conexiones y Filtro Teológico</button>
+                <button type="button" class="sub-tab-btn paso3-btn active" onclick="openSubTab(event, 'paso3-18rels', 'paso3')">🤝 1. Las 18 Relaciones + 4 Extendidas</button>
+                <button type="button" class="sub-tab-btn paso3-btn" onclick="openSubTab(event, 'paso3-discourse', 'paso3')">📐 2. Arcing vs. Bracketing y Géneros</button>
+                <button type="button" class="sub-tab-btn paso3-btn" onclick="openSubTab(event, 'paso3-aplicacion', 'paso3')">🧩 3. Conexiones y Filtro Teológico</button>
             </div>
 
             <div id="paso3-18rels" class="sub-tab-content paso3-content active">
@@ -3732,10 +3587,10 @@
             </p>
 
             <div class="sub-tabs-container">
-                <button class="sub-tab-btn paso4-btn active" onclick="openSubTab(event, 'paso4-sintaxis', 'paso4')">🧩 1. Sintaxis y Patrones de Oración</button>
-                <button class="sub-tab-btn paso4-btn" onclick="openSubTab(event, 'paso4-diagramming', 'paso4')">🔬 2. Módulo Diagramming (Microscopio)</button>
-                <button class="sub-tab-btn paso4-btn" onclick="openSubTab(event, 'paso4-correlacion', 'paso4')">🔎 3. Léxico Original y Correlación (Searching)</button>
-                <button class="sub-tab-btn paso4-btn" onclick="openSubTab(event, 'paso4-paraphrase', 'paso4')">✍️ 4. Paráfrasis y Contraste Bibliográfico</button>
+                <button type="button" class="sub-tab-btn paso4-btn active" onclick="openSubTab(event, 'paso4-sintaxis', 'paso4')">🧩 1. Sintaxis y Patrones de Oración</button>
+                <button type="button" class="sub-tab-btn paso4-btn" onclick="openSubTab(event, 'paso4-diagramming', 'paso4')">🔬 2. Módulo Diagramming (Microscopio)</button>
+                <button type="button" class="sub-tab-btn paso4-btn" onclick="openSubTab(event, 'paso4-correlacion', 'paso4')">🔎 3. Léxico Original y Correlación (Searching)</button>
+                <button type="button" class="sub-tab-btn paso4-btn" onclick="openSubTab(event, 'paso4-paraphrase', 'paso4')">✍️ 4. Paráfrasis y Contraste Bibliográfico</button>
             </div>
 
             <!-- SUB-PESTAÑA 4.1: SINTAXIS Y PATRONES DE ORACIÓN (100% ÍNTEGRO) -->
@@ -3975,9 +3830,9 @@
             </p>
 
             <div class="sub-tabs-container">
-                <button class="sub-tab-btn paso5-btn active" onclick="openSubTab(event, 'paso5-mybible', 'paso5')">📖 1. Guía Permanente para My Bible</button>
-                <button class="sub-tab-btn paso5-btn" onclick="openSubTab(event, 'paso5-savor', 'paso5')">🔥 2. Saborear (Savor) y Aplicación Práctica</button>
-                <button class="sub-tab-btn paso5-btn" onclick="openSubTab(event, 'paso5-notes', 'paso5')">🎤 3. Bosquejo y Enseñanza (Notes / Didactics)</button>
+                <button type="button" class="sub-tab-btn paso5-btn active" onclick="openSubTab(event, 'paso5-mybible', 'paso5')">📖 1. Guía Permanente para My Bible</button>
+                <button type="button" class="sub-tab-btn paso5-btn" onclick="openSubTab(event, 'paso5-savor', 'paso5')">🔥 2. Saborear (Savor) y Aplicación Práctica</button>
+                <button type="button" class="sub-tab-btn paso5-btn" onclick="openSubTab(event, 'paso5-notes', 'paso5')">🎤 3. Bosquejo y Enseñanza (Notes / Didactics)</button>
             </div>
 
             <!-- SUB-PESTAÑA 5.1: GUÍA PERMANENTE PARA MY BIBLE -->
@@ -4085,13 +3940,13 @@
             </div>
 
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Todo</button>
-                <button class="filter-btn" data-filter="logical-relations">Relaciones Lógicas</button>
-                <button class="filter-btn" data-filter="phrase-types">Tipos de Frases</button>
-                <button class="filter-btn" data-filter="expressions">Expresiones</button>
-                <button class="filter-btn" data-filter="prepositions">Preposiciones Griegas</button>
-                <button class="filter-btn special-btn" id="greekToggle">Mostrar Griego</button>
-                <button class="filter-btn clear-btn" onclick="clearGrammarSearch()">Limpiar</button>
+                <button type="button" class="filter-btn active" data-filter="all">Todo</button>
+                <button type="button" class="filter-btn" data-filter="logical-relations">Relaciones Lógicas</button>
+                <button type="button" class="filter-btn" data-filter="phrase-types">Tipos de Frases</button>
+                <button type="button" class="filter-btn" data-filter="expressions">Expresiones</button>
+                <button type="button" class="filter-btn" data-filter="prepositions">Preposiciones Griegas</button>
+                <button type="button" class="filter-btn special-btn" id="greekToggle">Mostrar Griego</button>
+                <button type="button" class="filter-btn clear-btn" onclick="clearGrammarSearch()">Limpiar</button>
             </div>
 
             <div class="results-info" id="resultsInfo"></div>
@@ -4120,7 +3975,7 @@
 </section>
 
         <button type="button" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">↑</button>
-    </div>
+    </main>
 
     <!-- CAJÓN LATERAL DE CONSULTA RÁPIDA (REFERENCE DRAWER) -->
     <div id="refDrawerBackdrop" class="ref-drawer-backdrop" onclick="closeRefDrawer()"></div>
@@ -4135,6 +3990,7 @@
             <button type="button" class="ref-drawer-tab" data-dtab="frases" onclick="renderDrawerTab('frases')">9 Frases</button>
             <button type="button" class="ref-drawer-tab" data-dtab="rels18" onclick="renderDrawerTab('rels18')">18 Rels</button>
             <button type="button" class="ref-drawer-tab" data-dtab="rels27" onclick="renderDrawerTab('rels27')">27 Rels</button>
+            <button type="button" class="ref-drawer-tab" data-dtab="gen19" onclick="renderDrawerTab('gen19')">19 Gen</button>
             <button type="button" class="ref-drawer-tab" data-dtab="mybible" onclick="renderDrawerTab('mybible')">My Bible</button>
         </div>
         <div id="refDrawerBody" class="ref-drawer-body"></div>
@@ -4143,30 +3999,154 @@
     <!-- PALETA DE SALTO RÁPIDO (CTRL + K) -->
     <div id="cmdPaletteOverlay" class="cmd-palette-overlay" onclick="if(event.target===this) closeCmdPalette();">
         <div class="cmd-palette-box" role="dialog" aria-label="Salto rápido a secciones y conceptos">
-            <input type="text" id="cmdPaletteInput" class="cmd-palette-input" placeholder="Buscar sección, paso, lente, frase, relación o My Bible… (Esc para cerrar)" />
+            <input type="text" id="cmdPaletteInput" class="cmd-palette-input" aria-label="Buscar sección o concepto" placeholder="Buscar sección, paso, lente, frase, relación o My Bible… (Esc para cerrar)" />
             <div id="cmdPaletteList" class="cmd-palette-list"></div>
         </div>
     </div>
 
     <!-- Modal / Context Menu para Notas Exegéticas -->
-<div id="exegesisNoteModal" class="note-modal" style="display: none;">
-    <div class="note-modal-header">Añadir Nota Técnica</div>
-    <textarea id="exegesisNoteInput" placeholder="Ej. Genitivo Subjetivo, Propósito, etc." rows="3"></textarea>
-    <div class="note-modal-actions">
-        <button id="deleteNoteBtn" class="note-btn delete-btn" style="display: none;">Eliminar</button>
-        <button id="cancelNoteBtn" class="note-btn">Cancelar</button>
-        <button id="saveNoteBtn" class="note-btn save-btn">Guardar</button>
+    <div id="exegesisNoteModal" class="note-modal" style="display: none;">
+        <div class="note-modal-header">Añadir Nota Técnica</div>
+        <textarea id="exegesisNoteInput" placeholder="Ej. Genitivo Subjetivo, Propósito, etc." rows="3"></textarea>
+        <div class="note-modal-actions">
+            <button type="button" id="deleteNoteBtn" class="note-btn delete-btn" style="display: none;">Eliminar</button>
+            <button type="button" id="cancelNoteBtn" class="note-btn">Cancelar</button>
+            <button type="button" id="saveNoteBtn" class="note-btn save-btn">Guardar</button>
+        </div>
     </div>
-</div>
 
-<!-- Tooltip visualización rápida -->
-<div id="noteViewer" class="note-viewer" style="display: none;"></div>
+    <!-- Tooltip visualización rápida -->
+    <div id="noteViewer" class="note-viewer" style="display: none;"></div>
 
-<script src="./gramatica.js"></script>
+    <!-- ===== MODAL PANTALLA COMPLETA: PIZARRA INTERACTIVA (LOOK AT THE BOOK) ===== -->
+    <div class="pz-board-overlay theme-black" id="pzBoardOverlay" role="dialog" aria-modal="true" aria-label="Pizarra Interactiva de Estudio Bíblico">
+        <button type="button" class="pz-restore-bars-btn" id="pzBtnRestoreBars" title="Mostrar controles (Tecla H)">👁 Mostrar (H)</button>
 
-<script src="./ai-engine.js"></script>
+        <div class="pz-board-topbar" id="pzBoardTopBar">
+            <div class="pz-bt-left">
+                <div class="pz-bt-book-icon">📖</div>
+                <div class="pz-bt-title" id="pzBtRef">Salmos 94:22</div>
+                <div class="pz-bt-sub" id="pzBtSub"></div>
+            </div>
 
-<script src="./script.js"></script>
+            <div class="pz-bt-right">
+                <button type="button" class="pz-bt-btn" id="pzBtnPrevVerse" title="Texto anterior (←)">←</button>
+                <button type="button" class="pz-bt-btn" id="pzBtnNextVerse" title="Siguiente texto (→)">→</button>
+                <div class="pz-bt-sep"></div>
+
+                <div class="pz-font-ctrl">
+                    <button type="button" id="pzBtnFontDec" title="Reducir texto">A-</button>
+                    <span id="pzFontSizeLabel">38px</span>
+                    <button type="button" id="pzBtnFontInc" title="Aumentar texto">A+</button>
+                </div>
+
+                <select class="pz-bt-select" id="pzBoardVersionSelect" aria-label="Cambiar versión bíblica en vivo" title="Cambiar versión bíblica en vivo" style="display:none;">
+                    <option value="LBLA">LBLA</option>
+                    <option value="NBLA">NBLA</option>
+                    <option value="RVR1960">RVR1960</option>
+                    <option value="NVI">NVI</option>
+                    <option value="NTV">NTV</option>
+                    <option value="RVC">RVC</option>
+                    <option value="DHH94I">DHH94I</option>
+                    <option value="DHHS94">DHHS94</option>
+                    <option value="TLAI">TLAI</option>
+                </select>
+                <div class="pz-bt-sep"></div>
+
+                <button type="button" class="pz-bt-btn" id="pzBtnThemeToggle" title="Alternar fondo: Pizarra Negra / Oscuro / Claro">🌑 Pizarra</button>
+                <button type="button" class="pz-bt-btn active-mode" id="pzBtnAutoHideToggle" title="Modo Look at the Book: oculta barras automáticamente al subrayar">🎯 Auto</button>
+                <div class="pz-bt-sep"></div>
+
+                <button type="button" class="pz-bt-btn" id="pzBtnBoardToPhrasing" title="Enviar este pasaje a Fraseo y Notas (DIALS)">📐 Fraseo</button>
+                <button type="button" class="pz-bt-btn" id="pzBtnBoardToAI" title="Enviar este pasaje al Asistente Exegético IA">🧠 IA</button>
+                <button type="button" class="pz-bt-btn" id="pzBtnCopyVerse" title="Copiar texto">📋</button>
+                <button type="button" class="pz-bt-btn" id="pzBtnSavePng" title="Guardar como imagen PNG">⬇ PNG</button>
+                <button type="button" class="pz-bt-btn" id="pzBtnFullscreen" title="Pantalla completa">⛶</button>
+                <button type="button" class="pz-bt-btn" id="pzBtnHideBars" title="Ocultar barras manualmente (Tecla H)">👁</button>
+                <button type="button" class="pz-bt-btn pz-bt-btn-close" id="pzBtnCloseBoard" title="Cerrar pizarra (ESC)">✕ ESC</button>
+            </div>
+        </div>
+
+        <div class="pz-board-stage" id="pzBoardStage">
+            <div class="pz-verse-container" id="pzVerseContainer">
+                <div class="pz-stage-ref-row">
+                    <span class="pz-stage-ref" id="pzStageRef">Salmos 94:22</span>
+                    <span class="pz-stage-ver-pill" id="pzStageVer">LBLA</span>
+                </div>
+                <div class="pz-stage-text" id="pzStageText"></div>
+            </div>
+            <canvas id="pzDrawCanvas"></canvas>
+        </div>
+
+        <div class="pz-board-bottombar" id="pzBoardBottomBar">
+            <div class="pz-bb-row">
+                <button type="button" class="pz-tool-btn" id="pzBtnWordMode" title="Alternar entre Dibujo libre y Marcado directo sobre palabras">🔤 Palabra</button>
+                <div class="pz-tool-sep"></div>
+
+                <!-- Grupo A: Herramientas de dibujo libre (Canvas) -->
+                <div class="pz-bb-tools-group" id="pzDrawToolsGroup">
+                    <button type="button" class="pz-tool-btn active" data-tool="pen" title="Lápiz libre">✏️ Lápiz</button>
+                    <button type="button" class="pz-tool-btn" data-tool="highlighter" title="Resaltador libre (usa la barra de intensidad)">🖍️ Resaltar</button>
+                    <button type="button" class="pz-tool-btn" data-tool="line" title="Línea recta">— Línea</button>
+                    <button type="button" class="pz-tool-btn" data-tool="wavy" title="Línea ondulada">〰 Ondulada</button>
+                    <button type="button" class="pz-tool-btn" data-tool="dotted" title="Línea punteada">┄ Punteada</button>
+                    <button type="button" class="pz-tool-btn" data-tool="dashed" title="Línea discontinua (guiones)">--- Guiones</button>
+                    <button type="button" class="pz-tool-btn" data-tool="arrow" title="Flecha">➜ Flecha</button>
+                    <button type="button" class="pz-tool-btn" data-tool="arrow-both" title="Flecha doble">↔ Doble</button>
+                    <button type="button" class="pz-tool-btn" data-tool="rect" title="Cuadrado / Rectángulo">□ Cuadrado</button>
+                    <button type="button" class="pz-tool-btn" data-tool="circle" title="Círculo / Óvalo">○ Círculo</button>
+                    <button type="button" class="pz-tool-btn" data-tool="triangle" title="Triángulo">△ Triángulo</button>
+                    <button type="button" class="pz-tool-btn" data-tool="eraser" title="Borrador">🧹 Borrar</button>
+                </div>
+
+                <!-- Grupo B: Herramientas de marcado directo sobre palabras (Capa 1: 14 estilos) -->
+                <div class="pz-bb-tools-group" id="pzWordToolsGroup">
+                    <button type="button" class="pz-tool-btn active" data-wstyle="highlight" title="Resaltado (usa la barra de intensidad)">🖍️ Resaltar</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="bottom-bar" title="Resaltado grueso inferior">▁ Bajo</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="solid-block" title="Bloque resaltado sólido">■ Bloque</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="underline" title="Subrayado continuo">— Línea</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="wavy" title="Subrayado ondulado">〰 Ondulada</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="dotted" title="Subrayado punteado">┄ Punteada</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="dashed" title="Subrayado discontinuo (guiones)">--- Guiones</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="arrow-left" title="Flecha izquierda sobre palabra">◀T</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="arrow-right" title="Flecha derecha sobre palabra">T▶</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="arrow-both" title="Flecha doble sobre palabra">◀T▶</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="box" title="Cuadrado / Caja">□ Cuadrado</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="circle" title="Círculo / Óvalo">○ Círculo</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="triangle" title="Triángulo alrededor de la palabra">△ Triángulo</button>
+                    <button type="button" class="pz-tool-btn" data-wstyle="clear" title="Quitar marca de la palabra">🧹 Borrar</button>
+                </div>
+            </div>
+
+            <div class="pz-bb-row-divider"></div>
+
+            <div class="pz-bb-row">
+                <div id="pzColorPalette" style="display:flex;align-items:center;gap:6px;"></div>
+                <div class="pz-tool-sep"></div>
+                <button type="button" class="pz-size-btn" data-width="2">• Fino</button>
+                <button type="button" class="pz-size-btn active" data-width="5">• Medio</button>
+                <button type="button" class="pz-size-btn" data-width="11">• Grueso</button>
+                <div class="pz-tool-sep"></div>
+                <div class="pz-hl-slider-wrap" title="Intensidad / opacidad del resaltado (10% suave a 90% fuerte)">
+                    <label for="pzHlAlphaSlider" style="font-size:0.74rem;cursor:pointer;">🔆</label>
+                    <input type="range" id="pzHlAlphaSlider" class="pz-hl-slider" min="10" max="90" step="5" value="35" />
+                    <span id="pzHlAlphaLabel">35%</span>
+                </div>
+                <div class="pz-tool-sep"></div>
+                <button type="button" class="pz-tool-btn" id="pzBtnUndo" title="Deshacer (Ctrl+Z)">↶ Deshacer</button>
+                <button type="button" class="pz-tool-btn" id="pzBtnRedo" title="Rehacer (Ctrl+Y)">↷ Rehacer</button>
+                <button type="button" class="pz-tool-btn" id="pzBtnClearMarks" style="color:#fca5a5;" title="Limpiar marcas y dibujos">🗑️ Limpiar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pz-status-toast" id="pzStatusToast" role="status" aria-live="polite"></div>
+
+    <script src="./gramatica.js"></script>
+    <script src="./ai-engine.js"></script>
+    <script src="./js/pdf-offline-reader.js"></script>
+    <script src="./pizarra.js"></script>
+    <script src="./script.js"></script>
 
 </body>
 

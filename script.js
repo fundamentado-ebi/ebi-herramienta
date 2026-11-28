@@ -147,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // =====================================================
         let activeBibleRef = JSON.parse(localStorage.getItem('activeBibleRef')) || null;
 
+        const phrasingVerSel = document.getElementById('phrasingBibleVersion');
         const bookSelect     = document.getElementById('bibleBook');
         const chapterInput   = document.getElementById('bibleChapter');
         const verseStartInput= document.getElementById('bibleVerseStart');
@@ -158,8 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updatePassageBadge() {
             if (activeBibleRef) {
-                const { bookName, chapter, verseStart, verseEnd } = activeBibleRef;
-                badgeLabel.textContent = `${bookName} ${chapter}:${verseStart}–${verseEnd}`;
+                const { bookName, chapter, verseStart, verseEnd, version } = activeBibleRef;
+                const verSuffix = version ? ` (${version})` : '';
+                badgeLabel.textContent = `${bookName} ${chapter}:${verseStart}–${verseEnd}${verSuffix}`;
                 badge.style.display = 'block';
             } else {
                 badge.style.display = 'none';
@@ -179,25 +181,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (chapterInput)    chapterInput.value    = activeBibleRef.chapter;
             if (verseStartInput) verseStartInput.value = activeBibleRef.verseStart;
             if (verseEndInput)   verseEndInput.value   = activeBibleRef.verseEnd;
+            if (phrasingVerSel && activeBibleRef.version) phrasingVerSel.value = activeBibleRef.version;
         }
 
-        // Botón: Abrir en BibleGateway (LBLA)
+        // Botón: Abrir en BibleGateway (versión seleccionada)
         if (btnOpenBG) {
             btnOpenBG.addEventListener('click', () => {
                 const parts   = bookSelect.value.split('|'); // [bookName, testament, abbrev]
                 const book    = parts[0];
                 const chapter = chapterInput.value || '1';
                 const vStart  = verseStartInput.value || '1';
-                const vEnd    = verseEndInput.value   || vStart;
+                const vEnd    = parseInt(verseEndInput.value, 10) >= parseInt(vStart, 10) ? verseEndInput.value : vStart;
+                const verKey  = phrasingVerSel ? phrasingVerSel.value : 'LBLA';
+                const bgVerMap = { DHH94I: 'DHH', DHHS94: 'DHH', TLAI: 'TLA' };
+                const bgVer   = bgVerMap[verKey] || verKey;
                 const search  = encodeURIComponent(`${book} ${chapter}:${vStart}-${vEnd}`);
-                const url     = `https://www.biblegateway.com/passage/?search=${search}&version=LBLA`;
+                const url     = `https://www.biblegateway.com/passage/?search=${search}&version=${encodeURIComponent(bgVer)}`;
                 openURL(url);
             });
         }
 
         // =====================================================
-        // CARGAR TEXTO BÍBLICO A MESA DE TRABAJO (Auto-Fetch)
-        // Usa API bolls.life con traducción LBLA
+        // CARGAR TEXTO BÍBLICO A FRASEO (9 Biblias locales biblias/ -> Fallback bolls.life)
         // =====================================================
         const bookToNumber = {
             'Génesis':1,'Éxodo':2,'Levítico':3,'Números':4,'Deuteronomio':5,
@@ -222,12 +227,14 @@ document.addEventListener('DOMContentLoaded', () => {
             btnLoadText.addEventListener('click', async () => {
                 const parts    = bookSelect.value.split('|');
                 const bookName = parts[0];
-                const chapter  = parseInt(chapterInput.value)    || 1;
-                const vStart   = parseInt(verseStartInput.value) || 1;
-                const vEnd     = parseInt(verseEndInput.value)   || vStart;
+                const verKey   = phrasingVerSel ? phrasingVerSel.value : 'LBLA';
+                const chapter  = parseInt(chapterInput.value, 10)    || 1;
+                const vStart   = parseInt(verseStartInput.value, 10) || 1;
+                const rawEnd   = parseInt(verseEndInput.value, 10)   || vStart;
+                const vEnd     = rawEnd >= vStart ? rawEnd : vStart;
 
                 // Confirmar si ya hay contenido
-                if (workspace.textContent.trim() && !confirm('¿Deseas reemplazar el contenido actual de la Mesa de Trabajo con el nuevo pasaje?')) {
+                if (workspace.textContent.trim() && !confirm('¿Deseas reemplazar el contenido actual de Fraseo con el nuevo pasaje?')) {
                     return;
                 }
 
@@ -238,19 +245,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnLoadText.style.opacity = '0.7';
 
                 try {
-                    const bookNum = bookToNumber[bookName];
-                    if (!bookNum) throw new Error(`Libro "${bookName}" no reconocido`);
+                    let filtered = [];
 
-                    // API bolls.life: devuelve capítulo completo en LBLA
-                    const url = `https://bolls.life/get-text/LBLA/${bookNum}/${chapter}/`;
+                    // 1. Intentar primero desde las 9 Biblias locales de Pizarra/biblias/
+                    if (window.ExegesisBibleStore && typeof window.ExegesisBibleStore.getVersesForPassage === 'function') {
+                        filtered = await window.ExegesisBibleStore.getVersesForPassage(verKey, bookName, chapter, vStart, vEnd);
+                    }
 
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error(`API respondió con error ${response.status}`);
-
-                    const allVerses = await response.json();
-
-                    // Filtrar por rango de versículos seleccionado
-                    const filtered = allVerses.filter(v => v.verse >= vStart && v.verse <= vEnd);
+                    // 2. Respaldo online vía bolls.life (ej. cuando se abre por file:// sin servidor)
+                    if (!filtered || filtered.length === 0) {
+                        const bookNum = bookToNumber[bookName];
+                        if (!bookNum) throw new Error(`Libro "${bookName}" no reconocido`);
+                        const bollsVerMap = { RVR1960: 'RV1960', DHH94I: 'DHH', DHHS94: 'DHH' };
+                        const apiVer = bollsVerMap[verKey] || verKey;
+                        const url = `https://bolls.life/get-text/${encodeURIComponent(apiVer)}/${bookNum}/${chapter}/`;
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error(`No disponible offline ni en API (${response.status})`);
+                        const allVerses = await response.json();
+                        filtered = allVerses.filter(v => v.verse >= vStart && v.verse <= vEnd);
+                    }
 
                     if (filtered.length > 0) {
                         workspace.innerHTML = '';
@@ -259,51 +272,95 @@ document.addEventListener('DOMContentLoaded', () => {
                             const line = document.createElement('div');
                             line.className = 'phrase-line';
                             line.innerHTML = createPhraseLineHTML();
-                            // Limpiar tags HTML (<i>, etc.) y saltos de línea
-                            const cleanText = v.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').trim();
+                            const cleanText = String(v.text || '').replace(/<[^>]*>/g, '').replace(/\n/g, ' ').trim();
                             line.querySelector('.phrase-text').textContent = `${v.verse} ${cleanText}`;
                             workspace.appendChild(line);
                         });
 
                         saveWorkspace();
 
-                        // También fijar como pasaje activo automáticamente
+                        // Fijar como pasaje activo automáticamente
                         const testament = parts[1];
                         const abbrev   = parts[2];
-                        activeBibleRef = { bookName, testament, abbrev, chapter, verseStart: vStart, verseEnd: vEnd };
+                        activeBibleRef = { bookName, testament, abbrev, chapter, verseStart: vStart, verseEnd: vEnd, version: verKey };
                         localStorage.setItem('activeBibleRef', JSON.stringify(activeBibleRef));
                         updatePassageBadge();
 
                         // Auto-copiar texto completo al Asistente Exegético IA
                         const plainVerses = filtered.map(v => {
-                            const clean = v.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').trim();
+                            const clean = String(v.text || '').replace(/<[^>]*>/g, '').replace(/\n/g, ' ').trim();
                             return `${v.verse} ${clean}`;
                         }).join('\n');
                         syncPassageToAI(bookName, chapter, vStart, vEnd, plainVerses);
 
                         // Feedback visual
-                        btnLoadText.innerHTML = '✅ ¡Cargado en LBLA!';
+                        btnLoadText.innerHTML = `✅ ¡Cargado (${verKey})!`;
                         btnLoadText.style.background = 'rgba(16,185,129,0.35)';
                         btnLoadText.style.opacity = '1';
                     } else {
-                        throw new Error(`No se encontraron versículos ${vStart}-${vEnd} en ${bookName} ${chapter}`);
+                        throw new Error(`No se encontraron versículos ${vStart}-${vEnd} en ${bookName} ${chapter} (${verKey})`);
                     }
                 } catch (err) {
                     console.error('Error al cargar pasaje:', err);
                     btnLoadText.innerHTML = '❌ Error';
                     btnLoadText.style.background = 'rgba(239,68,68,0.3)';
                     btnLoadText.style.opacity = '1';
-                    alert('No se pudo cargar el texto automáticamente.\n\n' + err.message + '\n\nPuedes usar "Abrir en BibleGateway" y copiar manualmente.');
+                    alert('No se pudo cargar el texto automáticamente.\n\n' + err.message + '\n\nPuedes cargarlo desde Pizarra (📚 Biblia Local .json) o usar BibleGateway.');
                 }
 
                 setTimeout(() => {
                     btnLoadText.disabled = false;
                     btnLoadText.innerHTML = originalHTML;
-                    btnLoadText.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    btnLoadText.style.background = '';
                     btnLoadText.style.opacity = '1';
                 }, 2500);
             });
         }
+
+        // Puente receptor desde la Pizarra Interactiva (botón "📐 Fraseo")
+        window.loadPassageIntoPhrasing = function (payload) {
+            if (!payload || !payload.text) return;
+            workspace.innerHTML = '';
+            const rawLines = String(payload.text).split('\n').map(l => l.trim()).filter(Boolean);
+            rawLines.forEach((ln, idx) => {
+                const line = document.createElement('div');
+                line.className = 'phrase-line';
+                line.innerHTML = createPhraseLineHTML();
+                const prefix = (idx === 0 && payload.verseNum && !/^\d+\s+/.test(ln)) ? `${payload.verseNum} ` : '';
+                line.querySelector('.phrase-text').textContent = prefix + ln;
+                workspace.appendChild(line);
+            });
+            saveWorkspace();
+
+            if (payload.bookName) {
+                activeBibleRef = {
+                    bookName: payload.bookName,
+                    testament: payload.testament || 'NT',
+                    abbrev: payload.abbrev || '',
+                    chapter: payload.chapter || 1,
+                    verseStart: payload.vStart || 1,
+                    verseEnd: payload.vEnd || payload.vStart || 1,
+                    version: payload.version || 'LBLA'
+                };
+                localStorage.setItem('activeBibleRef', JSON.stringify(activeBibleRef));
+                updatePassageBadge();
+                if (bookSelect) {
+                    for (let i = 0; i < bookSelect.options.length; i++) {
+                        if (bookSelect.options[i].value.split('|')[0] === payload.bookName) {
+                            bookSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                if (chapterInput) chapterInput.value = activeBibleRef.chapter;
+                if (verseStartInput) verseStartInput.value = activeBibleRef.verseStart;
+                if (verseEndInput) verseEndInput.value = activeBibleRef.verseEnd;
+                if (phrasingVerSel && payload.version && phrasingVerSel.querySelector(`option[value="${payload.version}"]`)) {
+                    phrasingVerSel.value = payload.version;
+                }
+                syncPassageToAI(activeBibleRef.bookName, activeBibleRef.chapter, activeBibleRef.verseStart, activeBibleRef.verseEnd, payload.text);
+            }
+        };
 
         // Botón: Fijar como pasaje activo
         if (btnSetActive) {
@@ -362,106 +419,253 @@ document.addEventListener('DOMContentLoaded', () => {
         // Configuraciones de Inicialización
         workspace.removeAttribute('contenteditable'); // El div padre ya no es editable, sólo los divs internos
         
-        // Cargar Autoguardado
+        // Mapeo de compatibilidad con códigos anteriores guardados en localStorage
+        const LEGACY_TYPE_MAP = {
+            'F-NM': 'U', 'F-CONJ': 'C', 'F-PREP': 'PR', 'F-GEN': 'GEN',
+            'F-REL': 'REL', 'F-PART': 'PA', 'F-INF': 'INF', 'F-AP': 'AP', 'F-SUST': 'SUB'
+        };
+
+        // ==========================================
+        // A. MOTOR PHRASING DIALS (9 Frases, 3 Flechas, 19 Genitivos + 27 Subordinadas)
+        // ==========================================
+        function createPhraseLineHTML() {
+            return `
+                <div class="phrase-selectors">
+                    <select class="phrase-type" aria-label="Tipo de frase (9 tipos Biblearc)">
+                        <option value="" data-bg="" data-color="">- Tipo (9) -</option>
+                        <option value="U" data-bg="#f3f4f6" data-color="#374151">[U 🩶] No marcada</option>
+                        <option value="C" data-bg="#e5e7eb" data-color="#374151">[C 🩶] Conjunción</option>
+                        <option value="PR" data-bg="#ffedd5" data-color="#c2410c">[PR 🟠] Preposicional</option>
+                        <option value="GEN" data-bg="#dbeafe" data-color="#1d4ed8">[GEN 🔵] Genitiva</option>
+                        <option value="REL" data-bg="#f3e8ff" data-color="#6f42c1">[REL 🟣] Relativa</option>
+                        <option value="PA" data-bg="#dcfce7" data-color="#166534">[PA 🟢] Participio</option>
+                        <option value="INF" data-bg="#dcfce7" data-color="#15803d">[INF 🟢] Infinitivo</option>
+                        <option value="AP" data-bg="#fee2e2" data-color="#b91b1c">[AP 🔴] Aposicional</option>
+                        <option value="SUB" data-bg="#fee2e2" data-color="#991b1b">[SUB 🔴] Sustantival</option>
+                    </select>
+                    <select class="logic-rel" aria-label="Etiqueta de relación DIALS">
+                        <option value="" data-bg="" data-color="">- Etiqueta DIALS -</option>
+                        <optgroup class="og-gen" label="🟦 19 Genitivas (Flecha Azul)">
+                            <option value="GEN-POSS">Posesivo (Possessive)</option>
+                            <option value="GEN-REL">Relación (Relationship)</option>
+                            <option value="GEN-PART">Partitivo (Partitive)</option>
+                            <option value="GEN-ATTR">Atributivo (Attributive)</option>
+                            <option value="GEN-ATTRD">Atribuido (Attributed)</option>
+                            <option value="GEN-PROD">Productor (Producer)</option>
+                            <option value="GEN-PRDT">Producto (Product)</option>
+                            <option value="GEN-MAT">Material (Material)</option>
+                            <option value="GEN-CONT">Contenido (Contents)</option>
+                            <option value="GEN-SUB">Subordinación (Subordination)</option>
+                            <option value="GEN-SEP">Separación (Separation)</option>
+                            <option value="GEN-ORIG">Origen / Fuente (Origin/Source)</option>
+                            <option value="GEN-REF">Referencia (Reference)</option>
+                            <option value="GEN-APP">Aposición (Apposition)</option>
+                            <option value="GEN-SUBJ">Subjetivo (Subjective)</option>
+                            <option value="GEN-OBJ">Objetivo (Objective)</option>
+                            <option value="GEN-TIME">Tiempo (Time)</option>
+                            <option value="GEN-LOC">Lugar (Location)</option>
+                            <option value="GEN-DESC">Descriptivo (Descriptive)</option>
+                        </optgroup>
+                        <optgroup class="og-sub" label="🟨 Declaración Distinta (11)">
+                            <option value="SUB-GND">Fundamento (Ground)</option>
+                            <option value="SUB-RES">Resultado (Result)</option>
+                            <option value="SUB-PUR">Propósito (Purpose)</option>
+                            <option value="SUB-ADV">↳ Ventaja (Advantage)</option>
+                            <option value="SUB-DIS">↳ Desventaja (Disadvantage)</option>
+                            <option value="SUB-COND">Condición (Condition)</option>
+                            <option value="SUB-TEMP">Temporal (Temporal)</option>
+                            <option value="SUB-LOC">Locativa (Locative)</option>
+                            <option value="SUB-SRC">↳ Fuente (Source)</option>
+                            <option value="SUB-DEST">↳ Destino (Destination)</option>
+                            <option value="SUB-SEP">↳ Separación (Separation)</option>
+                        </optgroup>
+                        <optgroup class="og-sub" label="🟨 Reiteración (15)">
+                            <option value="SUB-MAN">Manera (Manner)</option>
+                            <option value="SUB-MNS">↳ Medios (Means)</option>
+                            <option value="SUB-AGN">↳ Agencia (Agency)</option>
+                            <option value="SUB-CMP">Comparación (Comparison)</option>
+                            <option value="SUB-STD">↳ Estándar (Standard)</option>
+                            <option value="SUB-NEG">Negativa (Negative)</option>
+                            <option value="SUB-SUBS">↳ Sustitución (Substitution)</option>
+                            <option value="SUB-EXP">Explicación (Explanation)</option>
+                            <option value="SUB-CNT">↳ Contenido (Content)</option>
+                            <option value="SUB-CTX">↳ Contexto (Context)</option>
+                            <option value="SUB-DST">↳ Distinción (Distinction)</option>
+                            <option value="SUB-EXM">↳ Ejemplo (Example)</option>
+                            <option value="SUB-ACC">↳ Acompañamiento (Accompaniment)</option>
+                            <option value="SUB-REF">↳ Referencia (Reference)</option>
+                            <option value="SUB-ANS">Respuesta (Answer)</option>
+                        </optgroup>
+                        <optgroup class="og-sub" label="🟨 Declaración Contraria (1)">
+                            <option value="SUB-CSV">Concesiva (Concessive)</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <span class="dials-arrow" aria-hidden="true">└─▶</span>
+                <div class="phrase-text" contenteditable="true" aria-placeholder="Escribe o pega aquí..."></div>
+            `;
+        }
+
+        // Sincroniza color de badge, color de flecha (🟦/🟩/🟨) y menú de relaciones según reglas oficiales de Biblearc
+        function syncDialsLineState(lineEl) {
+            if (!lineEl) return;
+            const typeSel = lineEl.querySelector('select.phrase-type');
+            const relSel  = lineEl.querySelector('select.logic-rel');
+            let arrowEl   = lineEl.querySelector('.dials-arrow');
+            if (!arrowEl) {
+                const txtEl = lineEl.querySelector('.phrase-text');
+                if (txtEl) {
+                    arrowEl = document.createElement('span');
+                    arrowEl.className = 'dials-arrow';
+                    arrowEl.setAttribute('aria-hidden', 'true');
+                    arrowEl.textContent = '└─▶';
+                    lineEl.insertBefore(arrowEl, txtEl);
+                }
+            }
+            if (!typeSel || !relSel) return;
+
+            // Migrar valores antiguos si vienen de localStorage previo
+            const rawVal = typeSel.value || typeSel.getAttribute('data-val') || '';
+            if (LEGACY_TYPE_MAP[rawVal]) {
+                typeSel.value = LEGACY_TYPE_MAP[rawVal];
+            }
+
+            const tOpt = typeSel.options[typeSel.selectedIndex];
+            typeSel.style.backgroundColor = (tOpt && tOpt.getAttribute('data-bg')) || '';
+            typeSel.style.color = (tOpt && tOpt.getAttribute('data-color')) || '';
+
+            const tVal = typeSel.value;
+            const indentPx = parseInt(lineEl.style.marginLeft || '0', 10) || 0;
+            const genGroups = relSel.querySelectorAll('optgroup.og-gen');
+            const subGroups = relSel.querySelectorAll('optgroup.og-sub');
+            const firstOpt  = relSel.options[0];
+
+            // Regla oficial Biblearc:
+            // - [GEN]: Flecha Azul + 19 relaciones genitivas
+            // - [REL]: Flecha Verde + NUNCA lleva etiqueta
+            // - [PR, PA, INF, AP, SUB] o línea sangrada: Flecha Amarilla + 27 relaciones subordinadas
+            // - [U, C] sin sangrar: proposición principal / conector sin flecha ni etiqueta
+            if (tVal === 'REL') {
+                relSel.value = '';
+                relSel.disabled = true;
+                if (firstOpt) firstOpt.textContent = '🟩 Sin etiqueta (Rel.)';
+                relSel.style.backgroundColor = '#dcfce7';
+                relSel.style.color = '#166534';
+                if (arrowEl) arrowEl.className = 'dials-arrow visible arr-rel';
+            } else if (tVal === 'GEN') {
+                relSel.disabled = false;
+                if (firstOpt) firstOpt.textContent = '🟦 - 19 Genitivos -';
+                genGroups.forEach(g => { g.disabled = false; g.hidden = false; });
+                subGroups.forEach(g => { g.disabled = true; g.hidden = true; });
+                if (relSel.value && !relSel.value.startsWith('GEN-')) relSel.value = '';
+                relSel.style.backgroundColor = relSel.value ? '#dbeafe' : '';
+                relSel.style.color = relSel.value ? '#1d4ed8' : '';
+                if (arrowEl) arrowEl.className = 'dials-arrow visible arr-gen';
+            } else if (['PR', 'PA', 'INF', 'AP', 'SUB'].includes(tVal) || indentPx > 0) {
+                relSel.disabled = false;
+                if (firstOpt) firstOpt.textContent = '🟨 - 27 Subordinadas -';
+                genGroups.forEach(g => { g.disabled = true; g.hidden = true; });
+                subGroups.forEach(g => { g.disabled = false; g.hidden = false; });
+                if (relSel.value && relSel.value.startsWith('GEN-')) relSel.value = '';
+                relSel.style.backgroundColor = relSel.value ? '#fef9c3' : '';
+                relSel.style.color = relSel.value ? '#854d0e' : '';
+                if (arrowEl) arrowEl.className = 'dials-arrow visible arr-sub';
+            } else {
+                relSel.disabled = false;
+                if (firstOpt) firstOpt.textContent = '- Etiqueta DIALS -';
+                genGroups.forEach(g => { g.disabled = false; g.hidden = false; });
+                subGroups.forEach(g => { g.disabled = false; g.hidden = false; });
+                relSel.style.backgroundColor = '';
+                relSel.style.color = '';
+                if (arrowEl) arrowEl.className = 'dials-arrow';
+            }
+        }
+
+        // Cargar Autoguardado y actualizar líneas existentes al modelo DIALS canónico
         const savedData = localStorage.getItem('exegesisWorkSpaceV2');
         if (savedData && savedData.trim() !== '') {
             workspace.innerHTML = savedData;
-            // Restaurar los values de los <select> ya que innerHTML no guarda el estado visual activo en el DOM a veces
-            workspace.querySelectorAll('select.logic-rel, select.phrase-type').forEach(sel => {
-                if (sel.getAttribute('data-val')) {
-                    sel.value = sel.getAttribute('data-val');
-                    // Restaurar colores si existen
-                    const option = sel.options[sel.selectedIndex];
-                    if (option) {
-                        sel.style.backgroundColor = option.getAttribute('data-bg') || '';
-                        sel.style.color = option.getAttribute('data-color') || '';
+            workspace.querySelectorAll('.phrase-line').forEach(line => {
+                const oldType = line.querySelector('select.phrase-type');
+                const oldRel  = line.querySelector('select.logic-rel');
+                const savedTypeVal = oldType ? (oldType.getAttribute('data-val') || oldType.value || '') : '';
+                const savedRelVal  = oldRel ? (oldRel.getAttribute('data-val') || oldRel.value || '') : '';
+                // Si viene de una versión anterior sin optgroups .og-gen/.og-sub, actualizar selectores preservando texto y notas
+                if (oldRel && !oldRel.querySelector('optgroup.og-gen')) {
+                    const tmp = document.createElement('div');
+                    tmp.innerHTML = createPhraseLineHTML();
+                    const freshSelectors = tmp.querySelector('.phrase-selectors');
+                    const curSelectors = line.querySelector('.phrase-selectors');
+                    if (curSelectors && freshSelectors) {
+                        line.replaceChild(freshSelectors, curSelectors);
                     }
                 }
+                const newType = line.querySelector('select.phrase-type');
+                const newRel  = line.querySelector('select.logic-rel');
+                if (newType && savedTypeVal) {
+                    newType.value = LEGACY_TYPE_MAP[savedTypeVal] || savedTypeVal;
+                }
+                if (newRel && savedRelVal && newRel.querySelector(`option[value="${savedRelVal}"]`)) {
+                    newRel.value = savedRelVal;
+                }
+                syncDialsLineState(line);
             });
         }
 
         // Función de Guardado Automático
         function saveWorkspace() {
-            // Actualizar referencias data-val de los selects para que sobrevivan en el HTML
             workspace.querySelectorAll('select.logic-rel, select.phrase-type').forEach(sel => {
                 sel.setAttribute('data-val', sel.value);
             });
             localStorage.setItem('exegesisWorkSpaceV2', workspace.innerHTML);
         }
 
-        workspace.addEventListener('input', saveWorkspace); // Autoguardar si tipean
+        workspace.addEventListener('input', saveWorkspace);
 
-        // Reaccionar al cambio del menú desplegable: Colorear y Guardar
+        // Reaccionar al cambio del menú desplegable: Sincronizar flecha/etiqueta DIALS y Guardar
         workspace.addEventListener('change', (e) => {
-            if (e.target.classList.contains('logic-rel') || e.target.classList.contains('phrase-type')) {
-                const option = e.target.options[e.target.selectedIndex];
-                if (option) {
-                    e.target.style.backgroundColor = option.getAttribute('data-bg') || '';
-                    e.target.style.color = option.getAttribute('data-color') || '';
-                }
-            }
+            const line = e.target.closest('.phrase-line');
+            if (line) syncDialsLineState(line);
             saveWorkspace();
         });
 
-        // ==========================================
-        // A. MOTOR PHRASING (Enter, Tab, Pegado)
-        // ==========================================
-        function createPhraseLineHTML() {
-            return `
-                <div class="phrase-selectors">
-                    <select class="phrase-type">
-                        <option value="" data-bg="" data-color="">- Tipo de Frase -</option>
-                        <option value="F-NM" data-bg="#6c757d" data-color="#fff">⚪ [U] No Marcada</option>
-                        <option value="F-PREP" data-bg="#ffc107" data-color="#333">🟡 [Pr] Preposicional</option>
-                        <option value="F-GEN" data-bg="#007bff" data-color="#fff">🔵 [G] Genitiva</option>
-                        <option value="F-INF" data-bg="#28a745" data-color="#fff">🟢 [I] Infinitiva</option>
-                        <option value="F-PART" data-bg="#28a745" data-color="#fff">🟢 [Part] Participial</option>
-                        <option value="F-CONJ" data-bg="#6c757d" data-color="#fff">🩶 [C] Conjunción</option>
-                        <option value="F-AP" data-bg="#dc3545" data-color="#fff">🔴 [Ap] Aposicional</option>
-                        <option value="F-REL" data-bg="#6f42c1" data-color="#fff">🟣 [R] Relativa</option>
-                        <option value="F-SUST" data-bg="#dc3545" data-color="#fff">🔴 [S] Sustantival</option>
-                        <option value="F-ADJ" data-bg="#e91e63" data-color="#fff">🩷 Adjetival</option>
-                        <option value="F-ADV" data-bg="#6c757d" data-color="#fff">🩶 Adverbial</option>
-                    </select>
-                    <select class="logic-rel">
-                        <option value="" data-bg="" data-color="">- Relación -</option>
-                        <optgroup label="Coordinadas (3)">
-                            <option value="S">[S] Serie</option>
-                            <option value="P">[P] Progresión</option>
-                            <option value="A">[A] Alternativa</option>
-                        </optgroup>
-                        <optgroup label="Declaración Distinta (8)">
-                            <option value="G">[G] Fundamento (Ground)</option>
-                            <option value="INF">[∴] Inferencia</option>
-                            <option value="BL">[BL] Bilateral</option>
-                            <option value="AC-RES">[Ac/Res] Acción-Resultado</option>
-                            <option value="AC-PUR">[Ac/Pur] Acción-Propósito</option>
-                            <option value="IF-TH">[If/Th] Condicional</option>
-                            <option value="T">[T] Temporal</option>
-                            <option value="L">[L] Locativa</option>
-                        </optgroup>
-                        <optgroup label="Reiteración (5)">
-                            <option value="AC-MN">[Ac/Mn] Acción-Manera</option>
-                            <option value="CF">[Cf] Comparación</option>
-                            <option value="NEG-POS">[-/+] Negativo-Positivo</option>
-                            <option value="ID-EXP">[Id/Exp] Idea-Explicación</option>
-                            <option value="QA">[Q/A] Pregunta-Respuesta</option>
-                        </optgroup>
-                        <optgroup label="Declaración Contraria (2)">
-                            <option value="CSV">[Csv] Concesiva</option>
-                            <option value="SIT-R">[Sit/R] Situación-Respuesta</option>
-                        </optgroup>
-                        <optgroup label="Extendidas Opcionales (4)">
-                            <option value="BOTH-AND">[Both-And] Ambos-Y</option>
-                            <option value="GEN-SPEC">[Gen/Spec] General-Específico</option>
-                            <option value="FACT-INT">[Fact/Int] Hecho-Interpretación</option>
-                            <option value="ANT-FUL">[Ant/Ful] Anticipación-Cumplimiento</option>
-                        </optgroup>
-                    </select>
-                </div>
-                <div class="phrase-text" contenteditable="true" aria-placeholder="Escribe o pega aquí..."></div>
-            `;
+        // Seguimiento de la última línea activa para los botones de la barra DIALS
+        let lastActivePhraseLine = null;
+        workspace.addEventListener('focusin', (e) => {
+            const ln = e.target.closest('.phrase-line');
+            if (ln) lastActivePhraseLine = ln;
+        });
+
+        document.getElementById('btnDialsAddLine')?.addEventListener('click', () => {
+            const newLine = document.createElement('div');
+            newLine.className = 'phrase-line';
+            newLine.innerHTML = createPhraseLineHTML();
+            if (lastActivePhraseLine && workspace.contains(lastActivePhraseLine)) {
+                newLine.style.marginLeft = lastActivePhraseLine.style.marginLeft || '0px';
+                lastActivePhraseLine.parentNode.insertBefore(newLine, lastActivePhraseLine.nextSibling);
+            } else {
+                workspace.appendChild(newLine);
+            }
+            syncDialsLineState(newLine);
+            lastActivePhraseLine = newLine;
+            newLine.querySelector('.phrase-text')?.focus();
+            saveWorkspace();
+        });
+
+        function adjustLineIndent(deltaPx) {
+            const targetLine = (lastActivePhraseLine && workspace.contains(lastActivePhraseLine))
+                ? lastActivePhraseLine
+                : workspace.querySelector('.phrase-line:last-child');
+            if (!targetLine) return;
+            const cur = parseInt(targetLine.style.marginLeft || '0', 10) || 0;
+            const next = Math.max(0, cur + deltaPx);
+            targetLine.style.marginLeft = next + 'px';
+            syncDialsLineState(targetLine);
+            saveWorkspace();
         }
+
+        document.getElementById('btnDialsIndent')?.addEventListener('click', () => adjustLineIndent(30));
+        document.getElementById('btnDialsOutdent')?.addEventListener('click', () => adjustLineIndent(-30));
 
         // Interceptar pegado inicial masivo
         workspace.addEventListener('paste', (e) => {
@@ -523,6 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Lo metemos al flujo
                 currentLine.parentNode.insertBefore(newLine, currentLine.nextSibling);
+                syncDialsLineState(newLine);
 
                 // Mover cursor
                 const newRange = document.createRange();
@@ -534,7 +739,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveWorkspace();
             }
 
-            // 2. TAB -> Margin Left (Sangría)
+            // 2. TAB -> Margin Left (Sangría + Flecha DIALS)
             if (e.key === 'Tab') {
                 e.preventDefault();
                 let currentMargin = parseInt(currentLine.style.marginLeft || '0', 10);
@@ -544,6 +749,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentMargin += 30;
                 }
                 currentLine.style.marginLeft = currentMargin + 'px';
+                syncDialsLineState(currentLine);
                 saveWorkspace();
             }
         });
@@ -1023,24 +1229,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 const relSelect = origSel.querySelector('.logic-rel');
                 
                 const typeVal = typeSelect && typeSelect.selectedIndex > 0 ? typeSelect.options[typeSelect.selectedIndex].text : '';
-                const relVal = relSelect && relSelect.selectedIndex > 0 ? relSelect.options[relSelect.selectedIndex].text : '';
+                const relVal = (relSelect && !relSelect.disabled && relSelect.selectedIndex > 0) ? relSelect.options[relSelect.selectedIndex].text : '';
 
                 let badges = '';
-                if (typeVal && typeVal !== '- Tipo -' && typeVal !== '- Tipo de Frase -') {
-                    const typeBg = typeSelect.style.backgroundColor || '#e0e0e0';
-                    const typeColor = typeSelect.style.color || '#333';
+                if (typeVal && !typeVal.startsWith('-')) {
+                    const typeBg = typeSelect.style.backgroundColor || '#f3f4f6';
+                    const typeColor = typeSelect.style.color || '#374151';
                     badges += `<span style="
                         background: ${typeBg}; color: ${typeColor};
                         padding: 2px 8px; border-radius: 4px; font-size: 10px;
-                        font-weight: 700; margin-right: 4px;
+                        font-weight: 700; margin-right: 4px; border: 1px solid rgba(0,0,0,0.08);
                     ">${typeVal}</span>`;
                 }
-                if (relVal && relVal !== '- Relación -') {
+                if (relVal && !relVal.startsWith('-')) {
+                    const isGen = relSelect.value && relSelect.value.startsWith('GEN-');
+                    const relBg = isGen ? '#dbeafe' : '#fef9c3';
+                    const relColor = isGen ? '#1d4ed8' : '#854d0e';
                     badges += `<span style="
-                        background: #f0f4ff; color: #1e3c72;
+                        background: ${relBg}; color: ${relColor};
                         padding: 2px 8px; border-radius: 4px; font-size: 10px;
-                        font-weight: 700; border: 1px solid #c5d7f2;
-                    ">${relVal}</span>`;
+                        font-weight: 700; border: 1px solid rgba(0,0,0,0.1);
+                    ">[${relVal.replace(/^↳\s*/, '')}]</span>`;
                 }
 
                 cloneSel.innerHTML = badges || '';
@@ -1236,6 +1445,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(dot) dot.style.backgroundColor = hex;
             }
         });
+        if (typeof window.refreshPizarraColors === 'function') {
+            window.refreshPizarraColors();
+        }
     };
 
     // Exportar paleta para uso de ai-engine.js
@@ -1397,14 +1609,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.getAiTemperature = () => loadWorkspacePref('aiTemperature', 0.2);
 
-    // --- Modelo de Gemini ---
-    const modelSelect  = document.getElementById('geminiModel');
-    const savedModel   = loadWorkspacePref('geminiModel', 'gemini-2.5-flash');
-    if (modelSelect) {
-        modelSelect.value = savedModel;
-        modelSelect.addEventListener('change', () => saveWorkspacePref('geminiModel', modelSelect.value));
-    }
-    window.getAiModel = () => loadWorkspacePref('geminiModel', 'gemini-2.5-flash');
+    // --- Modelo activo de Gemini (resuelto desde Free/Paid) ---
+    window.getAiModel = () => localStorage.getItem('geminiModelFree') || localStorage.getItem('geminiModelPaid') || 'gemini-2.5-flash';
 
     // --- Base Lexicográfica ---
     const dictSelect  = document.getElementById('dictionaryBase');
@@ -1799,6 +2005,12 @@ function selectMainSection(targetId, btnEl) {
     if (targetId === 'herramientaGramatical' && typeof renderGrammarElements === 'function') {
         renderGrammarElements();
     }
+    if (targetId === 'mesaInteractiva' && typeof window.ensurePizarraReady === 'function') {
+        window.ensurePizarraReady();
+    }
+    if (targetId === 'documentosSoporte' && typeof window.ensureDriveDocsLoaded === 'function') {
+        window.ensureDriveDocsLoaded();
+    }
     updateBreadcrumb();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1807,22 +2019,9 @@ window.goToShortcut = function(stepId, tabId) {
     selectMainSection(stepId);
     setTimeout(() => {
         if (tabId) {
-            const subTabs = document.querySelectorAll('.' + stepId + '-btn');
-            subTabs.forEach(btn => {
-                const oc = btn.getAttribute('onclick') || '';
-                if (oc.indexOf("'" + tabId + "'") !== -1) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            document.querySelectorAll('.' + stepId + '-content').forEach(c => c.classList.remove('active'));
-            const targetSub = document.getElementById(tabId);
-            if (targetSub) targetSub.classList.add('active');
-
-            document.querySelectorAll('.sidebar-sub-btn').forEach(sb => {
-                sb.classList.toggle('active-sub', sb.getAttribute('data-subtab') === tabId);
-            });
+            const groupMap = { mesaInteractiva: 'mesa-tab', configGeneral: 'config' };
+            const grpClass = groupMap[stepId] || stepId;
+            openSubTab(null, tabId, grpClass);
         }
         const secEl = document.getElementById(stepId);
         if (secEl) secEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1901,10 +2100,33 @@ function renderDrawerTab(tabKey) {
                 '</div>';
             }).join('');
     } else if (tabKey === 'rels27') {
-        body.innerHTML = '<h4 style="margin-top:0;">27 Relaciones de Fraseo (Flechas Amarillas)</h4>' +
+        body.innerHTML = '<h4 style="margin-top:0;">🟨 27 Relaciones de Fraseo (Flechas Amarillas)</h4>' +
             '<p style="font-size:0.9em;"><strong>Declaración Distinta (11):</strong> Fundamento (Ground), Resultado (Result), Propósito (Purpose), Ventaja (Advantage), Desventaja (Disadvantage), Condición (Condition), Temporal (Temporal), Locativa (Locative), Fuente (Source), Destino (Destination), Separación (Separation).</p>' +
             '<p style="font-size:0.9em;"><strong>Reiteración (15):</strong> Manera (Manner), Medios (Means), Agencia (Agency), Comparación (Comparison), Estándar (Standard), Negativa (Negative), Sustitución (Substitution), Explicación (Explanation), Contenido (Content), Contexto (Context), Distinción (Distinction), Ejemplo (Example), Acompañamiento (Accompaniment), Referencia (Reference), Respuesta (Answer).</p>' +
             '<p style="font-size:0.9em;"><strong>Declaración Contraria (1):</strong> Concesiva (Concessive).</p>';
+    } else if (tabKey === 'gen19') {
+        body.innerHTML = '<h4 style="margin-top:0;">🟦 19 Relaciones Genitivas (Flechas Azules)</h4>' +
+            '<ol style="padding-left:18px;line-height:1.55;font-size:0.88em;">' +
+                '<li><strong>Posesivo (Possessive):</strong> Pertenencia directa (<em>casa de Pedro</em>).</li>' +
+                '<li><strong>Relación (Relationship):</strong> Vínculo personal/familiar (<em>apóstol de Cristo</em>).</li>' +
+                '<li><strong>Partitivo (Partitive):</strong> El todo de una parte (<em>algunos de ellos</em>).</li>' +
+                '<li><strong>Atributivo (Attributive):</strong> Genitivo califica al sustantivo (<em>palabra de verdad</em>).</li>' +
+                '<li><strong>Atribuido (Attributed):</strong> Sustantivo es cualidad del genitivo (<em>riqueza de su gracia</em>).</li>' +
+                '<li><strong>Productor (Producer):</strong> Genitivo produce el sustantivo (<em>fruto del Espíritu</em>).</li>' +
+                '<li><strong>Producto (Product):</strong> Sustantivo produce el genitivo (<em>evangelio de paz</em>).</li>' +
+                '<li><strong>Material (Material):</strong> De qué está hecho (<em>vaso de barro</em>).</li>' +
+                '<li><strong>Contenido (Contents):</strong> De qué está lleno (<em>copa de vino; nube de testigos</em>).</li>' +
+                '<li><strong>Subordinación (Subordination):</strong> Dominio sobre (<em>Señor de señores</em>).</li>' +
+                '<li><strong>Separación (Separation):</strong> Alejado/libre de (<em>libre del pecado</em>).</li>' +
+                '<li><strong>Origen / Fuente (Origin/Source):</strong> Procedencia (<em>justicia de Dios</em>).</li>' +
+                '<li><strong>Referencia (Reference):</strong> Respecto a qué (<em>celo de Dios</em>).</li>' +
+                '<li><strong>Aposición (Apposition):</strong> Define/iguala al sustantivo (<em>el don del Espíritu</em>).</li>' +
+                '<li><strong>Subjetivo (Subjective):</strong> Genitivo hace la acción (<em>el amor de Dios</em> = Dios ama).</li>' +
+                '<li><strong>Objetivo (Objective):</strong> Genitivo recibe la acción (<em>temor del Señor</em>).</li>' +
+                '<li><strong>Tiempo (Time):</strong> Cuándo ocurre (<em>días de Herodes</em>).</li>' +
+                '<li><strong>Lugar (Location):</strong> Dónde está (<em>iglesia de Corinto</em>).</li>' +
+                '<li><strong>Descriptivo (Descriptive):</strong> Último recurso general.</li>' +
+            '</ol>';
     } else if (tabKey === 'mybible') {
         body.innerHTML = '<h4 style="margin-top:0;">Paleta Permanente en My Bible</h4>' +
             '<ul style="padding-left:18px;line-height:1.6;">' +
@@ -1922,7 +2144,8 @@ function renderDrawerTab(tabKey) {
 }
 
 const CMD_TARGETS = [
-    { label: '🛠️ Mesa de Trabajo Interactiva', tag: 'Taller', step: 'mesaInteractiva', sub: 'mesa-herramientas' },
+    { label: '🎨 Pizarra y Marcado Bíblico (9 Biblias)', tag: 'Taller', step: 'mesaInteractiva', sub: 'mesa-pizarra' },
+    { label: '📐 Fraseo y Notas (DIALS)', tag: 'Taller', step: 'mesaInteractiva', sub: 'mesa-herramientas' },
     { label: '🧠 Asistente Exegético IA', tag: 'Taller', step: 'mesaInteractiva', sub: 'mesa-ai' },
     { label: '🔍 Búsqueda Gramatical y Referencia', tag: 'Buscador', step: 'herramientaGramatical', sub: '' },
     { label: '🎯 1.1 Introducción y Mapa Completo EBI', tag: 'Paso 1', step: 'paso1', sub: 'paso1-intro' },
@@ -2031,6 +2254,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('keydown', function(e) {
+        if (typeof window.isPizarraBoardOpen === 'function' && window.isPizarraBoardOpen()) return;
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
             openCmdPalette();
@@ -2041,6 +2265,121 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.remove('mobile-sidebar-open');
         }
     });
+
+    // =========================================================================
+    // SECCIÓN DOCUMENTOS Y FORMATOS (GOOGLE DRIVE BAJO DEMANDA + XSS SAFE)
+    // =========================================================================
+    const EXEGESIS_DRIVE_URL = 'https://script.google.com/macros/s/AKfycbyunWSWNZhQr14De-GBapf2y7hV_wl3LnYYoqho4r2HeC2iDXH-2mNpdPI0haKfdkFb/exec';
+    const viewGridBtn = document.getElementById('btnViewGrid');
+    const viewListBtn = document.getElementById('btnViewList');
+    const driveContainer = document.getElementById('driveDocsContainer');
+    const driveLoading = document.getElementById('docsLoadingState');
+    const driveError = document.getElementById('docsErrorState');
+    let loadedDriveDocs = [];
+    let driveCurrentMode = 'grid';
+    let driveFetchedOnce = false;
+
+    function escapeDriveHtml(str) {
+        return String(str ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function safeDriveUrl(rawUrl) {
+        const u = String(rawUrl || '').trim();
+        return /^https?:\/\//i.test(u) ? escapeDriveHtml(u) : '#';
+    }
+
+    function renderDriveDocs() {
+        if (!driveContainer) return;
+        driveContainer.style.display = '';
+
+        if (loadedDriveDocs.length === 0) {
+            driveContainer.className = 'docs-grid-view';
+            driveContainer.innerHTML = '<div class="docs-empty-card">La carpeta de formatos está vacía.</div>';
+            return;
+        }
+
+        if (driveCurrentMode === 'grid') {
+            driveContainer.className = 'docs-grid-view';
+            driveContainer.innerHTML = loadedDriveDocs.map(function(doc) {
+                const href = safeDriveUrl(doc.urlDrive);
+                const ext = escapeDriveHtml(String(doc.extension || '').toUpperCase());
+                return '<div class="doc-card">' +
+                    '<div class="doc-header">' +
+                        '<div class="doc-icon">📄</div>' +
+                        '<div class="doc-actions">' +
+                            '<a href="' + href + '" target="_blank" rel="noopener noreferrer" title="Abrir o descargar en Drive">↗️ Abrir</a>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="doc-title">' + escapeDriveHtml(doc.nombre) + '</div>' +
+                    '<div class="doc-tags">' +
+                        '<span>' + ext + '</span>' +
+                        '<span class="doc-size-tag">' + escapeDriveHtml(doc['tamaño'] || doc.tamano || '') + '</span>' +
+                    '</div>' +
+                    '<div class="doc-footer">☁️ Drive Sync • ' + escapeDriveHtml(doc.fecha) + '</div>' +
+                '</div>';
+            }).join('');
+        } else {
+            driveContainer.className = 'docs-list-view';
+            const rows = loadedDriveDocs.map(function(doc) {
+                const href = safeDriveUrl(doc.urlDrive);
+                const ext = escapeDriveHtml(String(doc.extension || '').toUpperCase());
+                return '<tr>' +
+                    '<td style="font-weight:700;">📄 ' + escapeDriveHtml(doc.nombre) + '</td>' +
+                    '<td><span style="padding:3px 8px;border-radius:4px;font-size:0.8em;font-weight:700;">' + ext + '</span></td>' +
+                    '<td style="color:#6366f1;font-weight:700;">' + escapeDriveHtml(doc['tamaño'] || doc.tamano || '') + '</td>' +
+                    '<td style="font-size:0.9em;opacity:0.8;">' + escapeDriveHtml(doc.fecha) + '</td>' +
+                    '<td style="text-align:right;">' +
+                        '<a href="' + href + '" target="_blank" rel="noopener noreferrer" class="shortcut-btn" style="text-decoration:none;font-size:0.82em;padding:5px 10px;" title="Abrir o descargar en Drive">↗️ Abrir</a>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+            driveContainer.innerHTML = '<table><thead><tr><th>Nombre</th><th>Tipo</th><th>Tamaño</th><th>Fecha</th><th style="text-align:right">Acción</th></tr></thead><tbody>' + rows + '</tbody></table>';
+        }
+    }
+
+    if (viewGridBtn && viewListBtn) {
+        viewGridBtn.addEventListener('click', function() {
+            driveCurrentMode = 'grid';
+            viewGridBtn.classList.add('active');
+            viewListBtn.classList.remove('active');
+            if (driveFetchedOnce) renderDriveDocs();
+        });
+        viewListBtn.addEventListener('click', function() {
+            driveCurrentMode = 'list';
+            viewListBtn.classList.add('active');
+            viewGridBtn.classList.remove('active');
+            if (driveFetchedOnce) renderDriveDocs();
+        });
+    }
+
+    window.ensureDriveDocsLoaded = function() {
+        if (driveFetchedOnce || !EXEGESIS_DRIVE_URL.trim() || !driveContainer) return;
+        driveFetchedOnce = true;
+        if (driveLoading) driveLoading.style.display = 'block';
+        if (driveError) driveError.style.display = 'none';
+        driveContainer.style.display = 'none';
+
+        fetch(EXEGESIS_DRIVE_URL)
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data && data.error) throw new Error(data.error);
+                loadedDriveDocs = Array.isArray(data) ? data : [];
+                if (driveLoading) driveLoading.style.display = 'none';
+                renderDriveDocs();
+            })
+            .catch(function(err) {
+                driveFetchedOnce = false;
+                if (driveLoading) driveLoading.style.display = 'none';
+                if (driveError) {
+                    driveError.style.display = 'block';
+                    driveError.textContent = 'Error cargando archivos: ' + err.message;
+                }
+            });
+    };
 
     const orderedFlow = [
         ['paso1', 'paso1-intro', 'Ir a Observación Básica →', 'paso1', 'paso1-basica'],
